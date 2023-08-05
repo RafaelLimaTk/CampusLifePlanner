@@ -1,0 +1,85 @@
+﻿@model CampusLifePlanner.WebUI.ViewModels.RegisterViewModel
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Registrar";
+}
+
+<style>
+    .d-flex-center-vh {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 88vh;
+    }
+</style>
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5 d-flex-center-vh">
+        <div class="col-lg-7 text-center text-lg-start text-center">
+            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">EduPlaner - Organizando seu Sucesso Acadêmico</h1>
+            <p class="col-lg-10 fs-4">EduPlaner é a sua ferramenta para maximizar o sucesso acadêmico! Com uma abordagem inovadora, nosso aplicativo permite que os alunos acessem e visualizem suas atividades e tarefas relacionadas a cada curso. Simplificando a gestão acadêmica, o EduPlaner ajuda você a ficar no controle de seus estudos, garantindo que nenhum prazo importante seja esquecido. Experimente a eficiência de um gerenciador de atividades projetado para aprimorar sua experiência educacional. Descubra o poder da organização com o EduPlaner!</p>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+            <form asp-controller="Account" asp-action="Register" method="post" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Endereço de e-mail</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Password" type="password" class="form-control" id="floatingPassword" placeholder="Senha">
+                    <label for="floatingPassword">Senha</label>                  
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" id="floatingPassword" placeholder="Confirmar senha">
+                    <label for="floatingPassword">Confirmar senha</label>
+                </div>
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Lembrar-me
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary mb-2" type="submit">Inscrever-se</button>
+                <a asp-controller="Account" asp-action="Login" class="w-100 py-2 mb-2 btn btn-lg btn-outline-primary rounded-3">
+                    Fazer login
+                </a>
+                <hr class="my-4">
+                <small class="text-body-secondary">Ao clicar em Inscrever-se, você concorda com os termos de uso.</small>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $('form').on('submit', function () {
+            // Verifique se o formulário é válido
+            if ($(this).valid()) {
+                // Se o formulário for válido, aplique a classe 'is-valid' para todos os campos de entrada
+                $(this).find('input').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                // Se o formulário for inválido, aplique a classe 'is-invalid' para todos os campos de entrada inválidos
+                $(this).find('input').each(function () {
+                    // Se o campo de entrada tem a classe 'input-validation-error'...
+                    if ($(this).hasClass('input-validation-error')) {
+                        // Adicione a classe 'is-invalid'
+                        $(this).removeClass('is-valid').addClass('is-invalid');
+
+                        // Obtenha a mensagem de erro a partir dos atributos data- do campo de entrada
+                        var errorMessage = $(this).attr('data-val-required') || $(this).attr('data-val-email');
+
+                        // Altere o texto da label correspondente para a mensagem de erro
+                        $(this).siblings('label').text(errorMessage);
+                    } else {
+                        // Caso contrário, adicione a classe 'is-valid'
+                        $(this).removeClass('is-invalid').addClass('is-valid');
+                    }
+                });
+            }
+        });
+    </script>
+}
