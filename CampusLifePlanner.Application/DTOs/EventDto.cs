@@ -11,7 +11,7 @@ public class EventDto
     [MinLength(3)]
     [MaxLength(120)]
     [DisplayName("Título")]
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
     [MinLength(5)]
     [MaxLength(500)]
@@ -21,6 +21,8 @@ public class EventDto
     [MinLength(3)]
     [MaxLength(120)]
     [DisplayName("Local")]
-    public string? Local { get; set; }
-    public CourseDto? Course { get; set; }
+    public string Local { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public Guid CourseId { get; set; }
 }

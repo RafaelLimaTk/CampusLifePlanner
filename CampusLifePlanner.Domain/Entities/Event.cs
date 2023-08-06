@@ -32,11 +32,50 @@ public class Event : EntityBase
         _CourseId = course.Id;
     }
 
-    public string Title { get => _Title; private set => value.EnsureNotNullOrEmpty(nameof(Title)); }
-    public string Local { get => _Local; private set => value.EnsureNotNullOrEmpty(nameof(Local)); }
-    public string Description { get => _Description; private set => _Description = value; }
-    public DateTime StartDate { get => _StartDate; private set => ValidateStartDate(value); }
-    public DateTime EndDate { get => _EndDate; private set => ValidateEndDate(_StartDate, value); }
+    public string Title
+    {
+        get => _Title;
+        private set
+        {
+            value.EnsureNotNullOrEmpty(nameof(Title));
+            _Title = value;
+        }
+    }
+    public string Local
+    {
+        get => _Local;
+        private set
+        {
+            value.EnsureNotNullOrEmpty(nameof(Local));
+            _Local = value;
+        }
+    }
+
+    public string Description
+    {
+        get => _Description;
+        private set => _Description = value;
+    }
+
+    public DateTime StartDate
+    {
+        get => _StartDate;
+        private set
+        {
+            ValidateStartDate(value);
+            _StartDate = value;
+        }
+    }
+
+    public DateTime EndDate
+    {
+        get => _EndDate;
+        private set
+        {
+            ValidateEndDate(_StartDate, value);
+            _EndDate = value;
+        }
+    }
 
     public Guid CourseId
     {

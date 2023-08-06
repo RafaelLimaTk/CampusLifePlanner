@@ -33,7 +33,13 @@ public static class DependencyInjection
             .AddDefaultTokenProviders();
 
         Services.ConfigureApplicationCookie(options =>
-                     options.AccessDeniedPath = "/Account/Login");
+        {
+            options.AccessDeniedPath = "/Account/Login";
+            options.Cookie.Name = "CampusLifePlanner";
+            options.Cookie.HttpOnly = true;
+            options.ExpireTimeSpan = TimeSpan.FromDays(30);
+            options.SlidingExpiration = true;
+        });
 
         Services.AddScoped<IEventRepository, EventRepository>();
         Services.AddScoped<ICourseRepository, CourseRepository>();

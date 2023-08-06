@@ -5,7 +5,7 @@ using CampusLifePlanner.Domain.Interfaces.Base;
 
 namespace CampusLifePlanner.Application.Services.Base;
 
-public class GenericService<TDto, TEntity> : IService<TDto, TEntity> where TEntity : IEntity
+public class GenericService<TDto, TEntity> : IService<TDto, TEntity> where TEntity : EntityBase
 {
     private readonly IRepository<TEntity> _repository;
     private readonly IMapper _mapper;
