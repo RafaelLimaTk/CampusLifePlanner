@@ -61,19 +61,17 @@
     <script>
         $(document).ready(function () {
             $("#eventForm").submit(function (e) {
-                e.preventDefault(); // Impede o envio padrão do formulário
+                e.preventDefault();
 
-                var formData = $(this).serialize(); // Pega os dados do formulário
-
+                var formData = $(this).serialize();
                 $.post("/Course/Create", formData)
                     .done(function () {
-                        // Tratamento se sucesso. Por exemplo:
+                      
                         alert("Curso salvo com sucesso!");
-                        $("#addCourseModal").modal('hide'); // Fecha a modal
-                        location.reload(); // Recarrega a página para ver os novos dados
+                        $("#addCourseModal").modal('hide'); 
+                        location.reload(); 
                     })
                     .fail(function () {
-                        // Tratamento se falha. Por exemplo:
                         alert("Erro ao salvar o curso.");
                     });
             });

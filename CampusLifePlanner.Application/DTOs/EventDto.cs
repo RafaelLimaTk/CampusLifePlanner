@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using CampusLifePlanner.Domain.Entities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CampusLifePlanner.Application.DTOs;

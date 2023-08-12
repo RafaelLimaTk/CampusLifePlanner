@@ -1,0 +1,205 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+</style>
+
+<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEventModalLabel">Adicionar Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm" action="/Event/CreateEvent" method="post">
+                    <input type="hidden" id="eventId" value="">
+                    <div class="mb-3">
+                        <label for="eventTitle" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="eventTitle" name="Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventLocal" class="form-label">Local</label>
+                        <input type="text" class="form-control" id="eventLocal" name="Local">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
+                        <input type="datetime-local" class="form-control" id="eventStartDateTime" name="StartDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
+                        <input type="datetime-local" class="form-control" id="eventEndDateTime" name="EndDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventDescription" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" id="eventDescription" name="Description">
+                    </div>
+                    <label for="courseId" class="form-label">Curso</label>
+                    <select class="form-control" id="courseId" name="CourseId">
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary" id="saveEvent">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-2" id='calendar'></div>
+
+<div class="toast" data-autohide="false">
+    <div class="toast-header">
+        <strong class="mr-auto text-primary">Mensagem</strong>
+    </div>
+    <div class="toast-body">
+        Dados salvos com sucesso.
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                initialView: 'dayGridMonth',
+                locale: 'pt-br',
+                headerToolbar: {
+                    start: 'prev,next',
+                    center: 'title',
+                    end: ''
+                },
+                buttonText: {
+                    today: 'Hoje',
+                    month: 'Mês',
+                    week: 'Semana',
+                    day: 'Dia',
+                    list: 'Lista'
+                },
+                headerToolbar: {
+                    start: 'prev,next',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek,dayGridDay'
+                },
+                slotDuration: '00:30:00',
+                slotLabelInterval: '01:00:00',
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                },
+                events: '/Event/GetEvents',
+                eventDataTransform: function (eventData) {
+                    return {
+                        id: eventData.id,
+                        title: eventData.title,
+                        local: eventData.local,
+                        start: eventData.startDate,
+                        end: eventData.endDate,
+                        description: eventData.description,
+                        courseId: eventData.courseId,
+                    };
+                },
+                eventClick: function (info) {
+                    var eventObj = info.event;
+
+                    $('#eventId').val(info.event.id);
+                    $('#saveEvent').text('Atualizar');
+
+                    $('#eventTitle').val(eventObj.title);
+                    $('#eventLocal').val(eventObj.extendedProps.local);
+                    if (eventObj.start) {
+                        $('#eventStartDateTime').val(eventObj.start.toISOString().slice(0, 16));
+                    }
+
+                    if (eventObj.end) {
+                        $('#eventEndDateTime').val(eventObj.end.toISOString().slice(0, 16));
+                    }
+                    $('#eventDescription').val(eventObj.extendedProps.description);
+                    $('#courseId').val(eventObj.extendedProps.courseId);
+
+                    var modal = new bootstrap.Modal(document.getElementById('addEventModal'));
+                    modal.show();
+                },
+                dateClick: function (info) {
+                    $('#eventId').val('');
+                    $('#saveEvent').text('Salvar');
+                    var currentDate = new Date();
+                    var currentHours = currentDate.getHours().toString().padStart(2, '0');
+                    var currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+
+                    var formattedDate = info.dateStr + 'T' + currentHours + ':' + currentMinutes + ':00';
+
+                    $('#eventStartDateTime').val(formattedDate);
+
+                    var modal = new bootstrap.Modal(document.getElementById('addEventModal'));
+                    modal.show();
+                }
+            });
+            calendar.render();
+        });
+
+        $(document).ready(function () {
+            $("#saveEvent").click(function () {
+                $("#eventForm").submit();
+            });
+
+            $("#eventForm").submit(function (e) {
+                e.preventDefault();
+
+                var eventId = $('#eventId').val();
+                var postUrl = eventId ? '/Event/Update/' + eventId : '/Event/Create';
+                var successMessage = eventId ? "Evento atualizado com sucesso!" : "Evento salvo com sucesso!";
+                var requestType = eventId ? "PUT" : "POST";
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: requestType,
+                    url: postUrl,
+                    data: formData,
+                    success: function () {
+                        localStorage.setItem('toastMessage', successMessage);
+                        location.reload();
+                    },
+                    error: function () {
+                        localStorage.setItem('toastMessage', 'Erro ao salvar o evento.');
+                        location.reload();
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            var toastMessage = localStorage.getItem('toastMessage');
+            if (toastMessage) {
+                $('.toast-body').text(toastMessage);
+                $('.toast').toast('show');
+                localStorage.removeItem('toastMessage'); // Limpe a mensagem após mostrá-la para evitar que seja exibida novamente em recargas subsequentes
+            }
+        });
+
+
+        $(document).ready(function () {
+            $.get('https://localhost:7287/Course/GetCourses', function (courses) {
+                var options = '';
+                courses.forEach(function (course) {
+                    options += `<option value="${course.id}">${course.name}</option>`;
+                });
+                $('#courseId').html(options);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("Erro na requisição:", textStatus, errorThrown);
+            });
+        });
+    </script>
+}
