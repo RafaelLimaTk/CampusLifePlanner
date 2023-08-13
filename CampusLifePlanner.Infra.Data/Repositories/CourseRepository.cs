@@ -10,4 +10,9 @@ public class CourseRepository : Repository<Course>, ICourseRepository
     public CourseRepository(ApplicationDbContext context) : base(context)
     {
     }
+
+    public bool ExistEvent(Guid id)
+    {
+        return Entities.Any(e => e.Id == id);
+    }
 }

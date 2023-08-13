@@ -1,0 +1,96 @@
+﻿@model CampusLifePlanner.Application.DTOs.EventDto;
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
+@{
+    ViewBag.title = Model.Id == Guid.Empty ? RS.Common.GENERAL_PAGE_BTN_ADD + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower() : RS.Common.GENERAL_PAGE_BTN_EDIT + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower();
+    var modalId = "modal_" + Guid.NewGuid();
+    var courseList = ViewBag.Courses;
+}
+
+<div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEventModalLabel">@ViewBag.title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    @Html.HiddenFor(a => a.Id)
+                    <div class="mb-3">
+                        <label for="eventTitle" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="eventTitle" name="Title" value="@Model.Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventLocal" class="form-label">Local</label>
+                        <input type="text" class="form-control" id="eventLocal" name="Local" value="@Model.Local">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
+                        <input type="datetime-local" class="form-control" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
+                        <input type="datetime-local" class="form-control" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventDescription" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" id="eventDescription" name="Description" value="@Model.Description">
+                    </div>
+                    <label for="courseId" class="form-label">Curso</label>
+                    <select class="form-control" asp-for="CourseId" asp-items="@courseList"></select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger fp-del" value="@Model.Id">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
+                <button type="submit" class="btn btn-primary fp-save">@RS.Common.GENERAL_PAGE_BTN_SAVE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#@modalId").modal('show');
+
+        $(document).ready(function () {
+            $(".fp-save").click(function () {
+                let formData = $("#eventForm").serialize();
+                let url = $("#@modalId").data("url");
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#@modalId").data('callback-success')();
+                            $("#@modalId").modal('hide');
+                        }
+                        else {
+                            ExceptionMessage(response.message, response.type);
+                        }
+                    }
+                });
+            });
+
+            $(".fp-del").click(function () {
+                let id = $(this).val();
+                $.post("@Url.Action("ModalDelete")")
+                    .done(function (modal) {
+                        $modal = $(modal);
+                        let modalId = $modal.attr("id");
+                        $modal.data("callback-success", function () {
+                            location.reload(true);
+                        });
+                        $("body").append($modal);
+                        $("body #" + modalId + " " + ".fp-delete").val(id);
+                    });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#@modalId").on('hidden hidden.bs.modal', function () {
+                $("#@modalId").remove();
+            });
+        });
+    </script>
+
+</div>

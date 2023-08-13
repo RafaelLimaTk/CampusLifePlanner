@@ -6,4 +6,5 @@ namespace CampusLifePlanner.Application.Interfaces;
 
 public interface ICourseService : IService<CourseDto, Course>
 {
+    bool ExistEvent(Guid id);
 }

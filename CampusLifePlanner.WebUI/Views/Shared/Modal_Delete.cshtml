@@ -1,0 +1,48 @@
+﻿@using RS = CampusLifePlanner.Infra.IoC.Resources;
+
+@{
+    var modalId = Guid.NewGuid();
+}
+
+<div class="modal modal-delete" id="@modalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@RS.Common.GENERAL_PAGE_LBL_DELETE</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>@RS.Common.GENERAL_PAGE_LBL_DELETE_THIS</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
+                <button type="button" class="btn btn-primary fp-delete">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#@modalId").modal('show');
+
+    $(document).ready(function () {
+        $("#@modalId").on('hidden hidden.bs.modal', function () {
+            $("#@modalId").remove();
+        });
+    });
+
+    $("#@modalId .fp-delete").click(function () {
+        let id = $(this).val();
+        $.ajax({
+            url: "@Url.Action("Delete")",
+            data: { id: id },
+            method: "POST"
+        }).done(function (response) {
+            if (response.success) {
+                $("#@modalId").data("callback-success")();
+                $("#@modalId").modal("hide");
+            }
+            else
+                ExceptionMessage(response.message, response.type);
+        });
+    });
+</script>

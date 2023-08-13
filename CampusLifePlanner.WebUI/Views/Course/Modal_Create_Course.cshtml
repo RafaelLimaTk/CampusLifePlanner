@@ -1,0 +1,66 @@
+﻿@model CampusLifePlanner.Application.DTOs.CourseDto;
+@{
+    var container = "modal_" + Guid.NewGuid();
+}
+
+<div class="modal fade" id="@container" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCourseModalLabel">Adicionar Curso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    @Html.HiddenFor(a => a.Id)
+                    <div class="mb-3">
+                        <label for="courseName" class="form-label">Curso</label>
+                        <input type="text" class="form-control" id="courseName" name="Name" value="@Model.Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Curso</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        OpenModal();
+        function OpenModal() {
+            $("#@container").modal('show');
+        }
+
+        $(document).ready(function () {
+            $("#eventForm").submit(function (e) {
+                e.preventDefault();
+
+                let formData = $(this).serialize();
+                let url = $("#@container").data("url");
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#@container").data('callback-success')();
+                            $("#@container").modal('hide');
+                        }
+                        else {
+                            ExceptionMessage(response.message, response.type);
+                        }
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#@container").on('hidden hidden.bs.modal', function () {
+                $("#@container").remove();
+            });
+        });
+    </script>
+
+</div>

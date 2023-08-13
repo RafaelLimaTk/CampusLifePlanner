@@ -29,7 +29,7 @@ public class AuthenticateService : IAuthenticate
         await _singInManeger.SignOutAsync();
     }
 
-    public async Task<bool> RegisterUser(string email, string password)
+    public async Task<(bool success, string msg)> RegisterUser(string email, string password)
     {
         var applicationUser = new ApplicationUser
         {
@@ -44,6 +44,6 @@ public class AuthenticateService : IAuthenticate
             await _singInManeger.SignInAsync(applicationUser, isPersistent: false);
         }
 
-        return result.Succeeded;
+        return new(result.Succeeded, result.Errors.Count() == 0  ? null : result.Errors.FirstOrDefault().Description.ToString());
     }
 }

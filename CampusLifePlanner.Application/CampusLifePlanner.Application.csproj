@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CampusLifePlanner.Domain\CampusLifePlanner.Domain.csproj" />
+    <ProjectReference Include="..\CampusLifePlanner.Infra.Data\CampusLifePlanner.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

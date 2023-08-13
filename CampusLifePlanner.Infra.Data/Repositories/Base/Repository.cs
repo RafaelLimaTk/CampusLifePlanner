@@ -33,7 +33,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
 
     public async Task UpdateAsync(T entity)
     {
-        _context.Entry(entity).State = EntityState.Modified;
+        _context.Update(entity);
         await _context.SaveChangesAsync();
     }
 

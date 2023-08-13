@@ -2,39 +2,16 @@
 
 @{
     ViewData["Title"] = "Course";
+    var container = Guid.NewGuid();
 }
-
-<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addCourseModalLabel">Adicionar Curso</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="eventForm" action="/Course/Create" method="post">
-                    <div class="mb-3">
-                        <label for="courseName" class="form-label">Curso</label>
-                        <input type="text" class="form-control" id="courseName" name="Name">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Salvar Curso</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card">
+<div id="@container" class="card">
     <div class="card-header">
         <div class="align-items-center row">
             <div class="col-10 d-flex">
                 <h5>Course</h5>
             </div>
             <div class="col-2 align-items-center justify-content-center d-flex">
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">Adicionar curso</button>
+                <a class="btn btn-outline-primary fp-add">Adicionar curso</a>
             </div>
         </div>
     </div>
@@ -43,6 +20,8 @@
             <thead>
                 <tr class="bg-secondary text-white">
                     <th>Nome do Curso</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +29,16 @@
                 {
                     <tr>
                         <td>@course.Name</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary fp-edit" value="@course.Id">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger fp-del" value="@course.Id">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -60,21 +49,45 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $("#eventForm").submit(function (e) {
-                e.preventDefault();
-
-                var formData = $(this).serialize();
-                $.post("/Course/Create", formData)
-                    .done(function () {
-                      
-                        alert("Curso salvo com sucesso!");
-                        $("#addCourseModal").modal('hide'); 
-                        location.reload(); 
-                    })
-                    .fail(function () {
-                        alert("Erro ao salvar o curso.");
+            $(".fp-add").click(function () {
+                $.get("@Url.Action("Modal_Create_Course")")
+                    .done(function (modal) {
+                        let $modal = $(modal);
+                        $modal.data("callback-success", function(){
+                            location.reload(true);
+                        }).data("url", '@Url.Action("Create")');
+                        $("#@container").append($modal);
                     });
             });
         });
+
+
+
+        $(".fp-edit").click(function () {
+            let id = $(this).val();
+            $.post("@Url.Action("Edit")", { id: id })
+            .done(function (modal) {
+                    let $modal = $(modal);
+                    $modal.data("callback-success", function () {
+                        location.reload(true);
+                    }).data("url", '@Url.Action("Update")');
+                    $("#@container").append($modal);
+            });
+        });
+        
+        $(".fp-del").click(function () {
+            let id = $(this).val();
+            $.get("@Url.Action("ModalDelete")")
+                .done(function (modal) {
+                    $modal = $(modal);
+                    let modalId = $modal.attr("id");
+                    $modal.data("callback-success", function(){
+                        location.reload(true);
+                    });
+                    $("body").append($modal);
+                    $("body #" + modalId + " " + ".fp-delete").val(id);
+                });
+        });
+
     </script>
 }

@@ -2,6 +2,7 @@
 using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 namespace CampusLifePlanner.WebUI.Controllers;
 
@@ -33,8 +34,7 @@ public class AccountController : Controller
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.(password must be strong).");
-                
+                TempData["warning"] = RS.Common.EX_MSG_INVALID_USER.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_USER).Replace("{1}", RS.Common.GENERAL_PAGE_LBL_PASSWORD);
             }
         }
         return View(model);
@@ -54,13 +54,13 @@ public class AccountController : Controller
         {
             var result = await _authentication.RegisterUser(model.Email, model.Password);
 
-            if (result)
+            if (result.success)
             {
                 return Redirect("/");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Houve um problema durante o registro. Verifique se a senha é forte o suficiente.");
+                TempData["info"] = result.msg;
             }
         }
         return View(model);

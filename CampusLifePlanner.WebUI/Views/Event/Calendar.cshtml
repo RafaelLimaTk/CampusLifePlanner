@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    var container = "container" + Guid.NewGuid();
+}
+<div id="@container">
+
+    <style>
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+    </style>
+
+    <div class="p-2" id='calendar'></div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                initialView: 'dayGridMonth',
+                locale: 'pt-br',
+                headerToolbar: {
+                    start: 'prev,next',
+                    center: 'title',
+                    end: ''
+                },
+                buttonText: {
+                    today: 'Hoje',
+                    month: 'Mês',
+                    week: 'Semana',
+                    day: 'Dia',
+                    list: 'Lista'
+                },
+                headerToolbar: {
+                    start: 'prev,next',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek,dayGridDay'
+                },
+                slotDuration: '00:30:00',
+                slotLabelInterval: '01:00:00',
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                },
+                events: '@Url.Action("GetEvents")',
+                eventDataTransform: function (eventData) {
+                    return {
+                        id: eventData.id,
+                        title: eventData.title,
+                        local: eventData.local,
+                        start: eventData.startDate,
+                        end: eventData.endDate,
+                        description: eventData.description,
+                        courseId: eventData.courseId,
+                    };
+                },
+                eventClick: function (info) {
+                    var eventId = info.event.id;
+                    $.get("@Url.Action("Modal_Edit")", { id : eventId })
+                        .done(function (modal) {
+                            let $modal = $(modal);
+                            $modal.data("callback-success", function () {
+                                location.reload(true);
+                            }).data("url", "@Url.Action("Update")");
+                            $("#@container").append($modal);
+                        });
+                },
+                dateClick: function (info) {
+                    $.get("@Url.Action("Modal_Create")")
+                        .done(function (modal) {
+                            let $modal = $(modal);
+                            $modal.data("callback-success", function(){
+                                location.reload(true);
+                            }).data("url", "@Url.Action("Create")");
+                            $("#@container").append($modal);
+                        });
+                }
+            });
+            calendar.render();
+        });
+    </script>
+}

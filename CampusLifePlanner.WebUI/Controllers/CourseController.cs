@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
+using CampusLifePlanner.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.MSIdentity.Shared;
+using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 namespace CampusLifePlanner.WebUI.Controllers;
 
@@ -36,24 +39,62 @@ public class CourseController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CourseDto courseDto)
+    public async Task<JsonResult> Create(CourseDto courseDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(courseDto);
-        }
-
         try
         {
             await _courseService.CreateAsync(courseDto);
+            return Json(new { success = true });
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError(string.Empty, "Ocorreu um erro ao criar o curso. Tente novamente.");
+            return Json(new { success = false, message = RS.Common.EX_MSG_CREATE_ERROR.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_COURSE), type = "info" });
+        }
+    }
 
-            return View(courseDto);
+    public async Task<ActionResult> Edit(Guid id)
+        => PartialView("Modal_Create_Course", _mapper.Map<CourseDto>(await _courseService.GetByIdAsync(id)));
+
+    [HttpPost]
+    public async Task<JsonResult> Delete(Guid id)
+    {
+        try
+        {
+            if (_courseService.ExistEvent(id))
+                throw new Exception("Existem eventos cadastrados para esse curso");
+
+            await _courseService.DeleteAsync(id);
+            TempData["success"] = "Sucesso";
+            return Json(new { success = true });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = ex.Message, type = "error" });
+        }
+        
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> Update(CourseDto courseDto)
+    {
+        try
+        {
+            await _courseService.UpdateAsync(_mapper.Map<Course>(courseDto));
+            TempData["success"] = "Salvo";
+            return Json(new { success = true });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = RS.Common.EX_MSG_CREATE_ERROR.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_COURSE), type = "info" });
         }
 
-        return RedirectToAction("Index");
+    }
+
+    public ActionResult ModalDelete()
+            => PartialView("Modal_Delete");
+
+    public ActionResult Modal_Create_Course()
+    {
+        return PartialView(new CourseDto());
     }
 }

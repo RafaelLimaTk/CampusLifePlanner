@@ -10,4 +10,9 @@
     <ProjectReference Include="..\CampusLifePlanner.Infra.IoC\CampusLifePlanner.Infra.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>
