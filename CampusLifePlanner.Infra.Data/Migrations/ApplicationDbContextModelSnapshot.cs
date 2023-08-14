@@ -87,6 +87,31 @@ namespace CampusLifePlanner.Infra.Data.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("CampusLifePlanner.Domain.Entities.User", b =>
+                {
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.HasKey("UpdatedAt");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("CampusLifePlanner.Infra.Data.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")

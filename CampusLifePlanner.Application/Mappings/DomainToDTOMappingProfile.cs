@@ -10,5 +10,6 @@ public class DomainToDTOMappingProfile : Profile
     {
         CreateMap<Event, EventDto>().ReverseMap();
         CreateMap<Course, CourseDto>().ReverseMap();
+        CreateMap<User, UserDto>().ReverseMap();
     }
 }

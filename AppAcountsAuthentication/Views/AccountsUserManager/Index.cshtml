@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CampusLifePlanner.Application.DTOs.UserDto>;
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
+@{
+    ViewData["Title"] = "Users";
+    var container = Guid.NewGuid();
+}
+<div id="@container" class="card">
+    <div class="card-header">
+        <div class="align-items-center row">
+            <div class="col-10 d-flex">
+                <h5>@RS.Common.GENERAL_PAGE_LBL_USER</h5>
+            </div>
+            <div class="col-2 align-items-center justify-content-center d-flex">
+                <a class="btn btn-outline-primary fp-add">Adicionar curso</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr class="bg-secondary text-white">
+                    <th>Nome</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@course.Name</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary fp-edit" value="@course.Id">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger fp-del" value="@course.Id">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusLifePlanner.Domain", "CampusLifePlanner.Domain\CampusLifePlanner.Domain.csproj", "{55EFBFF7-FE77-4D03-AFC9-12F9E9BF45FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampusLifePlanner.Domain", "CampusLifePlanner.Domain\CampusLifePlanner.Domain.csproj", "{55EFBFF7-FE77-4D03-AFC9-12F9E9BF45FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusLifePlanner.Application", "CampusLifePlanner.Application\CampusLifePlanner.Application.csproj", "{E3F6DBB4-3AC8-424A-9045-5AB717A7C2F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampusLifePlanner.Application", "CampusLifePlanner.Application\CampusLifePlanner.Application.csproj", "{E3F6DBB4-3AC8-424A-9045-5AB717A7C2F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusLifePlanner.Infra.Data", "CampusLifePlanner.Infra.Data\CampusLifePlanner.Infra.Data.csproj", "{644C476D-37E6-44F7-BF8A-D22B0E7820A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampusLifePlanner.Infra.Data", "CampusLifePlanner.Infra.Data\CampusLifePlanner.Infra.Data.csproj", "{644C476D-37E6-44F7-BF8A-D22B0E7820A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusLifePlanner.Infra.IoC", "CampusLifePlanner.Infra.IoC\CampusLifePlanner.Infra.IoC.csproj", "{7850D7CA-A289-47BC-B66D-624B68DBE736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampusLifePlanner.Infra.IoC", "CampusLifePlanner.Infra.IoC\CampusLifePlanner.Infra.IoC.csproj", "{7850D7CA-A289-47BC-B66D-624B68DBE736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampusLifePlanner.WebUI", "CampusLifePlanner.WebUI\CampusLifePlanner.WebUI.csproj", "{5A88C09B-15F8-496D-8B28-63FECD459D06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampusLifePlanner.WebUI", "CampusLifePlanner.WebUI\CampusLifePlanner.WebUI.csproj", "{5A88C09B-15F8-496D-8B28-63FECD459D06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAcountsAuthentication", "AppAcountsAuthentication\AppAcountsAuthentication.csproj", "{1A15649C-CCCE-4B5D-9E2E-923732EC4006}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5A88C09B-15F8-496D-8B28-63FECD459D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A88C09B-15F8-496D-8B28-63FECD459D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A88C09B-15F8-496D-8B28-63FECD459D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A15649C-CCCE-4B5D-9E2E-923732EC4006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A15649C-CCCE-4B5D-9E2E-923732EC4006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A15649C-CCCE-4B5D-9E2E-923732EC4006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A15649C-CCCE-4B5D-9E2E-923732EC4006}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

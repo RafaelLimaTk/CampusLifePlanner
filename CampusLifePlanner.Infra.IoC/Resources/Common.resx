@@ -136,4 +136,10 @@
   <data name="GENERAL_PAGE_BTN_EDIT" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="GENERAL_PAGE_LBL_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_EMAIL" xml:space="preserve">
+    <value>Email</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using CampusLifePlanner.Domain.Account;
+using CampusLifePlanner.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace CampusLifePlanner.Infra.Data.Identity;
@@ -17,7 +18,17 @@ public class AuthenticateService : IAuthenticate
         _singInManeger = singInManeger;
     }
 
-    public RoleManager<ApplicationUser> RoleManager { get; }
+    public async Task<User> GetById(string id)
+    {
+        var identityUser = await _userManager.FindByIdAsync(id);
+        var user = new User
+        {
+            Id = Guid.Parse(identityUser.Id),
+            Email = identityUser.Email,
+            Name = identityUser.UserName
+        };
+        return user;
+    }
 
     public async Task<bool> Authentication(string email, string password)
     {
