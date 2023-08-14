@@ -1,0 +1,32 @@
+﻿@using CampusLifePlanner.Infra.Data.Identity;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var appUser = await UserManager.GetUserAsync(User);
+}
+@{
+    var roleUser = await UserManager.GetUsersInRoleAsync("admin");
+}
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+        </li>
+        var admins = roleUser.Select(a => a.Email).ToList();
+        if (admins.Contains(appUser.Email))
+        {            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Calendar">Calendario</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Cursos</a>
+            </li>
+        }
+    }
+</ul>

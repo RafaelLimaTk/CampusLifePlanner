@@ -52,6 +52,12 @@ public static class DependencyInjection
 
         Services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
+        Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("isAdmin", policy => policy.RequireRole("admin"));
+            options.AddPolicy("isStudent", policy => policy.RequireRole("student"));
+        });
+
         return Services;
     }
 }
