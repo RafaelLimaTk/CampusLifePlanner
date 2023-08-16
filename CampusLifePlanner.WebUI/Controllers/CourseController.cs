@@ -9,7 +9,6 @@ using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 namespace CampusLifePlanner.WebUI.Controllers;
 
-[Authorize]
 public class CourseController : Controller
 {
     private readonly ICourseService _courseService;

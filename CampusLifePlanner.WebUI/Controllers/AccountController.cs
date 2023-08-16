@@ -71,4 +71,10 @@ public class AccountController : Controller
         await _authentication.Logout();
         return Redirect("/Account/Login");
     }
+
+    [HttpGet]
+    public IActionResult Profile()
+    {
+        return View();
+    }
 }

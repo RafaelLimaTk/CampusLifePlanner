@@ -14,6 +14,8 @@ namespace CampusLifePlanner.Infra.Data.Context
         { }
 
         public DbSet<Event> Events { get; set; }
+
+        public  DbSet<EnrollmentCourse> EnrollmentCourse { get; set; }
         public DbSet<Course> Courses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

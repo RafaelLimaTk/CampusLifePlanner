@@ -15,4 +15,9 @@ public class CourseRepository : Repository<Course>, ICourseRepository
     {
         return Entities.Any(e => e.Id == id);
     }
+
+    public IList<Course> GetCourseListByCourseId(IList<Guid> enrollmentCourseIdList)
+    {
+        return Entities.Where(a => enrollmentCourseIdList.Contains(a.Id)).ToList();
+    }
 }

@@ -1,13 +1,64 @@
-﻿@{
-    ViewData["Title"] = "Home";
+﻿@using CampusLifePlanner.Infra.Data.Identity;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var appUser = await UserManager.GetUserAsync(User);
+
+    var roleUser = await UserManager.GetUsersInRoleAsync("student");
+    var container = Guid.NewGuid();
 }
 
 <div class="list-group">
-    <div class="d-flex gap-2 w-100 justify-content-between">
-        <div>
-            <h6 class="mb-0">List group item heading</h6>
-            <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-        </div>
-        <small class="opacity-50 text-nowrap">now</small>
+    <div class="gap-2 w-100 justify-content-between">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            var admins = roleUser.Select(a => a.Email).ToList();
+            if (admins.Contains(appUser.Email))
+            {
+                <div id="@container"></div>
+            }
+        }
     </div>
 </div>
+
+@section Scripts {
+    <script>
+
+        $.get("@Url.Action("HasEnrollmentCourseByUserId")", { id: '@Guid.Parse(appUser.Id)' })
+            .done(function (response) {
+                if(response)
+                    SelectCourse();
+                else
+                    RelatedEnrollmentCourse();
+            });
+
+        function RelatedEnrollmentCourse() {
+            $.get("@Url.Action("RelatedEnrollmentCourse")")
+                .done(function (view) {
+                    let $view = $(view);
+                    window.myCallbackSuccess = function () {
+                       SelectCourse();
+                    };
+                    $("#@container").html(view);
+                });
+        }
+
+        function SelectCourse(){
+            $.get("@Url.Action("CalendarStudent")", { userId: '@Guid.Parse(appUser.Id)' })
+                .done(function (viewCourse) {
+                    let $viewCourse = $(viewCourse);
+                    $viewCourse.data("course-id")
+                    $("#@container").find("load-course").remove();
+                    $("#@container").html($viewCourse);
+                });
+        }
+    </script>
+}
+
+@*<div>
+    <h6 class="mb-0">List group item heading</h6>
+    <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
+</div>
+<small class="opacity-50 text-nowrap">now</small>*@

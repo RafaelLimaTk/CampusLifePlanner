@@ -17,7 +17,13 @@
 </a>
 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownMenuButton">
     <li><a class="dropdown-item" href="#">Configurações</a></li>
-    <li><a class="dropdown-item" href="#">Perfil</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a asp-controller="Account" asp-action="Logout" class="dropdown-item">Sair</a></li>
+    <li>
+        <a asp-controller="Account" asp-action="Profile" class="dropdown-item">Perfil</a>
+    </li>
+    <li>
+        <hr class="dropdown-divider">
+    </li>
+    <li>
+        <a asp-controller="Account" asp-action="Logout" class="dropdown-item">Sair</a>
+    </li>
 </ul>

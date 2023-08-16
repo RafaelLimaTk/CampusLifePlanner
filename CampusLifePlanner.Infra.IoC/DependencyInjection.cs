@@ -43,9 +43,11 @@ public static class DependencyInjection
 
         Services.AddScoped<IEventRepository, EventRepository>();
         Services.AddScoped<ICourseRepository, CourseRepository>();
+        Services.AddScoped<IEnrollmentCourseRepository, EnrollmentCourseRepository>();
 
         Services.AddScoped<IEventService, EventService>();
         Services.AddScoped<ICourseService, CourseService>();
+        Services.AddScoped<IEnrollmentCourseService, EnrollmentCourseService>();
 
         Services.AddScoped<IAuthenticate, AuthenticateService>();
         Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();

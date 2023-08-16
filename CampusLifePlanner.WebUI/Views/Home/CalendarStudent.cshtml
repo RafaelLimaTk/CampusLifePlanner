@@ -1,0 +1,84 @@
+﻿@model Guid
+@{
+    ViewData["Title"] = "Dashboard";
+    var container = "container" + Guid.NewGuid();
+    var courseList = ViewBag.Courses;
+}
+<div id="@container">
+
+    <style>
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+    </style>
+    <select class="form-select form-select-lg mb-3" name="CourseId" asp-items="@courseList" aria-label="Escolha seu curso">
+        <option selected>Selecione o curso</option>
+    </select>
+    <div class="p-2" id='calendar'></div>
+
+    <script>
+
+        $("#@container [name='CourseId']").change(function(){
+            if ($(this).find("option").length == 2)
+                $(this).find("option:not(:first)").prop("selected", true);
+            MountCalendar($(this).val());
+
+        }).change();
+        function MountCalendar(courseId){
+            $(document).ready(function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    themeSystem: 'bootstrap5',
+                    initialView: 'dayGridMonth',
+                    locale: 'pt-br',
+                    headerToolbar: {
+                        start: 'prev,next',
+                        center: 'title',
+                        end: ''
+                    },
+                    buttonText: {
+                        today: 'Hoje',
+                        month: 'Mês',
+                        week: 'Semana',
+                        day: 'Dia',
+                        list: 'Lista'
+                    },
+                    headerToolbar: {
+                        start: 'prev,next',
+                        center: 'title',
+                        end: 'dayGridMonth,timeGridWeek,dayGridDay'
+                    },
+                    slotDuration: '00:30:00',
+                    slotLabelInterval: '01:00:00',
+                    eventTimeFormat: {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        meridiem: 'short'
+                    },
+                    events: function (fetchInfo, successCallback, failureCallback) {
+                        $.get('@Url.Action("GetEventsByCourseId")', { courseId: courseId }, function (data) {
+                            successCallback(data);
+                        });
+                    },
+                    eventDataTransform: function (eventData) {
+                        return {
+                            id: eventData.id,
+                            title: eventData.title,
+                            local: eventData.local,
+                            start: eventData.startDate,
+                            end: eventData.endDate,
+                            description: eventData.description,
+                            courseId: eventData.courseId,
+                        };
+                    },
+                });
+                calendar.render();
+            });
+        }
+    </script>
+</div>
+
+

@@ -1,0 +1,223 @@
+﻿@{
+    TempData["Title"] = "Eduplaner | Perfil";
+}
+
+<style>
+    .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        object-fit: cover;
+    }
+
+    .avatar-container {
+        width: 108px;
+        height: 108px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #89CFF0;
+    }
+
+    .profile-list li {
+        border-radius: 4px;
+        padding: 10px 5px;
+        display: flex;
+        align-items: center;
+        transition: background 0.3s, color 0.3s;
+        cursor: pointer;
+    }
+
+    .profile-list i {
+        color: #344050;
+        margin-right: 10px;
+        font-size: 20px;
+    }
+
+    .profile-list li:hover {
+        background: #344050;
+        color: #fff;
+    }
+
+    .profile-list li p {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+    }
+
+        .profile-list li p:hover, .profile-list li:hover i {
+            color: #fff;
+        }
+
+    .fade-in {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .profile-list .active {
+        background: #344050;
+        color: #fff;
+    }
+
+        .profile-list .active i {
+            color: #fff;
+        }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card border mt-4">
+            <div class="card-body">
+                <div class="text-center mb-5">
+                    <div class="avatar-container mb-4" style="margin:0 auto;">
+                        <img src="~/img/GD_imgSemImagem.png" alt="" class="avatar" />
+                    </div>
+                    <h3 class="mb-0">Nome do usuário</h3>
+                </div>
+                <hr />
+                <ul class="d-flex flex-column flex list-unstyled pl-4 profile-list">
+                    <li class="mb-2 active">
+                        <i class="bi bi-person-fill"></i>
+                        <p>Perfil</p>
+                    </li>
+                    <li>
+                        <i class="bi bi-wallet"></i>
+                        <p>Cursos</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="profile-content" class="col-8 fade-in content">
+        <div class="card mt-4">
+            <h5 class="card-header">Perfil</h5>
+            <form action="" method="">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="UserName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="UserName" aria-describedby="UserName">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="UserLastName" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="UserLastName" aria-describedby="UserLastName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="Email" aria-describedby="Email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="Password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="Password" aria-describedby="Password">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="PasswordConfirm" class="form-label">Confirme a senha</label>
+                            <input type="password" class="form-control" id="PasswordConfirm" aria-describedby="Password confirm">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer clearfix">
+                    <button class="btn btn-secondary float-start">
+                        Cancelar alterações
+                    </button>
+                    <button type="submit" class="btn btn-success float-end">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="courses-content" class="col-8 fade-in content" style="display:none;">
+        <div class="card mt-4">
+            <h5 class="card-header">Cursos</h5>
+            <form action="" method="">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="UserName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="UserName" aria-describedby="UserName">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="UserLastName" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="UserLastName" aria-describedby="UserLastName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="Email" aria-describedby="Email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="Password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="Password" aria-describedby="Password">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="PasswordConfirm" class="form-label">Confirme a senha</label>
+                            <input type="password" class="form-control" id="PasswordConfirm" aria-describedby="Password confirm">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer clearfix">
+                    <button class="btn btn-secondary float-start">
+                        Cancelar alterações
+                    </button>
+                    <button type="submit" class="btn btn-success float-end">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div ">
+    <!-- Conteúdo de Cursos aqui -->
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".profile-list li").click(function () {
+                // Removendo a classe 'active' de todos os itens da lista
+                $('.profile-list li').removeClass('active');
+
+                // Adicionando a classe 'active' ao item clicado
+                $(this).addClass('active');
+
+                // Identificando qual item foi clicado
+                var clickedItem = $(this).find('p').text();
+
+                $(".profile-list li:eq(0)").click(function () {
+                    $(".content").hide(); // Ocultar todos os conteúdos
+                    $(".content").addClass(".fide");
+                    $("#profile-content").show(); // Mostrar conteúdo de Perfil
+                });
+
+                $(".profile-list li:eq(1)").click(function () {
+                    $(".content").hide(); // Ocultar todos os conteúdos
+                    $("#courses-content").show(); // Mostrar conteúdo de Cursos
+                });
+            });
+        });
+    </script>
+}
