@@ -1,7 +1,10 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using CampusLifePlanner.Infra.Data.Identity;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 @{
-    var userName = User.Identity.IsAuthenticated ? User.Identity.Name : "Cadastre-se";
+    var user = await UserManager.GetUserAsync(User);
+    var userName = User.Identity.IsAuthenticated ? $"{user.FirstName} {user.LastName}" : "Cadastre-se";
 }
 
 <style>

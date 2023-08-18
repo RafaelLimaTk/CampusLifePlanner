@@ -4,6 +4,12 @@ namespace CampusLifePlanner.WebUI.ViewModels;
 
 public class RegisterViewModel
 {
+    [Required(ErrorMessage = "Nome é obrigatório.")]
+    public string FirstName { get; set; }
+
+    [Required(ErrorMessage = "Sobrenome é obrigatório.")]
+    public string LastName { get; set; }
+
     [Required(ErrorMessage = "Email é obrigatório.")]
     [EmailAddress(ErrorMessage = "Email não é um endereço de email válido.")]
     public string Email { get; set; }

@@ -32,10 +32,12 @@ public class AuthenticateService : IAuthenticate
         await _singInManeger.SignOutAsync();
     }
 
-    public async Task<(bool success, string msg)> RegisterUser(string email, string password)
+    public async Task<(bool success, string msg)> RegisterUser(string firstName, string lastName, string email, string password)
     {
         var applicationUser = new ApplicationUser
         {
+            FirstName = firstName,
+            LastName = lastName,
             UserName = email,
             Email = email,
         };

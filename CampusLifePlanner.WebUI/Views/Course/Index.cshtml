@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<CampusLifePlanner.Application.DTOs.CourseDto>
-
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
 @{
-    ViewData["Title"] = "Course";
+    ViewData["Title"] = RS.Common.GENERAL_PAGE_LBL_COURSE;
     var container = Guid.NewGuid();
 }
+
 <div id="@container" class="card">
     <div class="card-header">
         <div class="align-items-center row">

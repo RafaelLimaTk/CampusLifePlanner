@@ -60,6 +60,8 @@ public static class DependencyInjection
             options.AddPolicy("isStudent", policy => policy.RequireRole("student"));
         });
 
+        Services.AddSignalR();
+
         return Services;
     }
 }

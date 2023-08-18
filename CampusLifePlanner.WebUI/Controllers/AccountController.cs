@@ -52,7 +52,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var result = await _authentication.RegisterUser(model.Email, model.Password);
+            var result = await _authentication.RegisterUser(model.FirstName, model.LastName, model.Email, model.Password);
 
             if (result.success)
             {

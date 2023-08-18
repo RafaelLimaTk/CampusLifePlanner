@@ -1,5 +1,6 @@
 using CampusLifePlanner.Domain.Account;
 using CampusLifePlanner.Infra.IoC;
+using CampusLifePlanner.WebUI.WebSockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,5 +40,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
+
+app.MapHub<ConnectionHub>("/connectionHub");
 
 app.Run();

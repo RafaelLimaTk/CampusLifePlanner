@@ -1,4 +1,13 @@
-﻿@{
+﻿@using CampusLifePlanner.Infra.Data.Identity;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var userName = User.Identity.IsAuthenticated ? $"{user.FirstName} {user.LastName}" : "Cadastre-se";
+}
+
+@{
     TempData["Title"] = "Eduplaner | Perfil";
 }
 
@@ -109,27 +118,17 @@
                     <div class="row">
                         <div class="mb-3 col-6">
                             <label for="UserName" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="UserName" aria-describedby="UserName">
+                            <input type="text" class="form-control" id="UserName" aria-describedby="UserName" value="@user.FirstName">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="UserLastName" class="form-label">Sobrenome</label>
-                            <input type="text" class="form-control" id="UserLastName" aria-describedby="UserLastName">
+                            <input type="text" class="form-control" id="UserLastName" aria-describedby="UserLastName" value="@user.LastName">
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3">
                             <label for="Email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="Email" aria-describedby="Email">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="Password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="Password" aria-describedby="Password">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="PasswordConfirm" class="form-label">Confirme a senha</label>
-                            <input type="password" class="form-control" id="PasswordConfirm" aria-describedby="Password confirm">
+                            <input type="email" class="form-control" id="Email" aria-describedby="Email" value="@user.Email">
                         </div>
                     </div>
                 </div>
@@ -138,7 +137,7 @@
                         Cancelar alterações
                     </button>
                     <button type="submit" class="btn btn-success float-end">
-                        Salvar
+                        Salvar alterações
                     </button>
                 </div>
             </form>
