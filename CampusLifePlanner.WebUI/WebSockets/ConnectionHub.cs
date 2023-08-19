@@ -1,16 +1,26 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CampusLifePlanner.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CampusLifePlanner.WebUI.WebSockets;
 
-[Authorize]
 public class ConnectionHub : Hub
 {
-    public async Task GetQRCode()
+    private readonly IEventService _eventService;
+    public ConnectionHub(IEventService eventService)
     {
-        var qrCode = "ABCD123";
+        _eventService = eventService;
+    }
 
-        await Clients.Caller.SendAsync("ResultQRCode", qrCode);    
+    public async Task ShareEvent(string eventIdString, string targetCourseIdString)
+    {
+        Guid eventId = Guid.Parse(eventIdString);
+        Guid targetCourseId = Guid.Parse(targetCourseIdString);
+        var eventCloneSuccess = await _eventService.ShareEvent(eventId, targetCourseId);
+        if (eventCloneSuccess)
+        {
+            await Clients.Caller.SendAsync("EventShared", eventId, targetCourseId);
+        }
     }
 
     public override Task OnConnectedAsync()

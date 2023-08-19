@@ -115,6 +115,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Shared.
+        /// </summary>
+        public static string GENERAL_PAGE_BTN_SHARED {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_BTN_SHARED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Cancel.
         /// </summary>
         public static string GENERAL_PAGE_LBL_CANCEL {

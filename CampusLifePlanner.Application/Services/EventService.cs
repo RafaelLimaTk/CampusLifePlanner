@@ -22,4 +22,14 @@ public class EventService : GenericService<EventDto, Event>, IEventService
         var events = await _eventRepository.GetEventsByCourse(courseId);
         return events.Select(e => _mapper.Map<EventDto>(e));
     }
+
+    public async Task<bool> ShareEvent(Guid eventId, Guid targetCourseId)
+    {
+        var eventToShare = await _eventRepository.GetByIdAsync(eventId);
+        var clonedEvent = new Event(eventToShare, targetCourseId);
+
+        await _eventRepository.CreateAsync(clonedEvent);
+
+        return true;
+    }
 }

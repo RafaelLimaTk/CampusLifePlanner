@@ -156,4 +156,7 @@
   <data name="GENERAL_PAGE_BTN_EDIT" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="GENERAL_PAGE_BTN_SHARED" xml:space="preserve">
+    <value>Compartilhar</value>
+  </data>
 </root>

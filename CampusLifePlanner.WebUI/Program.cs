@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +43,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-app.MapHub<ConnectionHub>("/connectionHub");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ConnectionHub>("/connectionHub");
+    endpoints.MapControllers();
+});
 
 app.Run();
