@@ -4,6 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
+    ViewData["Title"] = "Calendário | EduPlaner";
     var appUser = await UserManager.GetUserAsync(User);
 
     var roleUser = await UserManager.GetUsersInRoleAsync("student");
@@ -56,9 +57,3 @@
         }
     </script>
 }
-
-@*<div>
-    <h6 class="mb-0">List group item heading</h6>
-    <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-</div>
-<small class="opacity-50 text-nowrap">now</small>*@

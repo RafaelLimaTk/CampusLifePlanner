@@ -3,12 +3,9 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
+    TempData["Title"] = "Eduplaner | Perfil";
     var user = await UserManager.GetUserAsync(User);
     var userName = User.Identity.IsAuthenticated ? $"{user.FirstName} {user.LastName}" : "Cadastre-se";
-}
-
-@{
-    TempData["Title"] = "Eduplaner | Perfil";
 }
 
 <style>
@@ -86,7 +83,7 @@
 
 </style>
 
-<div class="row">
+<div id="enrollCourse" class="row">
     <div class="col-4">
         <div class="card border mt-4">
             <div class="card-body">
@@ -128,7 +125,7 @@
                     <div class="row">
                         <div class="mb-3">
                             <label for="Email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="Email" aria-describedby="Email" value="@user.Email">
+                            <input type="email" class="form-control" id="Email" aria-describedby="Email" value="@user.Email" disabled>
                         </div>
                     </div>
                 </div>
@@ -147,76 +144,74 @@
     <div id="courses-content" class="col-8 fade-in content" style="display:none;">
         <div class="card mt-4">
             <h5 class="card-header">Cursos</h5>
-            <form action="" method="">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="UserName" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="UserName" aria-describedby="UserName">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="UserLastName" class="form-label">Sobrenome</label>
-                            <input type="text" class="form-control" id="UserLastName" aria-describedby="UserLastName">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3">
-                            <label for="Email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="Email" aria-describedby="Email">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-6">
-                            <label for="Password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="Password" aria-describedby="Password">
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="PasswordConfirm" class="form-label">Confirme a senha</label>
-                            <input type="password" class="form-control" id="PasswordConfirm" aria-describedby="Password confirm">
-                        </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-group">
+                        </ul>
                     </div>
                 </div>
-                <div class="card-footer clearfix">
-                    <button class="btn btn-secondary float-start">
-                        Cancelar alterações
-                    </button>
-                    <button type="submit" class="btn btn-success float-end">
-                        Salvar
-                    </button>
-                </div>
-            </form>
+            </div>
+            <div class="card-footer clearfix">
+                <button id="fp-enroll" class="btn btn-primary float-end">Matricule-se em outro curso</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div ">
-    <!-- Conteúdo de Cursos aqui -->
-</div>
-
 @section Scripts {
     <script>
+        SelectCourse();
+
         $(document).ready(function () {
+            $(".content").hide();
+            $("#profile-content").show();
+
             $(".profile-list li").click(function () {
-                // Removendo a classe 'active' de todos os itens da lista
                 $('.profile-list li').removeClass('active');
 
-                // Adicionando a classe 'active' ao item clicado
                 $(this).addClass('active');
 
-                // Identificando qual item foi clicado
                 var clickedItem = $(this).find('p').text();
 
-                $(".profile-list li:eq(0)").click(function () {
-                    $(".content").hide(); // Ocultar todos os conteúdos
-                    $(".content").addClass(".fide");
-                    $("#profile-content").show(); // Mostrar conteúdo de Perfil
-                });
+                $(".content").hide();
 
-                $(".profile-list li:eq(1)").click(function () {
-                    $(".content").hide(); // Ocultar todos os conteúdos
-                    $("#courses-content").show(); // Mostrar conteúdo de Cursos
-                });
+                if (clickedItem === "Perfil") {
+                    $("#profile-content").show();
+                } else if (clickedItem === "Cursos") {
+                    $("#courses-content").show();
+                }
             });
         });
+
+        function SelectCourse() {
+            $.get("@Url.Action("GetCoursesByUserId", "Account")", { userId: '@Guid.Parse(user.Id)' })
+                .done(function (courses) {
+                    let ul = $("#courses-content").find("ul");
+                    ul.empty();
+                    courses.forEach(course => {
+                        let li = $('<li class="list-group-item d-flex justify-content-between align-items-center"></li>').text(course.name);
+                        ul.append(li); 
+                    });
+                });
+        }
+
+        $("#fp-enroll").on('click', function () {
+            $("#enrollCourse").empty();
+
+            $.get("@Url.Action("RelatedEnrollmentCourse", "Home")", function (data) {
+                $("#enrollCourse").html(data);
+                debugger;
+                window.myCallbackSuccess = function () {
+                    returnView();
+                };
+            });
+        });
+
+        function returnView(){
+            debugger;
+            window.location.href = "@Url.Action("Profile", "Account")";
+        }
+
     </script>
 }

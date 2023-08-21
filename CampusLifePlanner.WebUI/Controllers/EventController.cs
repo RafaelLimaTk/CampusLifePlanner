@@ -13,7 +13,7 @@ namespace CampusLifePlanner.WebUI.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IMapper _mapper;
-        private readonly ICourseService courseService;
+        private readonly ICourseService _courseService;
 
         public EventController(IEventService eventService,
                                IMapper mapper,
@@ -21,13 +21,13 @@ namespace CampusLifePlanner.WebUI.Controllers
         {
             _eventService = eventService;
             _mapper = mapper;
-            this.courseService = courseService;
+            _courseService = courseService;
         }
 
         #region GetList
         private async Task<IEnumerable<Course>> GetCourses()
         {
-            return await courseService.GetAllAsync();
+            return await _courseService.GetAllAsync();
         }
         #endregion
 

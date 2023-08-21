@@ -37,9 +37,10 @@ namespace CampusLifePlanner.WebUI.Controllers
             return View();
         }
 
-        public IActionResult RelatedEnrollmentCourse()
+        public async Task<IActionResult> RelatedEnrollmentCourse()
         {
-            ViewBag.Courses = new SelectList(GetCourses().Result.ToList(), "Id", "Name");
+            var courses = await GetCourses();
+            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
             return PartialView();
         }
 
@@ -88,7 +89,6 @@ namespace CampusLifePlanner.WebUI.Controllers
         {
             try
             {
-                //model.Id = Guid.NewGuid();
                 _enrollmentCourseService.CreateAsync(model);
                 return Json(new
                 {
