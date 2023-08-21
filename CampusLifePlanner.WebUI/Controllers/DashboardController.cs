@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
+using CampusLifePlanner.Domain.Entities;
+using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CampusLifePlanner.WebUI.Controllers
@@ -19,12 +21,32 @@ namespace CampusLifePlanner.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var events = await _eventService.GetAllAsync();
-            var today = DateTime.Today.Date;
-            var filteredEvents = events.Where(e => e.StartDate.Date <= today && e.EndDate.Date >= today);
-            var eventDto = _mapper.Map<IEnumerable<EventDto>>(filteredEvents);
+            try
+            {
+                var events = await _eventService.GetAllAsync();
+                var today = FilterEventByDate(events, DateTime.Today.Date);
+                var nextDay = FilterEventByDate(events, DateTime.Today.Date.AddDays(1));
 
-            return View(eventDto);
+                var todayEventDto = _mapper.Map<IEnumerable<EventDto>>(today);
+                var nextDayEventDto = _mapper.Map<IEnumerable<EventDto>>(nextDay);
+
+                var model = new EventViewModel
+                {
+                    TodayEvents = todayEventDto,
+                    NextDayEvents = nextDayEventDto
+                };
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = true, message = $"Ocorreu um erro ao buscar os eventos {ex}" , type = "error" });
+            }
+        }
+
+        private IEnumerable<Event> FilterEventByDate(IEnumerable<Event> events, DateTime date)
+        {
+            return events.Where(e => e.StartDate.Date <= date && e.EndDate.Date >= date);
         }
     }
 }
