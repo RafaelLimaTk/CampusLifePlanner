@@ -8,7 +8,7 @@ public class ApplicationUser : IdentityUser
     private string? _LastName;
     private string? _ImgPath;
 
-    public ApplicationUser(string firstName, string lastName)
+    public ApplicationUser(string firstName, string lastName, string? imgPath)
     {
         _FirstName = firstName;
         _LastName = lastName;
