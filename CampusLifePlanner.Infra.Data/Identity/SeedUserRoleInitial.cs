@@ -35,42 +35,42 @@ public class SeedUserRoleInitial : ISeedUserRoleInitial
 
     public void SeedUsers()
     {
-        if (_userManeger.FindByEmailAsync("usuario@localhost").Result == null)
-        {
-            ApplicationUser user = new ApplicationUser();
-            user.UserName = "usuario@localhost";
-            user.Email = "usuario@localhost";
-            user.NormalizedUserName = "USUARIO@LOCALHOST";
-            user.NormalizedEmail = "USUARIO@LOCALHOST";
-            user.EmailConfirmed = true;
-            user.LockoutEnabled = false;
-            user.SecurityStamp = Guid.NewGuid().ToString();
+        //if (_userManeger.FindByEmailAsync("usuario@localhost").Result == null)
+        //{
+        //    ApplicationUser user = new ApplicationUser();
+        //    user.UserName = "usuario@localhost";
+        //    user.Email = "usuario@localhost";
+        //    user.NormalizedUserName = "USUARIO@LOCALHOST";
+        //    user.NormalizedEmail = "USUARIO@LOCALHOST";
+        //    user.EmailConfirmed = true;
+        //    user.LockoutEnabled = false;
+        //    user.SecurityStamp = Guid.NewGuid().ToString();
 
-            IdentityResult result = _userManeger.CreateAsync(user, "Numsey#2023").Result;
+        //    IdentityResult result = _userManeger.CreateAsync(user, "Numsey#2023").Result;
 
-            if (result.Succeeded)
-            {
-                _userManeger.AddToRoleAsync(user, "User").Wait();
-            }
-        }
+        //    if (result.Succeeded)
+        //    {
+        //        _userManeger.AddToRoleAsync(user, "User").Wait();
+        //    }
+        //}
 
-        if (_userManeger.FindByEmailAsync("admin@localhost").Result == null)
-        {
-            ApplicationUser user = new ApplicationUser();
-            user.UserName = "admin@localhost";
-            user.Email = "admin@localhost";
-            user.NormalizedUserName = "ADMIN@LOCALHOST";
-            user.NormalizedEmail = "ADMIN@LOCALHOST";
-            user.EmailConfirmed = true;
-            user.LockoutEnabled = false;
-            user.SecurityStamp = Guid.NewGuid().ToString();
+        //if (_userManeger.FindByEmailAsync("admin@localhost").Result == null)
+        //{
+        //    ApplicationUser user = new ApplicationUser();
+        //    user.UserName = "admin@localhost";
+        //    user.Email = "admin@localhost";
+        //    user.NormalizedUserName = "ADMIN@LOCALHOST";
+        //    user.NormalizedEmail = "ADMIN@LOCALHOST";
+        //    user.EmailConfirmed = true;
+        //    user.LockoutEnabled = false;
+        //    user.SecurityStamp = Guid.NewGuid().ToString();
 
-            IdentityResult result = _userManeger.CreateAsync(user, "Numsey#2023").Result;
+        //    IdentityResult result = _userManeger.CreateAsync(user, "Numsey#2023").Result;
 
-            if (result.Succeeded)
-            {
-                _userManeger.AddToRoleAsync(user, "Admin").Wait();
-            }
-        }
+        //    if (result.Succeeded)
+        //    {
+        //        _userManeger.AddToRoleAsync(user, "Admin").Wait();
+        //    }
+        //}
     }
 }

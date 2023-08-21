@@ -1,5 +1,144 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CampusLifePlanner.WebUI.ViewModels.EventViewModel
+
 @{
+    ViewData["Title"] = "Dashboard | EduPlaner";
+}
+
+<style>
+    .link-list-today, .link-list-next {
+        text-decoration: none;
+    }
+
+    .collapse-show {
+        background: #f6f7fb;
+        padding: 20px
+    }
+
+    .icon-container-today, .icon-container-next {
+        transition: transform 0.3s ease;
+        display: inline-block;
+    }
+
+    .rotate-180 {
+        transform: rotate(180deg);
+        transition: transform 0.4s ease;
+        display: inline-block;
+    }
+
+    .button-info{
+        cursor: pointer;
+    }
+
+    .completed {
+        text-decoration: line-through;
+    }
+</style>
+
+<div class="bg-body-tertiary bg-primary rounded p-4">
+    <h4 class="text-white">
+        Eventos
+    </h4>
+</div>
+
+<div class="mt-4">
+    <h5 class="m-0 pb-2">
+        <a class="text-dark link-list-today" data-bs-toggle="collapse" href="#todayTasks" role="button" aria-expanded="false" aria-controls="todayTasks">
+            <span class="icon-container-today">
+                <i class="bi bi-chevron-down fs-6"></i>
+            </span>
+            Hoje
+        </a>
+    </h5>
+    <div class="collapse collapse-show rounded show" id="todayTasks">
+        @if (Model != null && Model.TodayEvents != null && Model.TodayEvents.Any())
+        {
+            foreach (var evento in Model.TodayEvents)
+            {
+                <div class="row p-1">
+                    <div class="col-10 justify-content-sm-between">
+                        <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
+                            <input type="checkbox" class="task-checkbox me-1" onchange="toggleTaskCompletion(this)">
+                            <span>@evento.Title</span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <span class="me-2">
+                            <i class="bi bi-calendar-date text-danger"></i>
+                            Hoje às @evento.StartDate.ToString("HH:mm")
+                        </span>
+                        <span class="button-info">
+                            <i class="bi bi-info-circle text-primary" id="info"></i>
+                        </span>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h4>Nenhum evento encontrado, aproveite seu dia!</h4>
+        }
+    </div>
+</div>
+
+<div class="mt-4">
+    <h5 class="m-0 pb-2">
+        <a class="text-dark link-list-next" data-bs-toggle="collapse" href="#nextTasks" role="button" aria-expanded="false" aria-controls="nextTasks">
+            <span class="icon-container-next">
+                <i class="bi bi-chevron-down fs-6"></i>
+            </span>
+            Amanhã
+        </a>
+    </h5>
+    <div class="collapse collapse-show rounded show" id="nextTasks">
+        @if (Model != null && Model.NextDayEvents != null && Model.NextDayEvents.Any())
+        {
+            foreach (var evento in Model.NextDayEvents)
+            {
+                <div class="row p-1">
+                    <div class="col-10 justify-content-sm-between">
+                        <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
+                            <span>@evento.Title</span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <span class="me-2">
+                            <i class="bi bi-calendar-date text-danger"></i>
+                            Amanhã às @evento.StartDate.ToString("HH:mm")
+                        </span>
+                        <span class="button-info">
+                            <i class="bi bi-info-circle text-primary" id="info"></i>
+                        </span>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h4>Nenhum evento encontrado, aproveite seu dia!</h4>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".link-list-today").addEventListener("click", function (e) {
+                document.querySelector(".icon-container-today").classList.toggle("rotate-180");
+            });
+            document.querySelector(".link-list-next").addEventListener("click", function (e) {
+                document.querySelector(".icon-container-next").classList.toggle("rotate-180");
+            });
+        });
+
+
+        function toggleTaskCompletion(checkbox) {
+            var title = $(checkbox).next();
+            if ($(checkbox).is(':checked')) {
+                title.addClass('completed');
+            } else {
+                title.removeClass('completed');
+            }
+        }
+
+    </script>
 }

@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
-using CampusLifePlanner.Application.Services;
 using CampusLifePlanner.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 namespace CampusLifePlanner.WebUI.Controllers
 {
@@ -15,7 +13,7 @@ namespace CampusLifePlanner.WebUI.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IMapper _mapper;
-        private readonly ICourseService courseService;
+        private readonly ICourseService _courseService;
 
         public EventController(IEventService eventService,
                                IMapper mapper,
@@ -23,13 +21,13 @@ namespace CampusLifePlanner.WebUI.Controllers
         {
             _eventService = eventService;
             _mapper = mapper;
-            this.courseService = courseService;
+            _courseService = courseService;
         }
 
         #region GetList
         private async Task<IEnumerable<Course>> GetCourses()
         {
-            return await courseService.GetAllAsync();
+            return await _courseService.GetAllAsync();
         }
         #endregion
 
@@ -55,14 +53,17 @@ namespace CampusLifePlanner.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Modal_Edit(Guid id)
         {
-            ViewBag.Courses = new SelectList(GetCourses().Result.ToList(), "Id", "Name");
-            return PartialView("Modal_Create", _mapper.Map<EventDto>(_eventService.GetByIdAsync(id).Result));
+            var courses = await GetCourses();
+            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
+            var eventEntity = await _eventService.GetByIdAsync(id);
+            return PartialView("Modal_Create", _mapper.Map<EventDto>(eventEntity));
         }
 
         [HttpGet]
         public async Task<IActionResult> Modal_Create()
         {
-            ViewBag.Courses = new SelectList(GetCourses().Result.ToList(), "Id", "Name");
+            var courses = await GetCourses();
+            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
             return PartialView(new EventDto());
         }
 
@@ -72,33 +73,18 @@ namespace CampusLifePlanner.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                return Json(new
-                {
-                    success = false,
-                    message = "Modelo não válido",
-                    type = "error"
-                });
+                return ErrorResponse("Modelo não é válido");
             }
 
             try
             {
                 await _eventService.CreateAsync(eventDto);
-                TempData["success"] = "Sucesso";
-                return Json(new
-                {
-                    success = true,
-                    message = "Sucesso",
-                    type = "success"
-                });
+                TempData["success"] = "Evento criado com sucesso";
+                return SuccessResponse("Evento criado com sucesso");
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    success = true,
-                    message = ex.Message,
-                    type = "error"
-                });
+                return ErrorResponse(ex.Message);
             }
         }
 
@@ -107,40 +93,34 @@ namespace CampusLifePlanner.WebUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Json(new
-                {
-                    success = false,
-                    message = "Modelo não válido",
-                    type = "error"
-                });
+                return ErrorResponse("Modelo não é válido");
             }
 
             try
             {
                 await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto));
-                TempData["success"] = "Sucesso";
-                return Json(new
-                {
-                    success = true,
-                    message = "Sucesso",
-                    type = "success"
-                });
+                TempData["success"] = "Evento atualizado com sucesso";
+                return SuccessResponse("Evento atualizado com sucesso");
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    success = true,
-                    message = ex.Message,
-                    type = "error"
-                });
+                return ErrorResponse(ex.Message);
             }
         }
 
         [HttpPost]
         public ActionResult ModalDelete()
             => PartialView("Modal_Delete");
-        
+
+        [HttpGet]
+        public async Task<ActionResult> ModalShared(Guid id)
+        {
+            var courses = await GetCourses();
+            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
+            var eventEntity = await _eventService.GetByIdAsync(id);
+            return PartialView("_ShareEventModal", _mapper.Map<EventDto>(eventEntity));
+        }
+
         [HttpPost]
         public async Task<JsonResult> Delete(Guid id)
         {
@@ -150,14 +130,26 @@ namespace CampusLifePlanner.WebUI.Controllers
                     throw new Exception("Id não pode ser null");
 
                 await _eventService.DeleteAsync(id);
-                TempData["success"] = "Sucesso";
-                return Json(new { success = true });
+                TempData["success"] = "Evento deletado com sucesso";
+                return SuccessResponse("Evento deletado com sucesso");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message, type = "error" });
+                return ErrorResponse(ex.Message);
             }
         }
+
+        #region Metodos de tratação de erro
+        private JsonResult SuccessResponse(string message)
+        {
+            return Json(new { success = true, message = message, type = "success" });
+        }
+
+        private JsonResult ErrorResponse(string message, string type = "error")
+        {
+            return Json(new { success = false, message = message, type = type });
+        }
+        #endregion
     }
     #endregion
 }

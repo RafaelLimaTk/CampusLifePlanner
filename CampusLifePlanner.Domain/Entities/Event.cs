@@ -32,6 +32,17 @@ public class Event : EntityBase
         _CourseId = course.Id;
     }
 
+    public Event(Event otherEvent, Guid targetCourseId)
+    {
+        _Title = otherEvent._Title;
+        _Description = otherEvent._Description;
+        _Local = otherEvent._Local;
+        _StartDate = otherEvent._StartDate;
+        _EndDate = otherEvent._EndDate;
+        _CourseId = targetCourseId;
+        _Course = otherEvent._Course;
+    }
+
     public string Title
     {
         get => _Title;

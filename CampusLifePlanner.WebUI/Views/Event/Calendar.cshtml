@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Calendário Administrador | EduPlaner";
     var container = "container" + Guid.NewGuid();
 }
 <div id="@container">
@@ -14,11 +14,9 @@
     </style>
 
     <div class="p-2" id='calendar'></div>
-
 </div>
 
-
-@section Scripts {
+@section Scripts{
     <script>
 
         $(document).ready(function () {
@@ -65,7 +63,7 @@
                 },
                 eventClick: function (info) {
                     var eventId = info.event.id;
-                    $.get("@Url.Action("Modal_Edit")", { id : eventId })
+                    $.get("@Url.Action("Modal_Edit")", { id: eventId })
                         .done(function (modal) {
                             let $modal = $(modal);
                             $modal.data("callback-success", function () {
@@ -78,7 +76,7 @@
                     $.get("@Url.Action("Modal_Create")")
                         .done(function (modal) {
                             let $modal = $(modal);
-                            $modal.data("callback-success", function(){
+                            $modal.data("callback-success", function () {
                                 location.reload(true);
                             }).data("url", "@Url.Action("Create")");
                             $("#@container").append($modal);
@@ -89,3 +87,5 @@
         });
     </script>
 }
+
+

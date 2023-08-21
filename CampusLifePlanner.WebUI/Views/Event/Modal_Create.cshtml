@@ -7,7 +7,7 @@
 }
 
 <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addEventModalLabel">@ViewBag.title</h5>
@@ -24,13 +24,15 @@
                         <label for="eventLocal" class="form-label">Local</label>
                         <input type="text" class="form-control" id="eventLocal" name="Local" value="@Model.Local">
                     </div>
-                    <div class="mb-3">
-                        <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
-                        <input type="datetime-local" class="form-control" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")">
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
-                        <input type="datetime-local" class="form-control" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
+                            <input type="datetime-local" class="form-control" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
+                            <input type="datetime-local" class="form-control" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="eventDescription" class="form-label">Descrição</label>
@@ -41,6 +43,7 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="submit" class="btn btn-primary fp-shared">Compartilhar evento</button>
                 <button type="button" class="btn btn-danger fp-del" value="@Model.Id">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
                 <button type="submit" class="btn btn-primary fp-save">@RS.Common.GENERAL_PAGE_BTN_SAVE</button>
@@ -69,6 +72,19 @@
                         }
                     }
                 });
+            });
+
+            $("#@modalId .fp-shared").click(function () {
+                let eventId = "@Model.Id";
+                $.get("@Url.Action("ModalShared")", { id: eventId })
+                    .done(function (modal) {
+                        let $modal = $(modal);
+                        $modal.data("callback-success", function () {
+                            location.reload(true);
+                        });
+                        $("#container").append($modal);
+                        $modal.modal('show');
+                    });
             });
 
             $(".fp-del").click(function () {

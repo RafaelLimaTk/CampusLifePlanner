@@ -21,7 +21,8 @@
         </li>
         var admins = roleUser.Select(a => a.Email).ToList();
         if (admins.Contains(appUser.Email))
-        {            <li class="nav-item">
+        {
+            <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Calendar">Calendario</a>
             </li>
             <li class="nav-item">

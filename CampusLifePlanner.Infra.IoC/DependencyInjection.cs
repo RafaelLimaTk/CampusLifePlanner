@@ -43,9 +43,11 @@ public static class DependencyInjection
 
         Services.AddScoped<IEventRepository, EventRepository>();
         Services.AddScoped<ICourseRepository, CourseRepository>();
+        Services.AddScoped<IEnrollmentCourseRepository, EnrollmentCourseRepository>();
 
         Services.AddScoped<IEventService, EventService>();
         Services.AddScoped<ICourseService, CourseService>();
+        Services.AddScoped<IEnrollmentCourseService, EnrollmentCourseService>();
 
         Services.AddScoped<IAuthenticate, AuthenticateService>();
         Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
@@ -57,6 +59,8 @@ public static class DependencyInjection
             options.AddPolicy("isAdmin", policy => policy.RequireRole("admin"));
             options.AddPolicy("isStudent", policy => policy.RequireRole("student"));
         });
+
+        Services.AddSignalR();
 
         return Services;
     }

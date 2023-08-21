@@ -136,4 +136,7 @@
   <data name="GENERAL_PAGE_BTN_EDIT" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="GENERAL_PAGE_BTN_SHARED" xml:space="preserve">
+    <value>Shared</value>
+  </data>
 </root>

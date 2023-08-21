@@ -1,16 +1,25 @@
-﻿using CampusLifePlanner.Domain.Account;
+﻿using CampusLifePlanner.Application.Interfaces;
+using CampusLifePlanner.Application.Services;
+using CampusLifePlanner.Domain.Account;
+using CampusLifePlanner.Domain.Entities;
 using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 namespace CampusLifePlanner.WebUI.Controllers;
 
 public class AccountController : Controller
 {
+    private readonly ICourseService _courseService;
+    private readonly IEnrollmentCourseService _enrollmentCourseService;
     private readonly IAuthenticate _authentication;
-    public AccountController(IAuthenticate authentication)
+
+    public AccountController(ICourseService courseService, IEnrollmentCourseService enrollmentCourseService, IAuthenticate authentication)
     {
+        _courseService = courseService;
+        _enrollmentCourseService = enrollmentCourseService;
         _authentication = authentication;
     }
 
@@ -52,7 +61,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var result = await _authentication.RegisterUser(model.Email, model.Password);
+            var result = await _authentication.RegisterUser(model.FirstName, model.LastName, model.Email, model.Password);
 
             if (result.success)
             {
@@ -70,5 +79,30 @@ public class AccountController : Controller
     {
         await _authentication.Logout();
         return Redirect("/Account/Login");
+    }
+
+    [HttpGet]
+    public IActionResult Profile()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public JsonResult GetCoursesByUserId(Guid userId)
+    {
+        var courseIdList = _enrollmentCourseService.GetListByUserId(userId).Select(a => a.CourseId).ToList();
+        var courses = _courseService.GetCourseListByCourseId(courseIdList)
+            .Select(c => new
+            {
+                Id = c.Id,
+                Name = c.Name,
+            }).ToList();
+
+        return Json(courses);
+    }
+
+    private async Task<IEnumerable<Course>> GetCourses()
+    {
+        return await _courseService.GetAllAsync();
     }
 }

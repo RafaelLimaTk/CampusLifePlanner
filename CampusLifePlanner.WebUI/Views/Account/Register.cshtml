@@ -23,6 +23,14 @@
         <div class="col-md-10 mx-auto col-lg-5">
             <form asp-controller="Account" asp-action="Register" method="post" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                 <div class="form-floating mb-3">
+                    <input asp-for="FirstName" type="text" class="form-control" id="floatingInput" placeholder="Escreva seu nome">
+                    <label for="floatingInput">Nome</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="LastName" type="text" class="form-control" id="floatingInput" placeholder="Escreva seu sobrenome">
+                    <label for="floatingInput">Sobrenome</label>
+                </div>
+                <div class="form-floating mb-3">
                     <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                     <label for="floatingInput">Endereço de e-mail</label>
                 </div>
@@ -57,25 +65,17 @@
 
     <script>
         $('form').on('submit', function () {
-            // Verifique se o formulário é válido
             if ($(this).valid()) {
-                // Se o formulário for válido, aplique a classe 'is-valid' para todos os campos de entrada
                 $(this).find('input').removeClass('is-invalid').addClass('is-valid');
             } else {
-                // Se o formulário for inválido, aplique a classe 'is-invalid' para todos os campos de entrada inválidos
                 $(this).find('input').each(function () {
-                    // Se o campo de entrada tem a classe 'input-validation-error'...
                     if ($(this).hasClass('input-validation-error')) {
-                        // Adicione a classe 'is-invalid'
                         $(this).removeClass('is-valid').addClass('is-invalid');
 
-                        // Obtenha a mensagem de erro a partir dos atributos data- do campo de entrada
                         var errorMessage = $(this).attr('data-val-required') || $(this).attr('data-val-email');
 
-                        // Altere o texto da label correspondente para a mensagem de erro
                         $(this).siblings('label').text(errorMessage);
                     } else {
-                        // Caso contrário, adicione a classe 'is-valid'
                         $(this).removeClass('is-invalid').addClass('is-valid');
                     }
                 });
