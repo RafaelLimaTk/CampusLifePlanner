@@ -20,32 +20,29 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
-                <button type="button" class="btn btn-primary fp-submit">@RS.Common.GENERAL_PAGE_BTN_SHARED</button>
+                <button type="button" class="btn btn-primary fp-submit" onclick="shareEvent();">@RS.Common.GENERAL_PAGE_BTN_SHARED</button>
             </div>
         </div>
     </div>
-    @section Scripts{
-
         <script>
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/connectionHub")
+                .build();
 
-            console.log("Teste");
-            alert("oi");
-            $(".fp-submit").click(function () {
-                debugger;
-                console.log("Botão Compartilhar clicado!");
-                let eventId = '@Model.Id';
-                let targetCourseId = $("#@modalId select[name='CourseId']").val();
+            connection.start().catch(err => console.error(err.toString()));
+            debugger;
+            function shareEvent() {
+                const eventId = document.getElementById("Id").value;
+                const courseId = document.getElementById("CourseId").value;
 
-                // Chame o método SignalR
-                connection.invoke("ShareEvent", eventId, targetCourseId)
-                    .catch(function (err) {
-                        return console.error(err.toString());
-                    });
+                connection.invoke("ShareEvent", eventId, courseId)
+                    .catch(err => console.error(err));
+            }
 
-                // Feche a modal
-                $("#@modalId").modal("hide");
+            document.querySelector(".fp-submit").addEventListener("click", shareEvent);
+
+            connection.on("EventShared", (eventId, targetCourseId) => {
+                console.log("ok");
             });
         </script>
-    }
-    
 </div>

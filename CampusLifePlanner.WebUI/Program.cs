@@ -43,11 +43,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<ConnectionHub>("/connectionHub");
-    endpoints.MapControllers();
-});
+app.MapHub<ConnectionHub>("/connectionHub");
 
 app.Run();

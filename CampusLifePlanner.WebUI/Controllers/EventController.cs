@@ -2,6 +2,7 @@
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Domain.Entities;
+using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -118,7 +119,22 @@ namespace CampusLifePlanner.WebUI.Controllers
             var courses = await GetCourses();
             ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
             var eventEntity = await _eventService.GetByIdAsync(id);
-            return PartialView("_ShareEventModal", _mapper.Map<EventDto>(eventEntity));
+            return PartialView("Share_Event", _mapper.Map<EventDto>(eventEntity));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> SharedEvent(Guid id)
+        {
+            var courses = await GetCourses();
+            var eventEntity = await _eventService.GetByIdAsync(id);
+
+            var sharedEventViewModel = new SharedEventViewModel
+            {
+                Event = _mapper.Map<EventDto>(eventEntity),
+                Courses = new SelectList(courses.ToList(), "Id", "Name")
+            };
+
+            return View(sharedEventViewModel);
         }
 
         [HttpPost]

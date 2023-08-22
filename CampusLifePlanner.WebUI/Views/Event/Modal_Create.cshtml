@@ -43,7 +43,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary fp-shared">Compartilhar evento</button>
+                <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Id" class="btn btn-primary">Compartilhar evento</a>
                 <button type="button" class="btn btn-danger fp-del" value="@Model.Id">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
                 <button type="submit" class="btn btn-primary fp-save">@RS.Common.GENERAL_PAGE_BTN_SAVE</button>
@@ -74,18 +74,18 @@
                 });
             });
 
-            $("#@modalId .fp-shared").click(function () {
-                let eventId = "@Model.Id";
-                $.get("@Url.Action("ModalShared")", { id: eventId })
-                    .done(function (modal) {
-                        let $modal = $(modal);
-                        $modal.data("callback-success", function () {
-                            location.reload(true);
-                        });
-                        $("#container").append($modal);
-                        $modal.modal('show');
-                    });
-            });
+            //$("#@modalId .fp-shared").click(function () {
+            //    let eventId = "@Model.Id";
+            //    $.get("@Url.Action("SharedEvent")", { id: eventId })
+            //        .done(function (modal) {
+            //            let $modal = $(modal);
+            //            $modal.data("callback-success", function () {
+            //                location.reload(true);
+            //            });
+            //            $("#container").append($modal);
+            //            $modal.modal('show');
+            //        });
+            //});
 
             $(".fp-del").click(function () {
                 let id = $(this).val();
