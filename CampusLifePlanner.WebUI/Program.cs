@@ -1,6 +1,8 @@
 using CampusLifePlanner.Domain.Account;
 using CampusLifePlanner.Infra.IoC;
+using CampusLifePlanner.WebUI.Helpers;
 using CampusLifePlanner.WebUI.WebSockets;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddScoped<IUtil, Util>();
 
 builder.Services.AddSignalR();
 
@@ -23,6 +27,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+    RequestPath = "/Resources"
+});
 
 app.UseRouting();
 

@@ -8,7 +8,7 @@ public class Util : IUtil
         _hostEnvironment = hostEnvironment;
     }
 
-    public async Task<string> SaveImage(IFormFile imageFile, string destino)
+    public async Task<string> SaveImage(IFormFile imageFile, string distiny)
     {
         string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName)
             .Take(10)
@@ -16,7 +16,7 @@ public class Util : IUtil
             ).Replace(' ', '-');
 
         imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
-        var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, $@"~/Resources/{destino}", imageName);
+        var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @$"Resources/{distiny}", imageName);
 
         using (var fileStream = new FileStream(imagePath, FileMode.Create))
         {
@@ -31,7 +31,7 @@ public class Util : IUtil
         {
             if (!string.IsNullOrEmpty(imageName))
             {
-                var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @$"~/Resources/{distiny}", imageName);
+                var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @$"Resources/{distiny}", imageName);
                 if (System.IO.File.Exists(imagePath))
                     System.IO.File.Delete(imagePath);
             }

@@ -53,25 +53,17 @@
 
     <script>
         $('form').on('submit', function () {
-            // Verifique se o formulário é válido
             if ($(this).valid()) {
-                // Se o formulário for válido, aplique a classe 'is-valid' para todos os campos de entrada
                 $(this).find('input').removeClass('is-invalid').addClass('is-valid');
             } else {
-                // Se o formulário for inválido, aplique a classe 'is-invalid' para todos os campos de entrada inválidos
                 $(this).find('input').each(function () {
-                    // Se o campo de entrada tem a classe 'input-validation-error'...
                     if ($(this).hasClass('input-validation-error')) {
-                        // Adicione a classe 'is-invalid'
                         $(this).removeClass('is-valid').addClass('is-invalid');
 
-                        // Obtenha a mensagem de erro a partir dos atributos data- do campo de entrada
                         var errorMessage = $(this).attr('data-val-required') || $(this).attr('data-val-email');
 
-                        // Altere o texto da label correspondente para a mensagem de erro
                         $(this).siblings('label').text(errorMessage);
                     } else {
-                        // Caso contrário, adicione a classe 'is-valid'
                         $(this).removeClass('is-invalid').addClass('is-valid');
                     }
                 });

@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Event\Share_Event.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Perfil\GD_imgSemImagem.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CampusLifePlanner.Infra.IoC\CampusLifePlanner.Infra.IoC.csproj" />
   </ItemGroup>
 
@@ -17,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Resources\Perfil\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

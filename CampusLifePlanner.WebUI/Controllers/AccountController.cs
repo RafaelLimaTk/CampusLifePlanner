@@ -1,11 +1,11 @@
 ﻿using CampusLifePlanner.Application.Interfaces;
-using CampusLifePlanner.Application.Services;
 using CampusLifePlanner.Domain.Account;
-using CampusLifePlanner.Domain.Entities;
+using CampusLifePlanner.Infra.Data.Identity;
+using CampusLifePlanner.WebUI.Helpers;
 using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 namespace CampusLifePlanner.WebUI.Controllers;
@@ -15,12 +15,17 @@ public class AccountController : Controller
     private readonly ICourseService _courseService;
     private readonly IEnrollmentCourseService _enrollmentCourseService;
     private readonly IAuthenticate _authentication;
+    private readonly IUtil _util;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AccountController(ICourseService courseService, IEnrollmentCourseService enrollmentCourseService, IAuthenticate authentication)
+    public AccountController(ICourseService courseService, IEnrollmentCourseService enrollmentCourseService,
+        IAuthenticate authentication, IUtil util, UserManager<ApplicationUser> userManager)
     {
         _courseService = courseService;
         _enrollmentCourseService = enrollmentCourseService;
         _authentication = authentication;
+        _util = util;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -101,8 +106,33 @@ public class AccountController : Controller
         return Json(courses);
     }
 
-    private async Task<IEnumerable<Course>> GetCourses()
+    [HttpPost]
+    public async Task<IActionResult> UploadImage(IFormFile imageFile)
     {
-        return await _courseService.GetAllAsync();
+        try
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                if (!string.IsNullOrEmpty(user.ImgPath))
+                {
+                    _util.DeleteImage(user.ImgPath, "Perfil");
+                }
+
+                var imgPath = await _util.SaveImage(imageFile, "Perfil");
+
+                var userId = _userManager.GetUserId(User);
+                await _authentication.UpdateUserProfile(userId, imgPath);
+                TempData["success"] = "Imagem de perfil atualizada com sucesso";
+                return RedirectToAction("Profile", "Account");
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = "Não foi possivel salvar a imagem";
+        }
+
+        return View();
     }
 }

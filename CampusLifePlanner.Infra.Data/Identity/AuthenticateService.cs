@@ -63,4 +63,17 @@ public class AuthenticateService : IAuthenticate
 
         return new(result.Succeeded, result.Errors.Count() == 0 ? null : result.Errors.FirstOrDefault().Description.ToString());
     }
+
+    public async Task<bool> UpdateUserProfile(string userId, string imgPath)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            user.ImgPath = imgPath;
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+        return false;
+    }
+
 }

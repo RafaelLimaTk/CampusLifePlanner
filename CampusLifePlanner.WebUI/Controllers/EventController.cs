@@ -114,15 +114,6 @@ namespace CampusLifePlanner.WebUI.Controllers
             => PartialView("Modal_Delete");
 
         [HttpGet]
-        public async Task<ActionResult> ModalShared(Guid id)
-        {
-            var courses = await GetCourses();
-            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
-            var eventEntity = await _eventService.GetByIdAsync(id);
-            return PartialView("Share_Event", _mapper.Map<EventDto>(eventEntity));
-        }
-
-        [HttpGet]
         public async Task<ActionResult> SharedEvent(Guid id)
         {
             var courses = await GetCourses();
