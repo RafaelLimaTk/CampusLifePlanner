@@ -4,7 +4,7 @@ public abstract class EntityBase : IEntity
 {
     protected EntityBase()
     {
-        this.Id = Guid.NewGuid();
+        this.Id = this.Id == Guid.Empty ? Guid.NewGuid() : this.Id;
     }
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; set; }

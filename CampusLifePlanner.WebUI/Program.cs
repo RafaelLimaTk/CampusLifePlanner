@@ -1,7 +1,10 @@
 using CampusLifePlanner.Domain.Account;
+using CampusLifePlanner.Infra.Data.Context;
 using CampusLifePlanner.Infra.IoC;
 using CampusLifePlanner.WebUI.Helpers;
 using CampusLifePlanner.WebUI.WebSockets;
+using Hangfire;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +16,14 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddScoped<IUtil, Util>();
 
-builder.Services.AddSignalR();
+builder.Services.AddHangfire(x => x.UseSqlServerStorage("Data Source=localhost;Initial Catalog=CampusLifePlanner;Integrated Security=True; TrustServerCertificate=True"));
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+dbContext.Database.Migrate();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -48,6 +56,11 @@ using (var serviceScope = app.Services.CreateScope())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHangfireDashboard("/hangfire").RequireAuthorization("HangfireDashboard");
+});
 
 app.MapControllerRoute(
     name: "default",

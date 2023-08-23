@@ -3,6 +3,7 @@ using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Domain.Entities;
 using CampusLifePlanner.WebUI.ViewModels;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -79,7 +80,13 @@ namespace CampusLifePlanner.WebUI.Controllers
 
             try
             {
+                eventDto.Id = Guid.NewGuid();
                 await _eventService.CreateAsync(eventDto);
+
+                var timeUntilDeletion = eventDto.EndDate.AddDays(1) - DateTime.Now;
+
+                BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Id), timeUntilDeletion);
+
                 TempData["success"] = "Evento criado com sucesso";
                 return SuccessResponse("Evento criado com sucesso");
             }
