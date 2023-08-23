@@ -7,6 +7,7 @@ public class EventLog : EntityBase
     private Guid _UserId;
     private Guid _EventId;
     private bool _Completed;
+    private Event _Event;
 
     public EventLog() { }
 
@@ -26,5 +27,11 @@ public class EventLog : EntityBase
     {
         get { return _Completed; }
         set { _Completed = value; }
+    }
+
+    public Event Event
+    {
+        get { return _Event; }
+        set { _Event = value; }
     }
 }

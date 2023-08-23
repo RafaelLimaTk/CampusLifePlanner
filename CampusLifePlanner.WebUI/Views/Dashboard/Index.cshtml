@@ -66,7 +66,7 @@
                             <i class="bi bi-calendar-date text-danger"></i>
                             Hoje às @evento.StartDate.ToString("HH:mm")
                         </span>
-                        <span class="button-info">
+                        <span class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
                             <i class="bi bi-info-circle text-primary" id="info"></i>
                         </span>
                     </div>
@@ -105,7 +105,7 @@
                             <i class="bi bi-calendar-date text-danger"></i>
                             Amanhã às @evento.StartDate.ToString("HH:mm")
                         </span>
-                        <span class="button-info">
+                        <span class="button-info" class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
                             <i class="bi bi-info-circle text-primary" id="info"></i>
                         </span>
                     </div>
@@ -141,6 +141,11 @@
             }
             $.post("@Url.Action("CreateEventLog")", { eventId: $(checkbox).val(), isChecked: isChecked });
         }
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
 
     </script>
 }

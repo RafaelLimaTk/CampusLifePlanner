@@ -4,6 +4,7 @@
     ViewBag.title = Model.Id == Guid.Empty ? RS.Common.GENERAL_PAGE_BTN_ADD + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower() : RS.Common.GENERAL_PAGE_BTN_EDIT + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower();
     var modalId = "modal_" + Guid.NewGuid();
     var courseList = ViewBag.Courses;
+    var startDateValue = Model.StartDate != DateTime.MinValue ? Model.StartDate.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
 }
 
 <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
@@ -27,11 +28,11 @@
                     <div class="row">
                         <div class="col-6 mb-3">
                             <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
-                            <input type="datetime-local" class="form-control" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")">
+                            <input type="datetime-local" class="form-control" id="eventStartDateTime" name="StartDate" value="@startDateValue">
                         </div>
                         <div class="col-6 mb-3">
                             <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
-                            <input type="datetime-local" class="form-control" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")">
+                            <input type="datetime-local" class="form-control" name="EndDate" value="@(Model.EndDate != DateTime.MinValue ? Model.EndDate.ToString("yyyy-MM-ddTHH:mm") : "")">
                         </div>
                     </div>
                     <div class="mb-3">

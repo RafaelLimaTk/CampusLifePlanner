@@ -13,6 +13,9 @@ public class Event : EntityBase
     private Guid _CourseId;
     private Course? _Course;
     private bool _Completed;
+    private readonly List<EventLog> _eventLogs = new List<EventLog>();
+    public IReadOnlyCollection<EventLog> EventLogs => _eventLogs.AsReadOnly();
+
 
     private Event() { }
 
