@@ -8,162 +8,161 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CampusLifePlanner.WebUI.Controllers
+namespace CampusLifePlanner.WebUI.Controllers;
+
+[Authorize]
+public class EventController : Controller
 {
-    [Authorize]
-    public class EventController : Controller
+    private readonly IEventService _eventService;
+    private readonly IMapper _mapper;
+    private readonly ICourseService _courseService;
+
+    public EventController(IEventService eventService,
+                           IMapper mapper,
+                           ICourseService courseService)
     {
-        private readonly IEventService _eventService;
-        private readonly IMapper _mapper;
-        private readonly ICourseService _courseService;
+        _eventService = eventService;
+        _mapper = mapper;
+        _courseService = courseService;
+    }
 
-        public EventController(IEventService eventService,
-                               IMapper mapper,
-                               ICourseService courseService)
+    #region GetList
+    private async Task<IEnumerable<Course>> GetCourses()
+    {
+        return await _courseService.GetAllAsync();
+    }
+    #endregion
+
+    #region CRUD
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult Calendar()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetEvents()
+    {
+        var events = await _eventService.GetAllAsync();
+        var eventDtos = _mapper.Map<IEnumerable<EventDto>>(events);
+        return Json(eventDtos);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Modal_Edit(Guid id)
+    {
+        var courses = await GetCourses();
+        ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
+        var eventEntity = await _eventService.GetByIdAsync(id);
+        return PartialView("Modal_Create", _mapper.Map<EventDto>(eventEntity));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Modal_Create()
+    {
+        var courses = await GetCourses();
+        ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
+        return PartialView(new EventDto());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(EventDto eventDto)
+    {
+
+        if (!ModelState.IsValid)
         {
-            _eventService = eventService;
-            _mapper = mapper;
-            _courseService = courseService;
+            return ErrorResponse("Modelo não é válido");
         }
 
-        #region GetList
-        private async Task<IEnumerable<Course>> GetCourses()
+        try
         {
-            return await _courseService.GetAllAsync();
-        }
-        #endregion
+            eventDto.Id = Guid.NewGuid();
+            await _eventService.CreateAsync(eventDto);
 
-        #region CRUD
-        public IActionResult Index()
-        {
-            return View();
-        }
+            var timeUntilDeletion = eventDto.EndDate.AddDays(1) - DateTime.Now;
 
-        public IActionResult Calendar()
-        {
-            return View();
-        }
+            BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Id), timeUntilDeletion);
 
-        [HttpGet]
-        public async Task<IActionResult> GetEvents()
-        {
-            var events = await _eventService.GetAllAsync();
-            var eventDtos = _mapper.Map<IEnumerable<EventDto>>(events);
-            return Json(eventDtos);
+            TempData["success"] = "Evento criado com sucesso";
+            return SuccessResponse("Evento criado com sucesso");
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Modal_Edit(Guid id)
+        catch (Exception ex)
         {
-            var courses = await GetCourses();
-            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
-            var eventEntity = await _eventService.GetByIdAsync(id);
-            return PartialView("Modal_Create", _mapper.Map<EventDto>(eventEntity));
+            return ErrorResponse(ex.Message);
+        }
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> Update(Guid id, EventDto eventDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return ErrorResponse("Modelo não é válido");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Modal_Create()
+        try
         {
-            var courses = await GetCourses();
-            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
-            return PartialView(new EventDto());
+            await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto));
+            TempData["success"] = "Evento atualizado com sucesso";
+            return SuccessResponse("Evento atualizado com sucesso");
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(EventDto eventDto)
+        catch (Exception ex)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return ErrorResponse("Modelo não é válido");
-            }
-
-            try
-            {
-                eventDto.Id = Guid.NewGuid();
-                await _eventService.CreateAsync(eventDto);
-
-                var timeUntilDeletion = eventDto.EndDate.AddDays(1) - DateTime.Now;
-
-                BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Id), timeUntilDeletion);
-
-                TempData["success"] = "Evento criado com sucesso";
-                return SuccessResponse("Evento criado com sucesso");
-            }
-            catch (Exception ex)
-            {
-                return ErrorResponse(ex.Message);
-            }
+            return ErrorResponse(ex.Message);
         }
+    }
 
-        [HttpPost]
-        public async Task<JsonResult> Update(Guid id, EventDto eventDto)
+    [HttpPost]
+    public ActionResult ModalDelete()
+        => PartialView("Modal_Delete");
+
+    [HttpGet]
+    public async Task<ActionResult> SharedEvent(Guid id)
+    {
+        var courses = await GetCourses();
+        var eventEntity = await _eventService.GetByIdAsync(id);
+
+        var sharedEventViewModel = new SharedEventViewModel
         {
-            if (!ModelState.IsValid)
-            {
-                return ErrorResponse("Modelo não é válido");
-            }
+            Event = _mapper.Map<EventDto>(eventEntity),
+            Courses = new SelectList(courses.ToList(), "Id", "Name")
+        };
 
-            try
-            {
-                await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto));
-                TempData["success"] = "Evento atualizado com sucesso";
-                return SuccessResponse("Evento atualizado com sucesso");
-            }
-            catch (Exception ex)
-            {
-                return ErrorResponse(ex.Message);
-            }
-        }
+        return View(sharedEventViewModel);
+    }
 
-        [HttpPost]
-        public ActionResult ModalDelete()
-            => PartialView("Modal_Delete");
-
-        [HttpGet]
-        public async Task<ActionResult> SharedEvent(Guid id)
+    [HttpPost]
+    public async Task<JsonResult> Delete(Guid id)
+    {
+        try
         {
-            var courses = await GetCourses();
-            var eventEntity = await _eventService.GetByIdAsync(id);
+            if (id == Guid.Empty)
+                throw new Exception("Id não pode ser null");
 
-            var sharedEventViewModel = new SharedEventViewModel
-            {
-                Event = _mapper.Map<EventDto>(eventEntity),
-                Courses = new SelectList(courses.ToList(), "Id", "Name")
-            };
-
-            return View(sharedEventViewModel);
+            await _eventService.DeleteAsync(id);
+            TempData["success"] = "Evento deletado com sucesso";
+            return SuccessResponse("Evento deletado com sucesso");
         }
-
-        [HttpPost]
-        public async Task<JsonResult> Delete(Guid id)
+        catch (Exception ex)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                    throw new Exception("Id não pode ser null");
-
-                await _eventService.DeleteAsync(id);
-                TempData["success"] = "Evento deletado com sucesso";
-                return SuccessResponse("Evento deletado com sucesso");
-            }
-            catch (Exception ex)
-            {
-                return ErrorResponse(ex.Message);
-            }
+            return ErrorResponse(ex.Message);
         }
+    }
 
-        #region Metodos de tratação de erro
-        private JsonResult SuccessResponse(string message)
-        {
-            return Json(new { success = true, message = message, type = "success" });
-        }
+    #region Metodos de tratação de erro
+    private JsonResult SuccessResponse(string message)
+    {
+        return Json(new { success = true, message = message, type = "success" });
+    }
 
-        private JsonResult ErrorResponse(string message, string type = "error")
-        {
-            return Json(new { success = false, message = message, type = type });
-        }
-        #endregion
+    private JsonResult ErrorResponse(string message, string type = "error")
+    {
+        return Json(new { success = false, message = message, type = type });
     }
     #endregion
 }
+#endregion

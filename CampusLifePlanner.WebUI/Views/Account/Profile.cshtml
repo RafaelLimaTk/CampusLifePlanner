@@ -112,16 +112,16 @@
     <div id="profile-content" class="col-8 fade-in content">
         <div class="card mt-4">
             <h5 class="card-header">Perfil</h5>
-            <form action="" method="">
+            <form action="UpdateUserName" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="mb-3 col-6">
                             <label for="UserName" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="UserName" aria-describedby="UserName" value="@user.FirstName">
+                            <input type="text" class="form-control" id="UserName" name="firstName" aria-describedby="UserName" value="@user.FirstName">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="UserLastName" class="form-label">Sobrenome</label>
-                            <input type="text" class="form-control" id="UserLastName" aria-describedby="UserLastName" value="@user.LastName">
+                            <input type="text" class="form-control" id="UserLastName" name="lastName" aria-describedby="UserLastName" value="@user.LastName">
                         </div>
                     </div>
                     <div class="row">
@@ -132,9 +132,6 @@
                     </div>
                 </div>
                 <div class="card-footer clearfix">
-                    <button class="btn btn-secondary float-start">
-                        Cancelar alterações
-                    </button>
                     <button type="submit" class="btn btn-success float-end">
                         Salvar alterações
                     </button>

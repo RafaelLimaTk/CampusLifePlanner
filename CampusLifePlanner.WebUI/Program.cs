@@ -59,13 +59,12 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapHub<ConnectionHub>("/connectionHub");
     endpoints.MapHangfireDashboard("/hangfire").RequireAuthorization("HangfireDashboard");
 });
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-
-app.MapHub<ConnectionHub>("/connectionHub");
 
 app.Run();

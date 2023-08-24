@@ -9,7 +9,7 @@
     <div class="card-header">
         <div class="align-items-center row">
             <div class="col-10 d-flex">
-                <h5>Course</h5>
+                <h5>Cursos</h5>
             </div>
             <div class="col-2 align-items-center justify-content-center d-flex">
                 <a class="btn btn-outline-primary fp-add">Adicionar curso</a>
@@ -30,12 +30,11 @@
                 {
                     <tr>
                         <td>@course.Name</td>
+                        <td></td>
                         <td>
-                            <button class="btn btn-sm btn-outline-primary fp-edit" value="@course.Id">
+                            <button class="btn btn-sm btn-outline-primary me-1 fp-edit" value="@course.Id">
                                 <i class="bi bi-pencil-square"></i>
                             </button>
-                        </td>
-                        <td>
                             <button class="btn btn-sm btn-outline-danger fp-del" value="@course.Id">
                                 <i class="bi bi-trash"></i>
                             </button>
