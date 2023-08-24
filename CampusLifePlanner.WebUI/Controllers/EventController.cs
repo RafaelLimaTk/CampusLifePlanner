@@ -2,6 +2,8 @@
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Domain.Entities;
+using CampusLifePlanner.WebUI.ViewModels;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -78,7 +80,13 @@ namespace CampusLifePlanner.WebUI.Controllers
 
             try
             {
+                eventDto.Id = Guid.NewGuid();
                 await _eventService.CreateAsync(eventDto);
+
+                var timeUntilDeletion = eventDto.EndDate.AddDays(1) - DateTime.Now;
+
+                BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Id), timeUntilDeletion);
+
                 TempData["success"] = "Evento criado com sucesso";
                 return SuccessResponse("Evento criado com sucesso");
             }
@@ -113,12 +121,18 @@ namespace CampusLifePlanner.WebUI.Controllers
             => PartialView("Modal_Delete");
 
         [HttpGet]
-        public async Task<ActionResult> ModalShared(Guid id)
+        public async Task<ActionResult> SharedEvent(Guid id)
         {
             var courses = await GetCourses();
-            ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
             var eventEntity = await _eventService.GetByIdAsync(id);
-            return PartialView("_ShareEventModal", _mapper.Map<EventDto>(eventEntity));
+
+            var sharedEventViewModel = new SharedEventViewModel
+            {
+                Event = _mapper.Map<EventDto>(eventEntity),
+                Courses = new SelectList(courses.ToList(), "Id", "Name")
+            };
+
+            return View(sharedEventViewModel);
         }
 
         [HttpPost]

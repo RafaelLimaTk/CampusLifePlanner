@@ -1,4 +1,5 @@
 ﻿using CampusLifePlanner.Domain.Account;
+using CampusLifePlanner.Infra.Data.Migrations;
 using Microsoft.AspNetCore.Identity;
 
 namespace CampusLifePlanner.Infra.Data.Identity;
@@ -34,6 +35,7 @@ public class AuthenticateService : IAuthenticate
 
     public async Task<(bool success, string msg)> RegisterUser(string firstName, string lastName, string email, string password)
     {
+
         var applicationUser = new ApplicationUser
         {
             FirstName = firstName,
@@ -61,4 +63,17 @@ public class AuthenticateService : IAuthenticate
 
         return new(result.Succeeded, result.Errors.Count() == 0 ? null : result.Errors.FirstOrDefault().Description.ToString());
     }
+
+    public async Task<bool> UpdateUserProfile(string userId, string imgPath)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            user.ImgPath = imgPath;
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+        return false;
+    }
+
 }

@@ -7,12 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Event\Share_Event.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Perfil\GD_imgSemImagem.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CampusLifePlanner.Infra.IoC\CampusLifePlanner.Infra.IoC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentMigrator" Version="3.3.2" />
+    <PackageReference Include="FluentMigrator.Extensions.SqlServer" Version="3.3.2" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+    <PackageReference Include="Hangfire" Version="1.8.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

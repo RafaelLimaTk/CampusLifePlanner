@@ -1,6 +1,11 @@
 using CampusLifePlanner.Domain.Account;
+using CampusLifePlanner.Infra.Data.Context;
 using CampusLifePlanner.Infra.IoC;
+using CampusLifePlanner.WebUI.Helpers;
 using CampusLifePlanner.WebUI.WebSockets;
+using Hangfire;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +14,16 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddSignalR();
+builder.Services.AddScoped<IUtil, Util>();
+
+builder.Services.AddHangfire(x => x.UseSqlServerStorage("Data Source=localhost;Initial Catalog=CampusLifePlanner;Integrated Security=True; TrustServerCertificate=True"));
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+dbContext.Database.Migrate();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -23,6 +35,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+    RequestPath = "/Resources"
+});
 
 app.UseRouting();
 
@@ -39,15 +57,15 @@ using (var serviceScope = app.Services.CreateScope())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHangfireDashboard("/hangfire").RequireAuthorization("HangfireDashboard");
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<ConnectionHub>("/connectionHub");
-    endpoints.MapControllers();
-});
+app.MapHub<ConnectionHub>("/connectionHub");
 
 app.Run();

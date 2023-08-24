@@ -73,6 +73,9 @@ namespace CampusLifePlanner.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
@@ -110,6 +113,34 @@ namespace CampusLifePlanner.Infra.Data.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("CampusLifePlanner.Domain.Entities.EventLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("EventLogs");
+                });
+
             modelBuilder.Entity("CampusLifePlanner.Infra.Data.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -132,6 +163,11 @@ namespace CampusLifePlanner.Infra.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("ImgPath")
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
@@ -351,6 +387,16 @@ namespace CampusLifePlanner.Infra.Data.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("CampusLifePlanner.Domain.Entities.EventLog", b =>
+                {
+                    b.HasOne("CampusLifePlanner.Domain.Entities.Event", "Event")
+                        .WithMany("EventLogs")
+                        .HasForeignKey("EventId")
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -399,6 +445,11 @@ namespace CampusLifePlanner.Infra.Data.Migrations
             modelBuilder.Entity("CampusLifePlanner.Domain.Entities.Course", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("CampusLifePlanner.Domain.Entities.Event", b =>
+                {
+                    b.Navigation("EventLogs");
                 });
 #pragma warning restore 612, 618
         }

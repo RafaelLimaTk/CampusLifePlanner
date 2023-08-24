@@ -2,18 +2,18 @@
 using CampusLifePlanner.Application.Interfaces.Base;
 using CampusLifePlanner.Application.Mappings;
 using CampusLifePlanner.Application.Services;
-using CampusLifePlanner.Application.Services.Base;
 using CampusLifePlanner.Domain.Account;
-using CampusLifePlanner.Domain.Entities;
 using CampusLifePlanner.Domain.Interfaces;
-using CampusLifePlanner.Domain.Interfaces.Base;
 using CampusLifePlanner.Infra.Data.Context;
 using CampusLifePlanner.Infra.Data.Identity;
 using CampusLifePlanner.Infra.Data.Repositories;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using System.Security.Claims;
 
 namespace CampusLifePlanner.Infra.IoC;
 
@@ -24,7 +24,7 @@ public static class DependencyInjection
     {
         Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"), 
+                configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext)
                     .Assembly.FullName)));
 
@@ -44,10 +44,12 @@ public static class DependencyInjection
         Services.AddScoped<IEventRepository, EventRepository>();
         Services.AddScoped<ICourseRepository, CourseRepository>();
         Services.AddScoped<IEnrollmentCourseRepository, EnrollmentCourseRepository>();
+        Services.AddScoped<IEventLogRepository, EventLogRepository>();
 
         Services.AddScoped<IEventService, EventService>();
         Services.AddScoped<ICourseService, CourseService>();
         Services.AddScoped<IEnrollmentCourseService, EnrollmentCourseService>();
+        Services.AddScoped<IEventLogService, EventLogService>();
 
         Services.AddScoped<IAuthenticate, AuthenticateService>();
         Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
@@ -56,11 +58,19 @@ public static class DependencyInjection
 
         Services.AddAuthorization(options =>
         {
-            options.AddPolicy("isAdmin", policy => policy.RequireRole("admin"));
+            options.AddPolicy("HangfireDashboard",
+                builder => builder.RequireClaim(ClaimTypes.Role, "Admin"));
+            options.AddPolicy("isAdmin", policy => policy.RequireRole("Admin"));
             options.AddPolicy("isStudent", policy => policy.RequireRole("student"));
         });
 
         Services.AddSignalR();
+
+        Services.AddFluentMigratorCore()
+            .ConfigureRunner(x => x.AddSqlServer()
+            .WithGlobalConnectionString(configuration.GetConnectionString("DefaultConnection"))
+            .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
+            .AddLogging(y => y.AddFluentMigratorConsole());
 
         return Services;
     }

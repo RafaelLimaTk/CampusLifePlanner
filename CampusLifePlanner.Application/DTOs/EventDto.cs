@@ -26,4 +26,5 @@ public class EventDto
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public Guid CourseId { get; set; }
+    public bool Completed { get; set; }
 }
