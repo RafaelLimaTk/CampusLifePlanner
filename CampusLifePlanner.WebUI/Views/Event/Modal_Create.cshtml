@@ -1,10 +1,9 @@
-﻿@model CampusLifePlanner.Application.DTOs.EventDto;
+﻿@model CampusLifePlanner.WebUI.ViewModels.EventEditViewModel;
 @using RS = CampusLifePlanner.Infra.IoC.Resources;
 @{
-    ViewBag.title = Model.Id == Guid.Empty ? RS.Common.GENERAL_PAGE_BTN_ADD + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower() : RS.Common.GENERAL_PAGE_BTN_EDIT + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower();
+    ViewBag.title = Model.Event.Id == Guid.Empty ? RS.Common.GENERAL_PAGE_BTN_ADD + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower() : RS.Common.GENERAL_PAGE_BTN_EDIT + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower();
     var modalId = "modal_" + Guid.NewGuid();
-    var courseList = ViewBag.Courses;
-    var startDateValue = Model.StartDate != DateTime.MinValue ? Model.StartDate.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+    var startDateValue = Model.Event.StartDate != DateTime.MinValue ? Model.Event.StartDate.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
 }
 
 <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
@@ -16,36 +15,39 @@
             </div>
             <div class="modal-body">
                 <form id="eventForm">
-                    @Html.HiddenFor(a => a.Id)
+                    @Html.HiddenFor(a => a.Event.Id)
                     <div class="mb-3">
                         <label for="eventTitle" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="eventTitle" name="Title" value="@Model.Title">
+                        <input type="text" class="form-control" id="eventTitle" name="Event.Title" value="@Model.Event.Title">
                     </div>
                     <div class="mb-3">
                         <label for="eventLocal" class="form-label">Local</label>
-                        <input type="text" class="form-control" id="eventLocal" name="Local" value="@Model.Local">
+                        <input type="text" class="form-control" id="eventLocal" name="Event.Local" value="@Model.Event.Local">
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
                             <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
-                            <input type="datetime-local" class="form-control" id="eventStartDateTime" name="StartDate" value="@startDateValue">
+                            <input type="datetime-local" class="form-control" id="eventStartDateTime" name="Event.StartDate" value="@startDateValue">
                         </div>
                         <div class="col-6 mb-3">
                             <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
-                            <input type="datetime-local" class="form-control" name="EndDate" value="@(Model.EndDate != DateTime.MinValue ? Model.EndDate.ToString("yyyy-MM-ddTHH:mm") : "")">
+                            <input type="datetime-local" class="form-control" name="Event.EndDate" value="@(Model.Event.EndDate != DateTime.MinValue ? Model.Event.EndDate.ToString("yyyy-MM-ddTHH:mm") : "")">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="eventDescription" class="form-label">Descrição</label>
-                        <input type="text" class="form-control" id="eventDescription" name="Description" value="@Model.Description">
+                        <input type="text" class="form-control" id="eventDescription" name="Event.Description" value="@Model.Event.Description">
                     </div>
                     <label for="courseId" class="form-label">Curso</label>
-                    <select class="form-control" asp-for="CourseId" asp-items="@courseList"></select>
+                    <select class="form-control" asp-for="@Model.Event.CourseId" asp-items="@Model.Courses"></select>
                 </form>
             </div>
             <div class="modal-footer">
-                <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Id" class="btn btn-primary">Compartilhar evento</a>
-                <button type="button" class="btn btn-danger fp-del" value="@Model.Id">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
+                @if (Model.Event.Id != Guid.Empty)
+                {
+                    <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Event.Id" class="btn btn-primary">Compartilhar evento</a>
+                }
+                <button type="button" class="btn btn-danger fp-del" value="@Model.Event.Id">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
                 <button type="submit" class="btn btn-primary fp-save">@RS.Common.GENERAL_PAGE_BTN_SAVE</button>
             </div>

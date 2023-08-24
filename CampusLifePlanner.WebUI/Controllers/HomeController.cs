@@ -2,6 +2,7 @@
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Domain.Entities;
 using CampusLifePlanner.WebUI.Models;
+using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,13 +25,6 @@ public class HomeController : Controller
         _eventService = eventService;
     }
 
-    #region GetList
-    private async Task<IEnumerable<Course>> GetCourses()
-    {
-        return await _courseService.GetAllAsync();
-    }
-    #endregion
-
     #region CRUD
     public IActionResult Index()
     {
@@ -39,15 +33,22 @@ public class HomeController : Controller
 
     public async Task<IActionResult> RelatedEnrollmentCourse()
     {
-        var courses = await GetCourses();
-        ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
-        return PartialView();
+        var CoursesModel = new CoursesViewModel
+        {
+            Courses = await GetCoursesSelectList()
+        };
+
+        return PartialView(CoursesModel);
     }
 
-    public IActionResult SelectCourse()
+    public async Task<IActionResult> SelectCourse()
     {
-        ViewBag.Courses = new SelectList(GetCourses().Result.ToList(), "Id", "Name");
-        return PartialView();
+        var CoursesModel = new CoursesViewModel
+        {
+            Courses = await GetCoursesSelectList()
+        };
+
+        return PartialView(CoursesModel);
     }
 
     public IActionResult CalendarStudent(Guid UserId)
@@ -105,4 +106,17 @@ public class HomeController : Controller
         }
 
     }
+
+    #region GetListCourse
+    private async Task<IEnumerable<Course>> GetCourses()
+    {
+        return await _courseService.GetAllAsync();
+    }
+    
+    private async Task<SelectList> GetCoursesSelectList()
+    {
+        var courses = await GetCourses();
+        return new SelectList(courses.ToList(), "Id", "Name");
+    }
+    #endregion
 }

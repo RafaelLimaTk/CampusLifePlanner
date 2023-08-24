@@ -1,3 +1,4 @@
+using CampusLifePlanner.Application.Interfaces.Base;
 using CampusLifePlanner.Domain.Account;
 using CampusLifePlanner.Infra.Data.Context;
 using CampusLifePlanner.Infra.IoC;
@@ -16,7 +17,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddScoped<IUtil, Util>();
 
-builder.Services.AddHangfire(x => x.UseSqlServerStorage("Data Source=localhost;Initial Catalog=CampusLifePlanner;Integrated Security=True; TrustServerCertificate=True"));
+builder.Services.AddSignalR();
+
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
 
 var app = builder.Build();

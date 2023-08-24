@@ -56,7 +56,8 @@
         connection.start().then(() => {
             console.log("Conexão SignalR estabelecida!");
         }).catch(err => {
-            console.error("Erro ao conectar ao SignalR:", err);
+            console.error("Erro completo:", err);
+            return console.error("Erro ao conectar ao SignalR:", err.toString());
         });
         
         function shareEvent() {

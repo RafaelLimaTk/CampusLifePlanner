@@ -26,13 +26,6 @@ public class EventController : Controller
         _courseService = courseService;
     }
 
-    #region GetList
-    private async Task<IEnumerable<Course>> GetCourses()
-    {
-        return await _courseService.GetAllAsync();
-    }
-    #endregion
-
     #region CRUD
     public IActionResult Index()
     {
@@ -55,23 +48,33 @@ public class EventController : Controller
     [HttpGet]
     public async Task<IActionResult> Modal_Edit(Guid id)
     {
-        var courses = await GetCourses();
-        ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
         var eventEntity = await _eventService.GetByIdAsync(id);
-        return PartialView("Modal_Create", _mapper.Map<EventDto>(eventEntity));
+
+        var EventEditModel = new EventEditViewModel
+        {
+            Event = _mapper.Map<EventDto>(eventEntity),
+            Courses = await GetCoursesSelectList()
+        };
+
+        return PartialView("Modal_Create", EventEditModel);
     }
 
     [HttpGet]
     public async Task<IActionResult> Modal_Create()
     {
-        var courses = await GetCourses();
-        ViewBag.Courses = new SelectList(courses.ToList(), "Id", "Name");
-        return PartialView(new EventDto());
+        var EventCreateModel = new EventEditViewModel
+        {
+            Event = new EventDto(),
+            Courses = await GetCoursesSelectList()
+        };
+
+        return PartialView(EventCreateModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(EventDto eventDto)
+    public async Task<IActionResult> Create(EventEditViewModel eventDto)
     {
+        ModelState.Remove("Courses");
 
         if (!ModelState.IsValid)
         {
@@ -80,12 +83,12 @@ public class EventController : Controller
 
         try
         {
-            eventDto.Id = Guid.NewGuid();
-            await _eventService.CreateAsync(eventDto);
+            eventDto.Event.Id = Guid.NewGuid();
+            await _eventService.CreateAsync(eventDto.Event);
 
-            var timeUntilDeletion = eventDto.EndDate.AddDays(1) - DateTime.Now;
+            var timeUntilDeletion = eventDto.Event.EndDate.AddDays(1) - DateTime.Now;
 
-            BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Id), timeUntilDeletion);
+            BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Event.Id), timeUntilDeletion);
 
             TempData["success"] = "Evento criado com sucesso";
             return SuccessResponse("Evento criado com sucesso");
@@ -97,8 +100,10 @@ public class EventController : Controller
     }
 
     [HttpPost]
-    public async Task<JsonResult> Update(Guid id, EventDto eventDto)
+    public async Task<JsonResult> Update(Guid id, EventEditViewModel eventDto)
     {
+        ModelState.Remove("Courses");
+
         if (!ModelState.IsValid)
         {
             return ErrorResponse("Modelo não é válido");
@@ -106,7 +111,7 @@ public class EventController : Controller
 
         try
         {
-            await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto));
+            await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto.Event));
             TempData["success"] = "Evento atualizado com sucesso";
             return SuccessResponse("Evento atualizado com sucesso");
         }
@@ -162,6 +167,19 @@ public class EventController : Controller
     private JsonResult ErrorResponse(string message, string type = "error")
     {
         return Json(new { success = false, message = message, type = type });
+    }
+    #endregion
+
+    #region GetList
+    private async Task<IEnumerable<Course>> GetCourses()
+    {
+        return await _courseService.GetAllAsync();
+    }
+
+    private async Task<SelectList> GetCoursesSelectList()
+    {
+        var courses = await GetCourses();
+        return new SelectList(courses.ToList(), "Id", "Name");
     }
     #endregion
 }
