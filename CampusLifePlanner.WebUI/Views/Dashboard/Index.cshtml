@@ -1,4 +1,5 @@
 ﻿@model CampusLifePlanner.WebUI.ViewModels.EventViewModel
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 @{
     ViewData["Title"] = "Dashboard | EduPlaner";
@@ -36,7 +37,7 @@
 
 <div class="bg-body-tertiary bg-primary rounded p-4">
     <h4 class="text-white">
-        Eventos
+        @RS.Common.GENERAL_PAGE_LBL_EVENTS
     </h4>
 </div>
 
@@ -46,7 +47,7 @@
             <span class="icon-container-today">
                 <i class="bi bi-chevron-down fs-6"></i>
             </span>
-            Hoje
+            @RS.Common.GENERAL_PAGE_LBL_TODAY
         </a>
     </h5>
     <div class="collapse collapse-show rounded show" id="todayTasks">
@@ -64,7 +65,7 @@
                     <div class="col-2">
                         <span class="me-2">
                             <i class="bi bi-calendar-date text-danger"></i>
-                            Hoje às @evento.StartDate.ToString("HH:mm")
+                            @RS.Common.GENERAL_PAGE_LBL_TODAY @RS.Common.GENERAL_PAGE_LBL_TO_THE @evento.StartDate.ToString("HH:mm")
                         </span>
                         <span class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
                             <i class="bi bi-info-circle text-primary" id="info"></i>
@@ -75,7 +76,7 @@
         }
         else
         {
-            <h4>Nenhum evento encontrado, aproveite seu dia!</h4>
+            <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
         }
     </div>
 </div>
@@ -86,7 +87,7 @@
             <span class="icon-container-next">
                 <i class="bi bi-chevron-down fs-6"></i>
             </span>
-            Amanhã
+            @RS.Common.GENERAL_PAGE_LBL_TOMORROW
         </a>
     </h5>
     <div class="collapse collapse-show rounded show" id="nextTasks">
@@ -103,7 +104,7 @@
                     <div class="col-2">
                         <span class="me-2">
                             <i class="bi bi-calendar-date text-danger"></i>
-                            Amanhã às @evento.StartDate.ToString("HH:mm")
+                            @RS.Common.GENERAL_PAGE_LBL_TOMORROW @RS.Common.GENERAL_PAGE_LBL_TO_THE @evento.StartDate.ToString("HH:mm")
                         </span>
                         <span class="button-info" class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
                             <i class="bi bi-info-circle text-primary" id="info"></i>
@@ -114,21 +115,22 @@
         }
         else
         {
-            <h4>Nenhum evento encontrado, aproveite seu dia!</h4>
+            <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
         }
     </div>
 </div>
 
 @section Scripts {
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector(".link-list-today").addEventListener("click", function (e) {
-                document.querySelector(".icon-container-today").classList.toggle("rotate-180");
+        $(document).ready(function () {
+            $(".link-list-today").click(function (e) {
+                $(".icon-container-today").toggleClass("rotate-180");
             });
-            document.querySelector(".link-list-next").addEventListener("click", function (e) {
-                document.querySelector(".icon-container-next").classList.toggle("rotate-180");
+            $(".link-list-next").click(function (e) {
+                $(".icon-container-next").toggleClass("rotate-180");
             });
         });
+
 
 
         function toggleTaskCompletion(checkbox) {

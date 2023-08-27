@@ -88,6 +88,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Fill in all fields, please..
+        /// </summary>
+        public static string EX_MSG_NULL_ERROR {
+            get {
+                return ResourceManager.GetString("EX_MSG_NULL_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Add.
         /// </summary>
         public static string GENERAL_PAGE_BTN_ADD {
@@ -133,6 +142,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Close.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_CLOSE {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_CLOSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Course.
         /// </summary>
         public static string GENERAL_PAGE_LBL_COURSE {
@@ -169,6 +187,24 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Events.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_EVENTS {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_EVENTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a No {0} found, enjoy your day!.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Password.
         /// </summary>
         public static string GENERAL_PAGE_LBL_PASSWORD {
@@ -178,11 +214,47 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a to the.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_TO_THE {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_TO_THE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Today.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_TODAY {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_TODAY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Tomorrow.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_TOMORROW {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_TOMORROW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a User.
         /// </summary>
         public static string GENERAL_PAGE_LBL_USER {
             get {
                 return ResourceManager.GetString("GENERAL_PAGE_LBL_USER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a To stay up to date with events and activities, please choose the course in which you are currently enrolled. This will allow you to keep track of all relevant information and participate in scheduled activities. we are here for ensure that you are always well informed and engaged in your course..
+        /// </summary>
+        public static string MSG_PAGE_ENROLLMENT_COURSE {
+            get {
+                return ResourceManager.GetString("MSG_PAGE_ENROLLMENT_COURSE", resourceCulture);
             }
         }
     }

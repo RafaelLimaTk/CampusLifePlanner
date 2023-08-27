@@ -1,5 +1,8 @@
 ﻿@using CampusLifePlanner.Infra.Data.Identity;
 @using Microsoft.AspNetCore.Identity;
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
+
+
 @model CampusLifePlanner.WebUI.ViewModels.CoursesViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -40,10 +43,7 @@
             </div>
             <div class="modal-body py-2">
                 <p class="f6 fade-in">
-                    Para ficar por dentro dos eventos e atividades, por favor, escolha o curso
-                    no qual você está atualmente matriculado. Isso permitirá que você acompanhe todas
-                    as informações relevantes e participe das atividades programadas. Estamos aqui para
-                    garantir que você esteja sempre bem informado e engajado em seu curso.
+                    @RS.Common.MSG_PAGE_ENROLLMENT_COURSE
                 </p>
                 <div class="mt-3 fade-in">
                     <select class="form-select form-select-lg mb-3" name="CourseId" asp-items="@Model.Courses" aria-label="Escolha seu curso">

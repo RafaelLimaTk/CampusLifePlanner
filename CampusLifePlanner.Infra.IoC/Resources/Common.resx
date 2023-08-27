@@ -139,4 +139,28 @@
   <data name="GENERAL_PAGE_BTN_SHARED" xml:space="preserve">
     <value>Shared</value>
   </data>
+  <data name="EX_MSG_NULL_ERROR" xml:space="preserve">
+    <value>Fill in all fields, please.</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_CLOSE" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_TODAY" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_EVENTS" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_TOMORROW" xml:space="preserve">
+    <value>Tomorrow</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_TO_THE" xml:space="preserve">
+    <value>to the</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_NOT_FOUND" xml:space="preserve">
+    <value>No {0} found, enjoy your day!</value>
+  </data>
+  <data name="MSG_PAGE_ENROLLMENT_COURSE" xml:space="preserve">
+    <value>To stay up to date with events and activities, please choose the course in which you are currently enrolled. This will allow you to keep track of all relevant information and participate in scheduled activities. we are here for ensure that you are always well informed and engaged in your course.</value>
+  </data>
 </root>

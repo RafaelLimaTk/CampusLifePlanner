@@ -1,4 +1,5 @@
 ﻿@model SharedEventViewModel
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 <style>
     .fade-in {
@@ -37,7 +38,7 @@
         <div class="modal-footer m-0 fade-in">
             <div>
                 <a class="btn btn-outline-success scalable-button fp-share" onclick="shareEvent();">
-                    Compartilhar
+                    @RS.Common.GENERAL_PAGE_BTN_SHARED
                 </a>
             </div>
         </div>

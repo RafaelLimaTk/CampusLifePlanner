@@ -8,4 +8,5 @@ public interface ICourseService : IService<CourseDto, Course>
 {
     bool ExistEvent(Guid id);
     IList<CourseDto> GetCourseListByCourseId(IList<Guid> enrollmentCourseIdList);
+    Task<int> GetEnrollmentCountByCourseId(Guid courseId);
 }

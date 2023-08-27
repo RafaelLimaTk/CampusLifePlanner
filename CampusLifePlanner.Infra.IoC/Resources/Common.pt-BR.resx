@@ -139,7 +139,7 @@
     <value>Evento</value>
   </data>
   <data name="GENERAL_PAGE_LBL_DELETE" xml:space="preserve">
-    <value>Apagar</value>
+    <value>Excluir</value>
   </data>
   <data name="GENERAL_PAGE_LBL_DELETE_THIS" xml:space="preserve">
     <value>Deseja realmente deletar isso?</value>
@@ -158,5 +158,29 @@
   </data>
   <data name="GENERAL_PAGE_BTN_SHARED" xml:space="preserve">
     <value>Compartilhar</value>
+  </data>
+  <data name="EX_MSG_NULL_ERROR" xml:space="preserve">
+    <value>Preencha todos os campos, por favor.</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_CLOSE" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_TODAY" xml:space="preserve">
+    <value>Hoje</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_EVENTS" xml:space="preserve">
+    <value>Eventos</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_TOMORROW" xml:space="preserve">
+    <value>Amanhã</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_TO_THE" xml:space="preserve">
+    <value>às</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_NOT_FOUND" xml:space="preserve">
+    <value>Nenhum {0} encontrado, aproveite seu dia!</value>
+  </data>
+  <data name="MSG_PAGE_ENROLLMENT_COURSE" xml:space="preserve">
+    <value>Para ficar por dentro dos eventos e atividades, por favor, escolha o curso no qual você está atualmente matriculado. Isso permitirá que você acompanhe todas as informações relevantes e participe das atividades programadas. Estamos aqui para garantir que você esteja sempre bem informado e engajado em seu curso.</value>
   </data>
 </root>

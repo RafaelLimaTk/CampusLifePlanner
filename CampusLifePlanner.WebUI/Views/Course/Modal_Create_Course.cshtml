@@ -1,4 +1,6 @@
 ﻿@model CampusLifePlanner.Application.DTOs.CourseDto;
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
+
 @{
     var container = "modal_" + Guid.NewGuid();
 }
@@ -7,23 +9,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addCourseModalLabel">Adicionar Curso</h5>
+                <h5 class="modal-title" id="addCourseModalLabel">
+                    @(Model.Id == Guid.Empty ? @RS.Common.GENERAL_PAGE_BTN_ADD + " " + @RS.Common.GENERAL_PAGE_LBL_COURSE : RS.Common.GENERAL_PAGE_BTN_EDIT + " " + RS.Common.GENERAL_PAGE_LBL_COURSE)
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="eventForm">
+            <form id="eventForm">
+                <div class="modal-body">
                     @Html.HiddenFor(a => a.Id)
                     <div class="mb-3">
-                        <label for="courseName" class="form-label">Curso</label>
+                        <label for="courseName" class="form-label">Nome do curso</label>
                         <input type="text" class="form-control" id="courseName" name="Name" value="@Model.Name">
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Salvar Curso</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CLOSE</button>
+                    <button type="submit" class="btn btn-primary">@RS.Common.GENERAL_PAGE_BTN_SAVE @RS.Common.GENERAL_PAGE_LBL_COURSE</button>
+                </div>
+            </form>
         </div>
     </div>
 
