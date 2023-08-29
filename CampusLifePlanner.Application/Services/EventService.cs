@@ -23,6 +23,12 @@ public class EventService : GenericService<EventDto, Event>, IEventService
         return events.Select(e => _mapper.Map<EventDto>(e));
     }
 
+    public async Task<IList<Event>> GetEventsWithCoursesAsync()
+        => await _eventRepository.GetEventsWithCoursesAsync();
+
+    public async Task<Event> GetWithCourseById(Guid id)
+        => await _eventRepository.GetWithCourseById(id);
+
     public async Task<bool> ShareEvent(Guid eventId, Guid targetCourseId)
     {
         var eventToShare = await _eventRepository.GetByIdAsync(eventId);

@@ -17,9 +17,9 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
         _mapper = mapper;
     }
 
-    public IEnumerable<EventDto> FilterMapEvents(IEnumerable<Event> events, DateTime date, Guid userId)
+    public IEnumerable<EventDto> FilterMapEvents(IEnumerable<Event> events, DateTime date, Guid userId, IList<Guid> courseIds)
     {
-        return FilterEventByDate(events, date)
+        return FilterEventByDate(FilterEventByCourse(events, courseIds), date)
         .Select(e => new EventDto
         {
             Id = e.Id,
@@ -29,6 +29,7 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
             StartDate = e.StartDate,
             EndDate = e.EndDate,
             CourseId = e.CourseId,
+            Courses = e.Course,
             Completed = GetEventCompletedStatus(e.Id, userId)
         });
     }
@@ -36,6 +37,11 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
     private IEnumerable<Event> FilterEventByDate(IEnumerable<Event> events, DateTime date)
     {
         return events.Where(e => e.StartDate.Date <= date && e.EndDate.Date >= date);
+    }
+
+    private IEnumerable<Event> FilterEventByCourse(IEnumerable<Event> events, IList<Guid> courseIds)
+    {
+        return events.Where(e => courseIds.Contains(e.CourseId));
     }
 
     public async Task ToggleEventLog(Guid eventId, Guid userId, bool isMarked)

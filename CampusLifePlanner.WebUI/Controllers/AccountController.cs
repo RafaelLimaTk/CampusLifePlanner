@@ -135,4 +135,45 @@ public class AccountController : Controller
 
         return View();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateUserName(string firstName, string lastName)
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                TempData["Error"] = "Erro ao tentar atualizar o usuário";
+                return NotFound();
+            }
+
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+            {
+                TempData["Info"] = "Nome e sobrenome são obrigatórios";
+                return RedirectToAction("Profile", "Account");
+            }
+
+            user.FirstName = firstName; user.LastName = lastName;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Nome do usuário atualizado com sucesso!";
+                return RedirectToAction("Profile", "Account");
+            }
+            else
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                TempData["Error"] = $"Erro ao tentar atualizar o usuário: {errors}";
+                return RedirectToAction("Profile", "Account");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            TempData["Error"] = $"Ocorreu um erro inesperado: {ex.Message}";
+            return RedirectToAction("Profile", "Account");
+        }
+    }
 }

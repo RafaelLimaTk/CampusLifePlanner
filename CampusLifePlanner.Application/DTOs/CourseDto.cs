@@ -11,5 +11,7 @@ public class CourseDto
     [MaxLength(120)]
     [DisplayName("Curso")]
     public string? Name { get; set; }
+    public string? Sigla { get; set; }
     public List<EventDto>? Events { get; set; }
+    public int EnrollmentCount { get; set; }
 }

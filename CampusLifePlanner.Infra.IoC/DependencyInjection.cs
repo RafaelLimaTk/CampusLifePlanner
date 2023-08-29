@@ -64,8 +64,6 @@ public static class DependencyInjection
             options.AddPolicy("isStudent", policy => policy.RequireRole("student"));
         });
 
-        Services.AddSignalR();
-
         Services.AddFluentMigratorCore()
             .ConfigureRunner(x => x.AddSqlServer()
             .WithGlobalConnectionString(configuration.GetConnectionString("DefaultConnection"))

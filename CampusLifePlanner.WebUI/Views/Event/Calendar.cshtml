@@ -72,8 +72,9 @@
                             $("#@container").append($modal);
                         });
                 },
-                dateClick: function (info) {
-                    $.get("@Url.Action("Modal_Create")")
+                dateClick: function (start, end) {
+                    let startDate = start.dateStr;
+                    $.get("@Url.Action("Modal_Create")", { start: startDate })
                         .done(function (modal) {
                             let $modal = $(modal);
                             $modal.data("callback-success", function () {

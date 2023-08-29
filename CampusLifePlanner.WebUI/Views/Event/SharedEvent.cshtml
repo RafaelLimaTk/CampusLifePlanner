@@ -1,4 +1,5 @@
 ﻿@model SharedEventViewModel
+@using RS = CampusLifePlanner.Infra.IoC.Resources;
 
 <style>
     .fade-in {
@@ -37,7 +38,7 @@
         <div class="modal-footer m-0 fade-in">
             <div>
                 <a class="btn btn-outline-success scalable-button fp-share" onclick="shareEvent();">
-                    Compartilhar
+                    @RS.Common.GENERAL_PAGE_BTN_SHARED
                 </a>
             </div>
         </div>
@@ -56,11 +57,11 @@
         connection.start().then(() => {
             console.log("Conexão SignalR estabelecida!");
         }).catch(err => {
-            console.error("Erro ao conectar ao SignalR:", err);
+            console.error("Erro completo:", err);
+            return console.error("Erro ao conectar ao SignalR:", err.toString());
         });
         
         function shareEvent() {
-            debugger;
             const eventId = document.getElementById("EventId").value;
             const courseId = document.getElementById("CourseId").value;
 

@@ -5,47 +5,99 @@
     var container = Guid.NewGuid();
 }
 
-<div id="@container" class="card">
-    <div class="card-header">
-        <div class="align-items-center row">
-            <div class="col-10 d-flex">
-                <h5>Course</h5>
-            </div>
-            <div class="col-2 align-items-center justify-content-center d-flex">
-                <a class="btn btn-outline-primary fp-add">Adicionar curso</a>
-            </div>
+<style>
+    .circle-sigla-course {
+        position: relative;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .circle-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #2196F3;
+        opacity: 0.22;
+        border-radius: 50%;
+    }
+
+    .custom-p {
+        color: #4E4E4E;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .custom-span {
+        color: #2196F3;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .effect-edit-card {
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .effect-edit-card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+        }
+</style>
+
+<div id="@container">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mb-2">
+            Cursos <span class="fs-5">(@Model.Count())</span>
+        </h4>
+        <div class="col-2 align-items-center justify-content-center d-flex">
+            <a class="btn btn-outline-primary fp-add">@RS.Common.GENERAL_PAGE_BTN_ADD @RS.Common.GENERAL_PAGE_LBL_COURSE</a>
         </div>
     </div>
-    <div class="card-body">
-        <table class="table table-responsive table-hover">
-            <thead>
-                <tr class="bg-secondary text-white">
-                    <th>Nome do Curso</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var course in Model)
-                {
-                    <tr>
-                        <td>@course.Name</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary fp-edit" value="@course.Id">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                        </td>
-                        <td>
+    <div class="row">
+        @if (Model != null)
+        {
+            @foreach (var course in Model)
+            {
+                <div class="d-flex justify-content-between card border-0 shadow-sm  me-3 mt-2 fp-edit effect-edit-card" style="width:48%;" data-id="@course.Id">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="circle-sigla-course me-2">
+                                <div class="circle-background"></div>
+                                <h5 style="color: #2196F3;">@course.Sigla</h5>
+                            </div>
+                            <h5 style="color: #1A1A1A;">@course.Name</h5>
+                        </div>
+                        <div class="d-flex mt-4">
+                            <div class="ms-4">
+                                <p class="custom-p">Eventos</p>
+                                <span class="custom-span">@course.Events.Count()</span>
+                            </div>
+                            <div class="ms-3">
+                                <p class="custom-p">Alunos matriculados</p>
+                                <span class="custom-span">@course.EnrollmentCount</span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-2">
                             <button class="btn btn-sm btn-outline-danger fp-del" value="@course.Id">
                                 <i class="bi bi-trash"></i>
+                                @RS.Common.GENERAL_PAGE_LBL_DELETE
                             </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h4>Adicione um curso!</h4>
+        }
     </div>
 </div>
+
 
 @section Scripts {
     <script>
@@ -54,7 +106,7 @@
                 $.get("@Url.Action("Modal_Create_Course")")
                     .done(function (modal) {
                         let $modal = $(modal);
-                        $modal.data("callback-success", function(){
+                        $modal.data("callback-success", function () {
                             location.reload(true);
                         }).data("url", '@Url.Action("Create")');
                         $("#@container").append($modal);
@@ -65,24 +117,25 @@
 
 
         $(".fp-edit").click(function () {
-            let id = $(this).val();
+            let id = $(this).attr("data-id");
             $.post("@Url.Action("Edit")", { id: id })
-            .done(function (modal) {
+                .done(function (modal) {
                     let $modal = $(modal);
                     $modal.data("callback-success", function () {
                         location.reload(true);
                     }).data("url", '@Url.Action("Update")');
                     $("#@container").append($modal);
-            });
+                });
         });
-        
+
         $(".fp-del").click(function () {
+            event.stopPropagation();
             let id = $(this).val();
             $.get("@Url.Action("ModalDelete")")
                 .done(function (modal) {
                     $modal = $(modal);
                     let modalId = $modal.attr("id");
-                    $modal.data("callback-success", function(){
+                    $modal.data("callback-success", function () {
                         location.reload(true);
                     });
                     $("body").append($modal);

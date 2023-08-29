@@ -3,7 +3,6 @@ using CampusLifePlanner.Domain.Entities.Base;
 using CampusLifePlanner.Infra.Data.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
 
 namespace CampusLifePlanner.Infra.Data.Context
 {
@@ -15,7 +14,7 @@ namespace CampusLifePlanner.Infra.Data.Context
 
         public DbSet<Event> Events { get; set; }
         public DbSet<EventLog> EventLogs { get; set; }
-        public  DbSet<EnrollmentCourse> EnrollmentCourse { get; set; }
+        public DbSet<EnrollmentCourse> EnrollmentCourse { get; set; }
         public DbSet<Course> Courses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,6 +1,6 @@
-﻿@{
+﻿@model CampusLifePlanner.WebUI.ViewModels.CoursesViewModel
+@{
     TempData["title"] = "Selecione seu curso";
-    var courseList = ViewBag.Courses;
 }
 
 <style>
@@ -34,7 +34,7 @@
                 garantir que você esteja sempre bem informado e engajado em seu curso.
             </p>
             <div class="mt-3 fade-in">
-                <select class="form-select form-select-lg mb-3" asp-items="@courseList" aria-label="Escolha seu curso">
+                <select class="form-select form-select-lg mb-3" asp-items="@Model.Courses" aria-label="Escolha seu curso">
                     <option selected>Escolha seu curso</option>
                 </select>
             </div>
