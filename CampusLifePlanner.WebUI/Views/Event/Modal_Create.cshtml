@@ -16,6 +16,7 @@
             <div class="modal-body">
                 <form id="eventForm">
                     @Html.HiddenFor(a => a.Event.Id)
+                    @Html.HiddenFor(a => a.Event.JobId)
                     <div class="mb-3">
                         <span style="color:red">*</span>
                         <label for="eventTitle" class="form-label">Título</label>

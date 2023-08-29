@@ -28,6 +28,10 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.EndDate)
             .IsRequired();
 
+        builder.Property(e => e.JobId)
+            .IsRequired(false)
+            .HasMaxLength(4000);
+
         builder.HasOne(e => e.Course)
             .WithMany(c => c.Events)
             .HasForeignKey(e => e.CourseId)

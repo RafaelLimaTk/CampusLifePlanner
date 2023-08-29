@@ -12,14 +12,14 @@ public class Event : EntityBase
     private DateTime _EndDate;
     private Guid _CourseId;
     private Course? _Course;
-    private bool _Completed;
+    private string? _JobId;
     private readonly List<EventLog> _eventLogs = new List<EventLog>();
     public IReadOnlyCollection<EventLog> EventLogs => _eventLogs.AsReadOnly();
 
 
     private Event() { }
 
-    public Event(string title, string description, string local, DateTime startDate, DateTime endDate, Course course, bool completed = false)
+    public Event(string title, string description, string local, DateTime startDate, DateTime endDate, Course course, string jobId)
     {
         title.EnsureNotNullOrEmpty(nameof(title));
         local.EnsureNotNullOrEmpty(nameof(local));
@@ -34,7 +34,7 @@ public class Event : EntityBase
         _EndDate = endDate;
         _Course = course;
         _CourseId = course.Id;
-        _Completed = completed;
+        _JobId = jobId;
     }
 
     public Event(Event otherEvent, Guid targetCourseId)
@@ -110,12 +110,12 @@ public class Event : EntityBase
         private set => value.EnsureNotNull(nameof(Course));
     }
 
-    public bool Completed
+    public string JobId
     {
-        get => _Completed;
+        get => _JobId;
         private set
         {
-            _Completed = value;
+            _JobId = value;
         }
     }
 

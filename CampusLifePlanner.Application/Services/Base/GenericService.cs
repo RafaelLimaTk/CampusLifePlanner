@@ -2,6 +2,7 @@
 using CampusLifePlanner.Application.Interfaces.Base;
 using CampusLifePlanner.Domain.Entities.Base;
 using CampusLifePlanner.Domain.Interfaces.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusLifePlanner.Application.Services.Base;
 
@@ -39,5 +40,20 @@ public class GenericService<TDto, TEntity> : IService<TDto, TEntity> where TEnti
     public async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
+    }
+
+    public async Task BeginTransaction()
+    {
+        await _repository.BeginTransaction();
+    }
+
+    public async Task CommitTransaction()
+    {
+        await _repository.CommitTransaction();
+    }
+
+    public async Task RollbackTransaction()
+    {
+        await _repository.RollbackTransaction();
     }
 }

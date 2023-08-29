@@ -30,6 +30,7 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
             EndDate = e.EndDate,
             CourseId = e.CourseId,
             Courses = e.Course,
+            JobId = e.JobId,
             Completed = GetEventCompletedStatus(e.Id, userId)
         });
     }

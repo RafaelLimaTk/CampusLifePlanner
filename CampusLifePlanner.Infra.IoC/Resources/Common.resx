@@ -196,4 +196,40 @@
   <data name="EX_MSG_AN_ERROR_OCCORRED_FETCHING_EVENT" xml:space="preserve">
     <value>An error occurred while fetching events</value>
   </data>
+  <data name="EX_MSG_DATE_START_END_INVALID" xml:space="preserve">
+    <value>The start date cannot be greater than the end date</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_REMOVE" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="GENERAL_PAGE_IMAGE_PERFIL" xml:space="preserve">
+    <value>Image perfil</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_CHANGES" xml:space="preserve">
+    <value>Changes</value>
+  </data>
+  <data name="GENERAL_PAGE_BTN_ENROLLMENT" xml:space="preserve">
+    <value>Enrollment</value>
+  </data>
+  <data name="GENERAL_PAGE_LINK_IN" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="GENERAL_PAGE_LINK_OTHER" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="GENERAL_MSG_HOME_ENROLLMENT" xml:space="preserve">
+    <value>To stay up to date with events and activities, please choose the course in which you are currently enrolled. This will allow you to keep track of all relevant information and participate in scheduled activities. we are here for ensure that you are always well informed and engaged in your course.</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_CHOOSE_COURSE" xml:space="preserve">
+    <value>Choose your course</value>
+  </data>
+  <data name="GENERAL_PAGE_WELCOME_EDU_PLANER" xml:space="preserve">
+    <value>Welcome to EduPlaner</value>
+  </data>
+  <data name="GENERAL_PAGE_TITLE_PROJECT" xml:space="preserve">
+    <value>EduPlaner - Organizing Your Academic Success</value>
+  </data>
+  <data name="GENERAL_MSG_DESCRIPTION_PROJECT" xml:space="preserve">
+    <value>EduPlaner is your tool to maximize academic success! With an innovative approach, our app allows students to access and view their activities and assignments related to each course. Simplifying academic management, EduPlaner helps you stay in control of your studies, ensuring that no important deadlines are missed. Experience the efficiency of an activity manager designed to enhance your educational experience. Discover the power of organization with EduPlaner!</value>
+  </data>
 </root>

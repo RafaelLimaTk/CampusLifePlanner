@@ -97,6 +97,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The start date cannot be greater than the end date.
+        /// </summary>
+        public static string EX_MSG_DATE_START_END_INVALID {
+            get {
+                return ResourceManager.GetString("EX_MSG_DATE_START_END_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are registered events for this course.
         /// </summary>
         public static string EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE {
@@ -142,6 +151,24 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EduPlaner is your tool to maximize academic success! With an innovative approach, our app allows students to access and view their activities and assignments related to each course. Simplifying academic management, EduPlaner helps you stay in control of your studies, ensuring that no important deadlines are missed. Experience the efficiency of an activity manager designed to enhance your educational experience. Discover the power of organization with EduPlaner!.
+        /// </summary>
+        public static string GENERAL_MSG_DESCRIPTION_PROJECT {
+            get {
+                return ResourceManager.GetString("GENERAL_MSG_DESCRIPTION_PROJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To stay up to date with events and activities, please choose the course in which you are currently enrolled. This will allow you to keep track of all relevant information and participate in scheduled activities. we are here for ensure that you are always well informed and engaged in your course..
+        /// </summary>
+        public static string GENERAL_MSG_HOME_ENROLLMENT {
+            get {
+                return ResourceManager.GetString("GENERAL_MSG_HOME_ENROLLMENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string GENERAL_PAGE_BTN_ADD {
@@ -169,6 +196,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enrollment.
+        /// </summary>
+        public static string GENERAL_PAGE_BTN_ENROLLMENT {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_BTN_ENROLLMENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string GENERAL_PAGE_BTN_SAVE {
@@ -187,11 +223,38 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image perfil.
+        /// </summary>
+        public static string GENERAL_PAGE_IMAGE_PERFIL {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_IMAGE_PERFIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string GENERAL_PAGE_LBL_CANCEL {
             get {
                 return ResourceManager.GetString("GENERAL_PAGE_LBL_CANCEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_CHANGES {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_CHANGES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose your course.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_CHOOSE_COURSE {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_CHOOSE_COURSE", resourceCulture);
             }
         }
         
@@ -268,6 +331,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string GENERAL_PAGE_LBL_REMOVE {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LBL_REMOVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shared event.
         /// </summary>
         public static string GENERAL_PAGE_LBL_SHARED_EVENT {
@@ -313,6 +385,24 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In.
+        /// </summary>
+        public static string GENERAL_PAGE_LINK_IN {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LINK_IN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string GENERAL_PAGE_LINK_OTHER {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_LINK_OTHER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [0} created success.
         /// </summary>
         public static string GENERAL_PAGE_MSG__CREATED_SUCCESS {
@@ -336,6 +426,24 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         public static string GENERAL_PAGE_MSG_UPDATE_SUCCESS {
             get {
                 return ResourceManager.GetString("GENERAL_PAGE_MSG_UPDATE_SUCCESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EduPlaner - Organizing Your Academic Success.
+        /// </summary>
+        public static string GENERAL_PAGE_TITLE_PROJECT {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_TITLE_PROJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to EduPlaner.
+        /// </summary>
+        public static string GENERAL_PAGE_WELCOME_EDU_PLANER {
+            get {
+                return ResourceManager.GetString("GENERAL_PAGE_WELCOME_EDU_PLANER", resourceCulture);
             }
         }
         
