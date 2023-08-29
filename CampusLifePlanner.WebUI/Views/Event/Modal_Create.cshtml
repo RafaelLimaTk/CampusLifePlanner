@@ -1,7 +1,7 @@
 ﻿@model CampusLifePlanner.WebUI.ViewModels.EventEditViewModel;
-@using RS = CampusLifePlanner.Infra.IoC.Resources;
+@using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
 @{
-    ViewBag.title = Model.Event.Id == Guid.Empty ? RS.Common.GENERAL_PAGE_BTN_ADD + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower() : RS.Common.GENERAL_PAGE_BTN_EDIT + " " + RS.Common.GENERAL_PAGE_LBL_EVENT.ToLower();
+    ViewBag.title = Model.Event.Id == Guid.Empty ? RS.GENERAL_PAGE_BTN_ADD + " " + RS.GENERAL_PAGE_LBL_EVENT.ToLower() : RS.GENERAL_PAGE_BTN_EDIT + " " + RS.GENERAL_PAGE_LBL_EVENT.ToLower();
     var modalId = "modal_" + Guid.NewGuid();
     var startDateValue = Model.Event.StartDate != DateTime.MinValue ? Model.Event.StartDate.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
 }
@@ -17,27 +17,32 @@
                 <form id="eventForm">
                     @Html.HiddenFor(a => a.Event.Id)
                     <div class="mb-3">
+                        <span style="color:red">*</span>
                         <label for="eventTitle" class="form-label">Título</label>
                         <input type="text" class="form-control" id="eventTitle" name="Event.Title" value="@Model.Event.Title">
                     </div>
                     <div class="mb-3">
+                        <span style="color:red">*</span>
                         <label for="eventLocal" class="form-label">Local</label>
                         <input type="text" class="form-control" id="eventLocal" name="Event.Local" value="@Model.Event.Local">
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
+                            <span style="color:red">*</span>
                             <label for="eventStartDateTime" class="form-label">Data e Hora inicial</label>
                             <input type="datetime-local" class="form-control" id="eventStartDateTime" name="Event.StartDate" value="@startDateValue">
                         </div>
                         <div class="col-6 mb-3">
+                            <span style="color:red">*</span>
                             <label for="eventEndDateTime" class="form-label">Data e Hora final</label>
                             <input type="datetime-local" class="form-control" name="Event.EndDate" value="@(Model.Event.EndDate != DateTime.MinValue ? Model.Event.EndDate.ToString("yyyy-MM-ddTHH:mm") : "")">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="eventDescription" class="form-label">Descrição</label>
+                        <label for="eventDescription" class="form-label">@RS.EVENT_PAGE_LBL__DESCRIPTON</label>
                         <input type="text" class="form-control" id="eventDescription" name="Event.Description" value="@Model.Event.Description">
                     </div>
+                    <span style="color:red">*</span>
                     <label for="courseId" class="form-label">Curso</label>
                     <select class="form-control" asp-for="@Model.Event.CourseId" asp-items="@Model.Courses"></select>
                 </form>
@@ -45,11 +50,11 @@
             <div class="modal-footer">
                 @if (Model.Event.Id != Guid.Empty)
                 {
-                    <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Event.Id" class="btn btn-primary">Compartilhar evento</a>
+                    <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Event.Id" class="btn btn-primary">@RS.GENERAL_PAGE_LBL_SHARED_EVENT</a>
+                    <button type="button" class="btn btn-danger fp-del" value="@Model.Event.Id">@RS.GENERAL_PAGE_LBL_DELETE</button>
                 }
-                <button type="button" class="btn btn-danger fp-del" value="@Model.Event.Id">@RS.Common.GENERAL_PAGE_LBL_DELETE</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.Common.GENERAL_PAGE_LBL_CANCEL</button>
-                <button type="submit" class="btn btn-primary fp-save">@RS.Common.GENERAL_PAGE_BTN_SAVE</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.GENERAL_PAGE_LBL_CANCEL</button>
+                <button type="submit" class="btn btn-primary fp-save">@RS.GENERAL_PAGE_BTN_SAVE</button>
             </div>
         </div>
     </div>

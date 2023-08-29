@@ -19,6 +19,7 @@
     <div class="p-2" id='calendar'></div>
 
     <script>
+        $("select[name='CourseId'] option:eq(1)").prop('selected', true);
 
         $("#@container [name='CourseId']").change(function(){
             if ($(this).find("option").length == 2)
@@ -61,6 +62,14 @@
                         $.get('@Url.Action("GetEventsByCourseId")', { courseId: courseId }, function (data) {
                             successCallback(data);
                         });
+                    },
+                    eventClick: function (info) {
+                        var eventId = info.event.id;
+                        $.get("@Url.Action("Modal_Detail")", { id: eventId })
+                            .done(function (modal) {
+                                let $modal = $(modal);
+                                $("#@container").append($modal);
+                            });
                     },
                     eventDataTransform: function (eventData) {
                         return {

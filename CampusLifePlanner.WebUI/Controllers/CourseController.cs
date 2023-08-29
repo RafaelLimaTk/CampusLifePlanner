@@ -5,7 +5,7 @@ using CampusLifePlanner.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
-using RS = CampusLifePlanner.Infra.IoC.Resources;
+using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
 
 namespace CampusLifePlanner.WebUI.Controllers;
 
@@ -22,6 +22,7 @@ public class CourseController : Controller
         _mapper = mapper;
     }
 
+    #region CRUD
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -50,7 +51,7 @@ public class CourseController : Controller
     [HttpPost]
     public async Task<JsonResult> Create(CourseDto courseDto)
     {
-        if (courseDto.Name == null) return Json(new { success = false, message = RS.Common.EX_MSG_NULL_ERROR, type = "info" });
+        if (courseDto.Name == null) return Json(new { success = false, message = RS.EX_MSG_NULL_ERROR, type = "info" });
 
         try
         {
@@ -59,7 +60,7 @@ public class CourseController : Controller
         }
         catch (Exception)
         {
-            return Json(new { success = false, message = RS.Common.EX_MSG_CREATE_ERROR.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_COURSE), type = "info" });
+            return Json(new { success = false, message = RS.EX_MSG_CREATE_ERROR.Replace("{0}", RS.GENERAL_PAGE_LBL_COURSE), type = "info" });
         }
     }
 
@@ -72,10 +73,10 @@ public class CourseController : Controller
         try
         {
             if (_courseService.ExistEvent(id))
-                throw new Exception("Existem eventos cadastrados para esse curso");
+                throw new Exception(RS.EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE);
 
             await _courseService.DeleteAsync(id);
-            TempData["success"] = "Sucesso";
+            TempData["success"] = RS.GENERAL_PAGE_MSG_DELETE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_COURSE);
             return Json(new { success = true });
         }
         catch (Exception ex)
@@ -96,7 +97,7 @@ public class CourseController : Controller
         }
         catch (Exception)
         {
-            return Json(new { success = false, message = RS.Common.EX_MSG_CREATE_ERROR.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_COURSE), type = "info" });
+            return Json(new { success = false, message = RS.EX_MSG_CREATE_ERROR.Replace("{0}", RS.GENERAL_PAGE_LBL_COURSE), type = "info" });
         }
 
     }
@@ -126,4 +127,5 @@ public class CourseController : Controller
 
         return sigla.ToString().ToUpper();
     }
+    #endregion
 }

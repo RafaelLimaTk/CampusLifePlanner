@@ -7,6 +7,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
 
 namespace CampusLifePlanner.WebUI.Controllers;
 
@@ -60,11 +61,14 @@ public class EventController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Modal_Create()
+    public async Task<IActionResult> Modal_Create(DateTime start)
     {
         var EventCreateModel = new EventEditViewModel
         {
-            Event = new EventDto(),
+            Event = new EventDto()
+            {
+                StartDate = start.Add(DateTime.UtcNow.TimeOfDay)
+            },
             Courses = await GetCoursesSelectList()
         };
 
@@ -75,10 +79,10 @@ public class EventController : Controller
     public async Task<IActionResult> Create(EventEditViewModel eventDto)
     {
         ModelState.Remove("Courses");
-
+        ModelState.Remove("Event.Courses");
         if (!ModelState.IsValid)
         {
-            return ErrorResponse("Modelo não é válido");
+            return ErrorResponse(RS.EX_MSG_MODEL_INVALID);
         }
 
         try
@@ -90,8 +94,8 @@ public class EventController : Controller
 
             BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Event.Id), timeUntilDeletion);
 
-            TempData["success"] = "Evento criado com sucesso";
-            return SuccessResponse("Evento criado com sucesso");
+            TempData["success"] = RS.GENERAL_PAGE_MSG__CREATED_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT);
+            return SuccessResponse(RS.GENERAL_PAGE_MSG__CREATED_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT));
         }
         catch (Exception ex)
         {
@@ -103,17 +107,18 @@ public class EventController : Controller
     public async Task<JsonResult> Update(Guid id, EventEditViewModel eventDto)
     {
         ModelState.Remove("Courses");
+        ModelState.Remove("Event.Courses");
 
         if (!ModelState.IsValid)
         {
-            return ErrorResponse("Modelo não é válido");
+            return ErrorResponse(RS.EX_MSG_MODEL_INVALID);
         }
 
         try
         {
             await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto.Event));
-            TempData["success"] = "Evento atualizado com sucesso";
-            return SuccessResponse("Evento atualizado com sucesso");
+            TempData["success"] = RS.GENERAL_PAGE_MSG_UPDATE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT);
+            return SuccessResponse(RS.GENERAL_PAGE_MSG_UPDATE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT));
         }
         catch (Exception ex)
         {
@@ -146,17 +151,18 @@ public class EventController : Controller
         try
         {
             if (id == Guid.Empty)
-                throw new Exception("Id não pode ser null");
+                throw new Exception(RS.EX_MSG_CANNOT_BE_NULL.Replace("{0}", RS.GENERAL_PRT_LBL_ID));
 
             await _eventService.DeleteAsync(id);
-            TempData["success"] = "Evento deletado com sucesso";
-            return SuccessResponse("Evento deletado com sucesso");
+            TempData["success"] = RS.GENERAL_PAGE_MSG_DELETE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT);
+            return SuccessResponse(RS.GENERAL_PAGE_MSG_DELETE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT));
         }
         catch (Exception ex)
         {
             return ErrorResponse(ex.Message);
         }
     }
+    #endregion
 
     #region Metodos de tratação de erro
     private JsonResult SuccessResponse(string message)
@@ -183,4 +189,4 @@ public class EventController : Controller
     }
     #endregion
 }
-#endregion
+

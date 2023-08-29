@@ -59,7 +59,7 @@
                     <div class="col-10 justify-content-sm-between">
                         <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
                             <input type="checkbox" class="task-checkbox me-1" value="@evento.Id" onchange="toggleTaskCompletion(this)" @(evento.Completed ? "checked" : "")>
-                            <span class ="@(evento.Completed ? "completed" : "")">@evento.Title</span>
+                            <span class ="@(evento.Completed ? "completed" : "")">@evento.Title - @evento.Courses.Name</span>
                         </div>
                     </div>
                     <div class="col-2">
@@ -98,7 +98,7 @@
                 <div class="row p-1">
                     <div class="col-10 justify-content-sm-between">
                         <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
-                            <span>@evento.Title</span>
+                            <span>@evento.Title - @evento.Courses.Name</span>
                         </div>
                     </div>
                     <div class="col-2">

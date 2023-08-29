@@ -163,4 +163,37 @@
   <data name="MSG_PAGE_ENROLLMENT_COURSE" xml:space="preserve">
     <value>To stay up to date with events and activities, please choose the course in which you are currently enrolled. This will allow you to keep track of all relevant information and participate in scheduled activities. we are here for ensure that you are always well informed and engaged in your course.</value>
   </data>
+  <data name="GENERAL_PAGE_BTN_DETAIL" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="EX_MSG_MODEL_INVALID" xml:space="preserve">
+    <value>Fill in all required fields</value>
+  </data>
+  <data name="GENERAL_PAGE_MSG__CREATED_SUCCESS" xml:space="preserve">
+    <value>[0} created success</value>
+  </data>
+  <data name="GENERAL_PAGE_MSG_UPDATE_SUCCESS" xml:space="preserve">
+    <value>{0} update success</value>
+  </data>
+  <data name="GENERAL_PAGE_MSG_DELETE_SUCCESS" xml:space="preserve">
+    <value>{0} deleted success</value>
+  </data>
+  <data name="EX_MSG_CANNOT_BE_NULL" xml:space="preserve">
+    <value>{0} cannot be null</value>
+  </data>
+  <data name="GENERAL_PRT_LBL_ID" xml:space="preserve">
+    <value>Identifier</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_SHARED_EVENT" xml:space="preserve">
+    <value>Shared event</value>
+  </data>
+  <data name="EVENT_PAGE_LBL__DESCRIPTON" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE" xml:space="preserve">
+    <value>There are registered events for this course</value>
+  </data>
+  <data name="EX_MSG_AN_ERROR_OCCORRED_FETCHING_EVENT" xml:space="preserve">
+    <value>An error occurred while fetching events</value>
+  </data>
 </root>

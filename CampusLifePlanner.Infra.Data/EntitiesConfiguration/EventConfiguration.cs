@@ -15,6 +15,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
             .HasMaxLength(120);
 
         builder.Property(e => e.Description)
+           .IsRequired(false)
            .HasMaxLength(500);
 
         builder.Property(e => e.Local)
