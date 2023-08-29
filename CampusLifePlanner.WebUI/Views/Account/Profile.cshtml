@@ -1,5 +1,6 @@
 ﻿@using CampusLifePlanner.Infra.Data.Identity;
 @using Microsoft.AspNetCore.Identity
+@using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
 @model CampusLifePlanner.WebUI.ViewModels.RegisterViewModel
 @inject UserManager<ApplicationUser> UserManager
 
@@ -132,8 +133,9 @@
                     </div>
                 </div>
                 <div class="card-footer clearfix">
-                    <button type="submit" class="btn btn-success float-end">
-                        Salvar alterações
+                    <a class="btn btn-outline-info">@RS.GENERAL_PAGE_LBL_REMOVE @RS.GENERAL_PAGE_IMAGE_PERFIL.ToLower()</a>
+                    <button type="submit" class="btn btn-outline-success float-end">
+                        @RS.GENERAL_PAGE_BTN_SAVE @RS.GENERAL_PAGE_LBL_CHANGES.ToLower()
                     </button>
                 </div>
             </form>
@@ -152,7 +154,7 @@
                 </div>
             </div>
             <div class="card-footer clearfix">
-                <button id="fp-enroll" class="btn btn-primary float-end">Matricule-se em outro curso</button>
+                <button id="fp-enroll" class="btn btn-primary float-end">@RS.GENERAL_PAGE_BTN_ENROLLMENT @RS.GENERAL_PAGE_LINK_IN.ToLower() @RS.GENERAL_PAGE_LINK_OTHER.ToLower() @RS.GENERAL_PAGE_LBL_COURSE.ToLower()</button>
             </div>
         </div>
     </div>

@@ -27,5 +27,6 @@ public class EventDto
     public DateTime EndDate { get; set; }
     public Guid CourseId { get; set; }
     public Course? Courses { get; set; }
+    public string? JobId { get; set; }
     public bool Completed { get; set; }
 }

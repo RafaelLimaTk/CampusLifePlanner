@@ -1,4 +1,5 @@
 ﻿@model CampusLifePlanner.WebUI.ViewModels.LoginViewModel
+@using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
 
 @{
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
@@ -17,8 +18,8 @@
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="row align-items-center g-lg-5 py-5 d-flex-center-vh">
         <div class="col-lg-7 text-center text-lg-start text-center">
-            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">EduPlaner - Organizando seu Sucesso Acadêmico</h1>
-            <p class="col-lg-10 fs-4">EduPlaner é a sua ferramenta para maximizar o sucesso acadêmico! Com uma abordagem inovadora, nosso aplicativo permite que os alunos acessem e visualizem suas atividades e tarefas relacionadas a cada curso. Simplificando a gestão acadêmica, o EduPlaner ajuda você a ficar no controle de seus estudos, garantindo que nenhum prazo importante seja esquecido. Experimente a eficiência de um gerenciador de atividades projetado para aprimorar sua experiência educacional. Descubra o poder da organização com o EduPlaner!</p>
+            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">@RS.GENERAL_PAGE_TITLE_PROJECT</h1>
+            <p class="col-lg-10 fs-4">@RS.GENERAL_MSG_DESCRIPTION_PROJECT</p>
         </div>
         <div class="col-md-10 mx-auto col-lg-5">
             <form asp-controller="Account" asp-action="Login" method="post" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">

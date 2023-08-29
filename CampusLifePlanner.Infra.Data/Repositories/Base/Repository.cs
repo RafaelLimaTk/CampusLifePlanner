@@ -43,4 +43,19 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
         Entities.Remove(entityToDelete);
         await _context.SaveChangesAsync();
     }
+
+    public async Task BeginTransaction()
+    {
+        await _context.Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitTransaction()
+    {
+        await _context.Database.CommitTransactionAsync();
+    }
+
+    public async Task RollbackTransaction()
+    {
+        await _context.Database.RollbackTransactionAsync();
+    }
 }

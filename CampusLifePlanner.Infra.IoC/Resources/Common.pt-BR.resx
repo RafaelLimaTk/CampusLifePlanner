@@ -216,4 +216,40 @@
   <data name="EX_MSG_AN_ERROR_OCCORRED_FETCHING_EVENT" xml:space="preserve">
     <value>Ocorreu um erro ao buscar os eventos</value>
   </data>
+  <data name="EX_MSG_DATE_START_END_INVALID" xml:space="preserve">
+    <value>A data de início não pode ser maior que a data final</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_REMOVE" xml:space="preserve">
+    <value>Remover</value>
+  </data>
+  <data name="GENERAL_PAGE_IMAGE_PERFIL" xml:space="preserve">
+    <value>Imagem de perfil</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_CHANGES" xml:space="preserve">
+    <value>Alterações</value>
+  </data>
+  <data name="GENERAL_PAGE_BTN_ENROLLMENT" xml:space="preserve">
+    <value>Matricule-se</value>
+  </data>
+  <data name="GENERAL_PAGE_LINK_IN" xml:space="preserve">
+    <value>Em</value>
+  </data>
+  <data name="GENERAL_PAGE_LINK_OTHER" xml:space="preserve">
+    <value>Outro</value>
+  </data>
+  <data name="GENERAL_MSG_HOME_ENROLLMENT" xml:space="preserve">
+    <value>Para ficar por dentro dos eventos e atividades, por favor, escolha o curso no qual você está atualmente matriculado. Isso permitirá que você acompanhe todas as informações relevantes e participe das atividades programadas. Estamos aqui para garantir que você esteja sempre bem informado e engajado em seu curso.</value>
+  </data>
+  <data name="GENERAL_PAGE_LBL_CHOOSE_COURSE" xml:space="preserve">
+    <value>Escolha seu curso</value>
+  </data>
+  <data name="GENERAL_PAGE_WELCOME_EDU_PLANER" xml:space="preserve">
+    <value>Bem-vindo ao EduPlaner</value>
+  </data>
+  <data name="GENERAL_PAGE_TITLE_PROJECT" xml:space="preserve">
+    <value>EduPlaner - Organizando seu Sucesso Acadêmico</value>
+  </data>
+  <data name="GENERAL_MSG_DESCRIPTION_PROJECT" xml:space="preserve">
+    <value>EduPlaner é a sua ferramenta para maximizar o sucesso acadêmico! Com uma abordagem inovadora, nosso aplicativo permite que os alunos acessem e visualizem suas atividades e tarefas relacionadas a cada curso. Simplificando a gestão acadêmica, o EduPlaner ajuda você a ficar no controle de seus estudos, garantindo que nenhum prazo importante seja esquecido. Experimente a eficiência de um gerenciador de atividades projetado para aprimorar sua experiência educacional. Descubra o poder da organização com o EduPlaner!</value>
+  </data>
 </root>

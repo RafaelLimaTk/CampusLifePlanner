@@ -9,4 +9,7 @@ public interface IService<TDto, TEntity> where TEntity : IEntity
     Task CreateAsync(TDto dto);
     Task UpdateAsync(TEntity entity);
     Task DeleteAsync(Guid id);
+    Task BeginTransaction();
+    Task CommitTransaction();
+    Task RollbackTransaction();
 }
