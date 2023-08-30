@@ -49,16 +49,14 @@
     <script>
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/connectionHub")
-            .configureLogging(signalR.LogLevel.Information)
-            .withAutomaticReconnect()
+            .configureLogging(signalR.LogLevel.Trace)
             .build();
 
         debugger;
         connection.start().then(() => {
-            console.log("Conexão SignalR estabelecida!");
+            console.log("OK");
         }).catch(err => {
-            console.error("Erro completo:", err);
-            return console.error("Erro ao conectar ao SignalR:", err.toString());
+            console.error("Erro:", err);
         });
         
         function shareEvent() {
@@ -73,7 +71,7 @@
             }
         }
 
-        connection.on("EventShared", (eventId, targetCourseId) => {
+        connection.on("ShareEvent", (eventId, courseId) => {
             console.log("ok");
         });
 

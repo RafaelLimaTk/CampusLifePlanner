@@ -57,6 +57,8 @@ using (var serviceScope = app.Services.CreateScope())
     seedUserRoleInitial.SeedUsers();
 }
 
+app.UseWebSockets();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
