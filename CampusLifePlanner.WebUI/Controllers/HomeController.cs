@@ -1,4 +1,5 @@
-﻿using CampusLifePlanner.Application.DTOs;
+﻿using AutoMapper;
+using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Domain.Entities;
 using CampusLifePlanner.WebUI.Models;
@@ -14,12 +15,14 @@ namespace CampusLifePlanner.WebUI.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
+    private readonly IMapper _mapper;
     private readonly ICourseService _courseService;
     private readonly IEnrollmentCourseService _enrollmentCourseService;
     private readonly IEventService _eventService;
 
-    public HomeController(ICourseService courseService, IEnrollmentCourseService enrollmentCourseService, IEventService eventService)
+    public HomeController(IMapper mapper, ICourseService courseService, IEnrollmentCourseService enrollmentCourseService, IEventService eventService)
     {
+        _mapper = mapper;
         _courseService = courseService;
         _enrollmentCourseService = enrollmentCourseService;
         _eventService = eventService;
@@ -58,6 +61,12 @@ public class HomeController : Controller
         return PartialView(UserId);
     }
 
+    public async Task<IActionResult> Modal_Detail(Guid id)
+    {
+        var result = _mapper.Map<EventDto>(await _eventService.GetWithCourseById(id));
+        return PartialView(result);
+    }
+
     public JsonResult GetEventsByCourseId(Guid courseId)
     {
         var events = _eventService.GetAllByCourseIdAsync(courseId).Result;
@@ -76,6 +85,7 @@ public class HomeController : Controller
     }
     #endregion
 
+    #region EnrollmentCourese
     public bool HasEnrollmentCourseByUserId(Guid id)
     {
         var enrollmentCourse = _enrollmentCourseService.HasEnrollmentCourseByUserId(id);
@@ -106,6 +116,8 @@ public class HomeController : Controller
         }
 
     }
+
+    #endregion
 
     #region GetListCourse
     private async Task<IEnumerable<Course>> GetCourses()

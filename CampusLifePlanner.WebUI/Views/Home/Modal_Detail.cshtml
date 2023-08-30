@@ -1,0 +1,54 @@
+﻿@model CampusLifePlanner.Application.DTOs.EventDto;
+@using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
+@{
+    var modalId = Guid.NewGuid();
+}
+
+<div id="@modalId" class="modal" tabindex="-1">
+    <style>
+        .modal-size{
+            width: 70%
+        }
+    </style>
+    <div class="modal-dialog modal-xl modal-size">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@RS.GENERAL_PAGE_BTN_DETAIL</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10 justify-content-sm-between">
+                            <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
+                                <span class="@(Model.Completed ? "completed" : "")">@Model.Title - @Model.Courses.Name</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="me-2">
+                                <i class="bi bi-calendar-date text-danger"></i>
+                                @RS.GENERAL_PAGE_LBL_TODAY @RS.GENERAL_PAGE_LBL_TO_THE @Model.StartDate.ToString("HH:mm")
+                            </span>
+                            <span class="button-info" data-bs-toggle="tooltip" title="@Model.Description" data-bs-placement="top">
+                                <i class="bi bi-info-circle text-primary" id="info"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">@RS.GENERAL_PAGE_LBL_CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#@modalId").modal("show");
+
+        $(document).ready(function () {
+            $("#@modalId").on('hidden hidden.bs.modal', function () {
+                $("#@modalId").remove();
+            });
+        });
+    </script>
+</div>

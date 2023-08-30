@@ -212,7 +212,6 @@
 
             $.get("@Url.Action("RelatedEnrollmentCourse", "Home")", function (data) {
                 $("#enrollCourse").html(data);
-                debugger;
                 window.myCallbackSuccess = function () {
                     returnView();
                 };
@@ -220,7 +219,6 @@
         });
 
         function returnView() {
-            debugger;
             window.location.href = "@Url.Action("Profile", "Account")";
         }
 

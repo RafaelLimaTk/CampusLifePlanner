@@ -6,6 +6,7 @@ using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RS = CampusLifePlanner.Infra.IoC.Resources.Common;
 
 
 namespace CampusLifePlanner.WebUI.Controllers;
@@ -39,7 +40,7 @@ public class DashboardController : Controller
             var userId = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
             var courseIdList = _enrollmentCourseService.GetListByUserId(Guid.Parse(userId)).Select(a => a.CourseId).ToList();
 
-            var events = await _eventService.GetAllAsync();
+            var events = await _eventService.GetEventsWithCoursesAsync();
 
             var today = _eventLogService.FilterMapEvents(events, DateTime.Today.Date, Guid.Parse(userId), courseIdList);
             var nextDay = _eventLogService.FilterMapEvents(events, DateTime.Today.Date.AddDays(1), Guid.Parse(userId), courseIdList);
@@ -57,7 +58,7 @@ public class DashboardController : Controller
         }
         catch (Exception ex)
         {
-            return Json(new { success = true, message = $"Ocorreu um erro ao buscar os eventos {ex}", type = "error" });
+            return Json(new { success = true, message =  RS.EX_MSG_AN_ERROR_OCCORRED_FETCHING_EVENT + " " + ex.Message, type = "error" });
         }
     }
 

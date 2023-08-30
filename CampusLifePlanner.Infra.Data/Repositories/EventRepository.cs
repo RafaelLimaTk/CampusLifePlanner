@@ -13,7 +13,11 @@ public class EventRepository : Repository<Event>, IEventRepository
     }
 
     public async Task<IEnumerable<Event>> GetEventsByCourse(Guid courseId)
-    {
-        return await Entities.Where(e => e.CourseId == courseId).ToListAsync();
-    }
+        => await Entities.Where(e => e.CourseId == courseId).ToListAsync();
+
+    public async Task<IList<Event>> GetEventsWithCoursesAsync()
+        => await Entities.Include(a => a.Course).ToListAsync();
+
+    public async Task<Event> GetWithCourseById(Guid id)
+     => await Entities.Where(x => x.Id == id).Include(a => a.Course).FirstOrDefaultAsync();
 }

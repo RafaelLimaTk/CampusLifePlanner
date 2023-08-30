@@ -118,7 +118,6 @@
 
         $(".fp-edit").click(function () {
             let id = $(this).attr("data-id");
-            debugger
             $.post("@Url.Action("Edit")", { id: id })
                 .done(function (modal) {
                     let $modal = $(modal);
