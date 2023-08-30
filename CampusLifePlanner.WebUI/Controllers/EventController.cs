@@ -226,7 +226,7 @@ public class EventController : Controller
                 throw new Exception(RS.EX_MSG_NOT_FOUND_DATABASE);
 
             string jobIdSource = eventDto.JobId;
-            eventDto.EndDate = end == default ? start.Add(TimeSpan.Zero) : end.Add(TimeSpan.Zero);
+            eventDto.EndDate = end;
             eventDto.StartDate = start;
 
             ValidateDate(eventDto.StartDate, eventDto.EndDate);
