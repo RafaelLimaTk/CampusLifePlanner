@@ -10,4 +10,5 @@ public interface IEventService : IService<EventDto, Event>
     Task<Event> GetWithCourseById(Guid id);
     Task<IEnumerable<EventDto>> GetAllByCourseIdAsync(Guid courseId);
     Task<bool> ShareEvent(Guid eventId, Guid targetCourseId);
+    Task<Event> GetByIdAsNoTrankingAsync(Guid id);
 }

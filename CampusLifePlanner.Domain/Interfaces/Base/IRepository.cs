@@ -12,4 +12,5 @@ public interface IRepository<T> where T : IEntity
     Task BeginTransaction();
     Task CommitTransaction();
     Task RollbackTransaction();
+    void Attach(T entity);
 }

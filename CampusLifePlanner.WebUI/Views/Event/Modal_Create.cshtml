@@ -43,6 +43,17 @@
                         <label for="eventDescription" class="form-label">@RS.EVENT_PAGE_LBL__DESCRIPTON</label>
                         <input type="text" class="form-control" id="eventDescription" name="Event.Description" value="@Model.Event.Description">
                     </div>
+                    <div class="mb-3">
+                        <label>Cor: </label>
+                        <select id="Event.Color" name="Event.Color" class="form-control">
+                            <option value="">Defeault</option>
+                            <option name="red" style="color: red" value="red">Red</option>
+                            <option name="blueviolet" style="color: blueviolet" value="blueviolet">Blueviolet</option>
+                            <option name="green" style="color: green" value="green">Green</option>
+                            <option name="purple" style="color: purple" value="purple">Purple</option>
+                            <option name="pink" style="color: pink" value="pink">pink</option>
+                        </select>
+                    </div>
                     <span style="color:red">*</span>
                     <label for="courseId" class="form-label">Curso</label>
                     <select class="form-control" asp-for="@Model.Event.CourseId" asp-items="@Model.Courses"></select>
@@ -62,6 +73,8 @@
 
     <script>
         $("#@modalId").modal('show');
+
+        $("#@modalId [name='Event.Color']").val('@Model.Event.Color');
 
         $(document).ready(function () {
             $(".fp-save").click(function () {

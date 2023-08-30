@@ -29,6 +29,9 @@ public class EventService : GenericService<EventDto, Event>, IEventService
     public async Task<Event> GetWithCourseById(Guid id)
         => await _eventRepository.GetWithCourseById(id);
 
+    public async Task<Event> GetByIdAsNoTrankingAsync(Guid id)
+        => await _eventRepository.GetByIdAsNoTrankingAsync(id);
+
     public async Task<bool> ShareEvent(Guid eventId, Guid targetCourseId)
     {
         var eventToShare = await _eventRepository.GetByIdAsync(eventId);

@@ -24,6 +24,23 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 themeSystem: 'bootstrap5',
                 initialView: 'dayGridMonth',
+                editable: true,
+                droppable: true,
+                eventDrop: function (data) {
+                    $.post("@Url.Action("UpdateDropEvent")", {
+                        eventId: data.event.id, start: data.event.startStr, end: data.event.endStr
+                    }).done(function (response) {
+                        if (response.success)
+                            ExceptionMessage(response.message, response.type);
+                        else {
+                            ExceptionMessage(response.message, response.type);
+                            data.revert();
+                        }
+                    }).fail(function (response) {
+                        ExceptionMessage(response.responseJSON.message, response.responseJSON.type);
+                        data.revert();
+                    });
+                },
                 locale: 'pt-br',
                 headerToolbar: {
                     start: 'prev,next',
@@ -59,6 +76,8 @@
                         end: eventData.endDate,
                         description: eventData.description,
                         courseId: eventData.courseId,
+                        backgroundColor: eventData.color,
+                        borderColor: eventData.color
                     };
                 },
                 eventClick: function (info) {

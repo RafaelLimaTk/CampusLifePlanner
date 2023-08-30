@@ -56,4 +56,9 @@ public class GenericService<TDto, TEntity> : IService<TDto, TEntity> where TEnti
     {
         await _repository.RollbackTransaction();
     }
+    
+    public void Attach(TEntity entity)
+    {
+        _repository.Attach(entity);
+    }
 }

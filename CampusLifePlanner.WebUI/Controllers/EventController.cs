@@ -91,8 +91,7 @@ public class EventController : Controller
         {
             ValidateDate(eventDto.Event.StartDate, eventDto.Event.EndDate);
             eventDto.Event.Id = Guid.NewGuid();
-            var timeUntilDeletion = eventDto.Event.EndDate.AddDays(1) - DateTime.Now;
-            jobId = BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Event.Id), timeUntilDeletion);
+            CreateJob(ref jobId, eventDto.Event.Id, eventDto.Event.EndDate.AddDays(1) - DateTime.Now);
             eventDto.Event.JobId = jobId;
 
             await _eventService.CreateAsync(eventDto.Event);
@@ -105,12 +104,6 @@ public class EventController : Controller
             RemoveJobById(jobId);
             return ErrorResponse(ex.Message);
         }
-    }
-
-    private void ValidateDate(DateTime start, DateTime end)
-    {
-        if (start > end)
-            throw new Exception(RS.EX_MSG_DATE_START_END_INVALID);
     }
 
     [HttpPost]
@@ -129,13 +122,13 @@ public class EventController : Controller
         try
         {
             ValidateDate(eventDto.Event.StartDate, eventDto.Event.EndDate);
-            var timeUntilDeletion = eventDto.Event.EndDate.AddDays(1) - DateTime.Now;
-            jobId = BackgroundJob.Schedule(() => _eventService.DeleteAsync(eventDto.Event.Id), timeUntilDeletion);
+            CreateJob(ref jobId, eventDto.Event.Id, eventDto.Event.EndDate.AddDays(1) - DateTime.Now);
             eventDto.Event.JobId = jobId;
-            await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto.Event));
-            RemoveJobById(jobIdSource);
 
+            await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto.Event));
             await _eventService.CommitTransaction();
+
+            RemoveJobById(jobIdSource);
             TempData["success"] = RS.GENERAL_PAGE_MSG_UPDATE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT);
             return SuccessResponse(RS.GENERAL_PAGE_MSG_UPDATE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT));
         }
@@ -199,6 +192,11 @@ public class EventController : Controller
     {
         return Json(new { success = false, message = message, type = type });
     }
+
+    private async Task<IActionResult> ErrorStatusCode(string message)
+    {
+        return new ObjectResult(new { success = false, message = message, type = "error" }) { StatusCode = 400 };
+    }
     #endregion
 
     #region GetList
@@ -211,6 +209,51 @@ public class EventController : Controller
     {
         var courses = await GetCourses();
         return new SelectList(courses.ToList(), "Id", "Name");
+    }
+    #endregion
+
+    #region FUNCTIONS
+    [HttpPost]
+    public async Task<IActionResult> UpdateDropEvent(Guid eventId, DateTime start, DateTime end)
+    {
+        string jobId = "-";
+
+        await _eventService.BeginTransaction();
+        try
+        {
+            var eventDto = _mapper.Map<EventDto>(await _eventService.GetByIdAsNoTrankingAsync(eventId));
+            if (eventDto == null)
+                throw new Exception(RS.EX_MSG_NOT_FOUND_DATABASE);
+
+            string jobIdSource = eventDto.JobId;
+            eventDto.EndDate = end == default ? start.Add(TimeSpan.Zero) : end.Add(TimeSpan.Zero);
+            eventDto.StartDate = start;
+
+            ValidateDate(eventDto.StartDate, eventDto.EndDate);
+            CreateJob(ref jobId, eventDto.Id, eventDto.EndDate.AddDays(1) - DateTime.Now);
+            eventDto.JobId = jobId;
+
+            await _eventService.UpdateAsync(_mapper.Map<Event>(eventDto));
+            await _eventService.CommitTransaction();
+
+            RemoveJobById(jobIdSource);
+            return SuccessResponse(RS.GENERAL_PAGE_MSG_UPDATE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT));
+        }
+        catch (Exception ex)
+        {
+            RemoveJobById(jobId);
+            await _eventService.RollbackTransaction();
+            return await ErrorStatusCode(ex.Message);
+        }
+    }
+
+    private string CreateJob(ref string jobId, Guid id, TimeSpan timeSpan)
+          => jobId = BackgroundJob.Schedule(() => _eventService.DeleteAsync(id), timeSpan);
+
+    private void ValidateDate(DateTime start, DateTime end)
+    {
+        if (start > end)
+            throw new Exception(RS.EX_MSG_DATE_START_END_INVALID);
     }
     #endregion
 }

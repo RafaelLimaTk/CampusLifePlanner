@@ -58,4 +58,9 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         await _context.Database.RollbackTransactionAsync();
     }
+    
+    public void Attach(T entity)
+    {
+        _context.Attach(entity);
+    }
 }

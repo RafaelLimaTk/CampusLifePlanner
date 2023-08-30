@@ -28,5 +28,6 @@ public class EventDto
     public Guid CourseId { get; set; }
     public Course? Courses { get; set; }
     public string? JobId { get; set; }
+    public string? Color { get; set; }
     public bool Completed { get; set; }
 }

@@ -31,6 +31,10 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.JobId)
             .IsRequired(false)
             .HasMaxLength(4000);
+        
+        builder.Property(e => e.Color)
+            .IsRequired(false)
+            .HasMaxLength(50);
 
         builder.HasOne(e => e.Course)
             .WithMany(c => c.Events)
