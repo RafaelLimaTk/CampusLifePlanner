@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CampusLifePlanner.Application.DTOs;
+using CampusLifePlanner.Application.Factories.Interfaces;
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Application.Services.Base;
 using CampusLifePlanner.Domain.Entities;
@@ -10,29 +11,25 @@ namespace CampusLifePlanner.Application.Services;
 public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogService
 {
     private readonly IEventLogRepository _eventLogRepository;
+    private readonly IEventDtoFactory _eventDtoFactory;
     private readonly IMapper _mapper;
-    public EventLogService(IEventLogRepository repository, IMapper mapper) : base(repository, mapper)
+    public EventLogService(IEventLogRepository repository, IEventDtoFactory eventDtoFactory, IMapper mapper) : base(repository, mapper)
     {
         _eventLogRepository = repository;
+        _eventDtoFactory = eventDtoFactory;
         _mapper = mapper;
     }
 
     public IEnumerable<EventDto> FilterMapEvents(IEnumerable<Event> events, DateTime date, Guid userId, IList<Guid> courseIds)
     {
-        return FilterEventByDate(FilterEventByCourse(events, courseIds), date)
-        .Select(e => new EventDto
-        {
-            Id = e.Id,
-            Title = e.Title,
-            Description = e.Description,
-            Local = e.Local,
-            StartDate = e.StartDate,
-            EndDate = e.EndDate,
-            CourseId = e.CourseId,
-            Courses = e.Course,
-            JobId = e.JobId,
-            Completed = GetEventCompletedStatus(e.Id, userId)
-        });
+        var filteredEvents = FilterEvents(events, date, courseIds);
+        return MapToEventDtos(filteredEvents, userId);
+    }
+
+    #region Methods Extensions FilterMapEvents
+    private IEnumerable<Event> FilterEvents(IEnumerable<Event> events, DateTime date, IList<Guid> courseIds)
+    {
+        return FilterEventByDate(FilterEventByCourse(events, courseIds), date);
     }
 
     private IEnumerable<Event> FilterEventByDate(IEnumerable<Event> events, DateTime date)
@@ -44,6 +41,12 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
     {
         return events.Where(e => courseIds.Contains(e.CourseId));
     }
+
+    private IEnumerable<EventDto> MapToEventDtos(IEnumerable<Event> events, Guid userId)
+    {
+        return events.Select(e => _eventDtoFactory.CreateEventDto(e, userId, GetEventCompletedStatus(e.Id, userId)));
+    }
+    #endregion
 
     public async Task ToggleEventLog(Guid eventId, Guid userId, bool isMarked)
     {
