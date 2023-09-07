@@ -20,4 +20,7 @@ public class EventRepository : Repository<Event>, IEventRepository
 
     public async Task<Event> GetWithCourseById(Guid id)
      => await Entities.Where(x => x.Id == id).Include(a => a.Course).FirstOrDefaultAsync();
+
+    public async Task<Event> GetByIdAsNoTrankingAsync(Guid id)
+        => await Entities.Where(a => a.Id == id).AsNoTracking().FirstOrDefaultAsync();
 }
