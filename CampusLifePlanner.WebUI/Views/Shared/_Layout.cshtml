@@ -9,6 +9,25 @@
     <link rel="stylesheet" href="~/CampusLifePlanner.WebUI.styles.css" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <style>
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgb(255 255 255 / 0.6);
+            z-index: 999;
+        }
+
+        .page-loader {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            min-height: 80vh;
+            transform: scale(3);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -36,6 +55,10 @@
     </header>
 
     <div class="container">
+        <div id="preloader" class="page-loader">
+            <div class="spinner-grow text-primary" role="status">
+            </div>
+        </div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -67,6 +90,8 @@
     <script src="~/js/exceptionhandlerextention/exceptionhandlersuccess.js" data-parametro="@TempData["success"]"></script>
     <script src="~/js/exceptionhandlerextention/exceptionhandlerwarning.js" data-parametro="@TempData["warning"]"></script>
     <script src="~/js/exceptionhandlerextention/exceptionhandlergeneral.js"></script>
+    <script src="~/js/loader.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
