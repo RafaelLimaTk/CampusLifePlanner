@@ -37,21 +37,23 @@ public class DashboardController : Controller
     {
         try
         {
-            var userId = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
-            var courseIdList = _enrollmentCourseService.GetListByUserId(Guid.Parse(userId)).Select(a => a.CourseId).ToList();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userId = user.Id;
+            if (userId == null) return BadRequest("Usuário não existe");
+
+            var userIdParseGuid = Guid.Parse(userId);
+            var courseIdList = _enrollmentCourseService.GetListByUserId(userIdParseGuid).Select(a => a.CourseId).ToList();
+            if (!courseIdList.Any()) return BadRequest("Usuário não está matriculado em nenhum curso");
 
             var events = await _eventService.GetEventsWithCoursesAsync();
 
-            var today = _eventLogService.FilterMapEvents(events, DateTime.Today.Date, Guid.Parse(userId), courseIdList);
-            var nextDay = _eventLogService.FilterMapEvents(events, DateTime.Today.Date.AddDays(1), Guid.Parse(userId), courseIdList);
-
-            var todayEventDto = _mapper.Map<IEnumerable<EventDto>>(today);
-            var nextDayEventDto = _mapper.Map<IEnumerable<EventDto>>(nextDay);
+            var today = _eventLogService.FilterMapEvents(events, DateTime.Today.Date, userIdParseGuid, courseIdList);
+            var nextDay = _eventLogService.FilterMapEvents(events, DateTime.Today.Date.AddDays(1), userIdParseGuid, courseIdList);
 
             var model = new EventViewModel
             {
-                TodayEvents = todayEventDto,
-                NextDayEvents = nextDayEventDto
+                TodayEvents = _mapper.Map<IEnumerable<EventDto>>(today),
+                NextDayEvents = _mapper.Map<IEnumerable<EventDto>>(nextDay)
             };
 
             return View(model);
@@ -63,10 +65,11 @@ public class DashboardController : Controller
     }
 
     [HttpPost]
-    public void CreateEventLog(Guid eventId, bool isChecked)
+    public async Task CreateEventLog(Guid eventId, bool isChecked)
     {
-        var userId = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        var userId = user.Id;
 
-        _eventLogService.ToggleEventLog(eventId, Guid.Parse(userId), isChecked);
+        await _eventLogService.ToggleEventLog(eventId, Guid.Parse(userId), isChecked);
     }
 }

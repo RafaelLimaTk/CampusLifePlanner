@@ -1,4 +1,6 @@
-﻿using CampusLifePlanner.Application.Interfaces;
+﻿using CampusLifePlanner.Application.Factories.Implementations;
+using CampusLifePlanner.Application.Factories.Interfaces;
+using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Application.Interfaces.Base;
 using CampusLifePlanner.Application.Mappings;
 using CampusLifePlanner.Application.Services;
@@ -50,6 +52,8 @@ public static class DependencyInjection
         Services.AddScoped<ICourseService, CourseService>();
         Services.AddScoped<IEnrollmentCourseService, EnrollmentCourseService>();
         Services.AddScoped<IEventLogService, EventLogService>();
+
+        Services.AddScoped<IEventDtoFactory, EventDtoFactory>();
 
         Services.AddScoped<IAuthenticate, AuthenticateService>();
         Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
