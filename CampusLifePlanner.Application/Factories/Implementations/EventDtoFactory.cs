@@ -13,6 +13,7 @@ public class EventDtoFactory : IEventDtoFactory
 {
     public EventDto CreateEventDto(Event e, Guid userId, bool completed)
     {
+        //Aqui colocaria algumas validações
         return new EventDto
         {
             Id = e.Id,

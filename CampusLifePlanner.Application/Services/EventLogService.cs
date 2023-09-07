@@ -26,7 +26,7 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
         return MapToEventDtos(filteredEvents, userId);
     }
 
-    #region Methods Extensions FilterMapEvents
+    #region Extensions Methods the FilterMapEvents
     private IEnumerable<Event> FilterEvents(IEnumerable<Event> events, DateTime date, IList<Guid> courseIds)
     {
         return FilterEventByDate(FilterEventByCourse(events, courseIds), date);
@@ -62,6 +62,7 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
         }
     }
 
+    #region Extensions Methods the ToggleEventLog
     private async Task CreateEventLogAsync(Guid eventId, Guid userId)
     {
         var eventLog = new EventLog
@@ -79,6 +80,7 @@ public class EventLogService : GenericService<EventLogDto, EventLog>, IEventLogS
         existingEventLog.Completed = isMarked;
         await _eventLogRepository.UpdateAsync(existingEventLog);
     }
+    #endregion
 
     public bool GetEventCompletedStatus(Guid eventId, Guid userId)
     {
