@@ -51,7 +51,11 @@ public class AuthenticateService : IAuthenticate
             if (!await _roleManager.RoleExistsAsync("student"))
                 await _roleManager.CreateAsync(new IdentityRole("student"));
 
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+
             await _userManager.AddToRoleAsync(applicationUser, "student");
+            await _userManager.AddToRoleAsync(applicationUser, "Admin");
         }
         else
             throw new Exception("Ocorreu um erro ao tentar inserir o nível de permissão no usuário");
