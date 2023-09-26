@@ -64,20 +64,32 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (ModelState.IsValid)
+        try
         {
-            var result = await _authentication.RegisterUser(model.FirstName, model.LastName, model.Email, model.Password);
-
-            if (result.success)
+            if (ModelState.IsValid)
             {
-                return Redirect("/");
+                var result = await _authentication.RegisterUser(model.FirstName, model.LastName, model.Email, model.Password);
+
+                if (result.success)
+                {
+                    return Redirect("/");
+                }
+                else
+                {
+                    TempData["info"] = result.msg;
+                }
             }
             else
-            {
-                TempData["info"] = result.msg;
-            }
+                TempData["info"] = ModelState.ValidationState.ToString();
+            
+            return View(model);
         }
-        return View(model);
+        catch (Exception)
+        {
+            TempData["info"] = RS.Common.EX_MSG_CREATE_ERROR.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_USER);
+            throw;
+        }
+        
     }
 
     public async Task<IActionResult> Logout()
