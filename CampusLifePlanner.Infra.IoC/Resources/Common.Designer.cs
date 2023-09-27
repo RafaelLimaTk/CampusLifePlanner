@@ -106,6 +106,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The start time cannot be the same as the end time..
+        /// </summary>
+        public static string EX_MSG_DATE_START_END_INVALID_SAME_TIME {
+            get {
+                return ResourceManager.GetString("EX_MSG_DATE_START_END_INVALID_SAME_TIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a There are registered events for this course.
         /// </summary>
         public static string EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE {

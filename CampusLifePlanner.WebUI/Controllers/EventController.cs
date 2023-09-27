@@ -171,6 +171,11 @@ public class EventController : Controller
             if (id == Guid.Empty)
                 throw new Exception(RS.EX_MSG_CANNOT_BE_NULL.Replace("{0}", RS.GENERAL_PRT_LBL_ID));
 
+            var eventToDelete = await _eventService.GetByIdAsync(id);
+
+            if (!string.IsNullOrEmpty(eventToDelete.JobId))
+                BackgroundJob.Delete(eventToDelete.JobId);
+
             await _eventService.DeleteAsync(id);
 
             TempData["success"] = RS.GENERAL_PAGE_MSG_DELETE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_EVENT);
@@ -255,6 +260,9 @@ public class EventController : Controller
     {
         if (start > end)
             throw new Exception(RS.EX_MSG_DATE_START_END_INVALID);
+
+        if (start == end)
+            throw new Exception(RS.EX_MSG_DATE_START_END_INVALID_SAME_TIME);
     }
     #endregion
 }

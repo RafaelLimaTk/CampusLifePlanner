@@ -261,4 +261,7 @@
   <data name="EX_MSG_USER_NOT_FOUND" xml:space="preserve">
     <value>Usuário não encontrado</value>
   </data>
+  <data name="EX_MSG_DATE_START_END_INVALID_SAME_TIME" xml:space="preserve">
+    <value>A hora inicial não pode ser igual a hora final.</value>
+  </data>
 </root>
