@@ -264,4 +264,7 @@
   <data name="EX_MSG_DATE_START_END_INVALID_SAME_TIME" xml:space="preserve">
     <value>A hora inicial não pode ser igual a hora final.</value>
   </data>
+  <data name="GENERAL_MSG_MANDATORY" xml:space="preserve">
+    <value>O {0} é obrigatório.</value>
+  </data>
 </root>

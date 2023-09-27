@@ -205,6 +205,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The {0} is mandatory..
+        /// </summary>
+        public static string GENERAL_MSG_MANDATORY {
+            get {
+                return ResourceManager.GetString("GENERAL_MSG_MANDATORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Add.
         /// </summary>
         public static string GENERAL_PAGE_BTN_ADD {

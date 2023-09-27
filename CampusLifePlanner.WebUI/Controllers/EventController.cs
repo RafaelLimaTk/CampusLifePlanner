@@ -82,10 +82,10 @@ public class EventController : Controller
         ModelState.Remove("Courses");
         ModelState.Remove("Event.Courses");
         string jobId = "-";
-        if (!ModelState.IsValid)
-        {
-            return ErrorResponse(RS.EX_MSG_MODEL_INVALID);
-        }
+
+        if (!ModelState.IsValid) return ErrorResponse(RS.EX_MSG_MODEL_INVALID);
+
+        if (eventDto.Event.CourseId == Guid.Empty) return ErrorResponse(RS.GENERAL_MSG_MANDATORY.Replace("{0}", RS.GENERAL_PAGE_LBL_COURSE.ToLower()));
 
         try
         {
