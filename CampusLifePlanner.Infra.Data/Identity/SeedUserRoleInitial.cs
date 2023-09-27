@@ -16,11 +16,11 @@ public class SeedUserRoleInitial : ISeedUserRoleInitial
 
     public void SeedRoles()
     {
-        if (!_roleManeger.RoleExistsAsync("User").Result)
+        if (!_roleManeger.RoleExistsAsync("student").Result)
         {
             IdentityRole role = new IdentityRole();
-            role.Name = "User";
-            role.NormalizedName = "USER";
+            role.Name = "student";
+            role.NormalizedName = "STUDENT";
             IdentityResult reloResult = _roleManeger.CreateAsync(role).Result;
         }
 

@@ -30,6 +30,19 @@ public class CourseService : GenericService<CourseDto, Course>, ICourseService
         return _mapper.Map<List<CourseDto>>(_courseRepository.GetCourseListByCourseId(enrollmentCourseIdList));
     }
 
+    public async Task<IEnumerable<Course>> GetCoursesUserIsNotEnrolledIn(Guid UserId)
+    {
+        var Courses = await GetAllAsync();
+
+        var enrolledCourses = _enrollmentCourseService.GetListByUserId(UserId);
+
+        var enrolledCourseIds = enrolledCourses.Select(e => e.CourseId).ToList();
+
+        var unenrolledCourses = Courses.Where(course => !enrolledCourseIds.Contains(course.Id));
+
+        return unenrolledCourses;
+    }
+
     public async Task<int> GetEnrollmentCountByCourseId(Guid courseId)
     {
         return await _courseRepository.GetEnrollmentCountByCourseId(courseId);

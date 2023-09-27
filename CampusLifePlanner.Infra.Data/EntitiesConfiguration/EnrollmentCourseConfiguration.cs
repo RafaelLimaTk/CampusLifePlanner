@@ -12,5 +12,10 @@ public class EnrollmentCourseConfiguration : IEntityTypeConfiguration<Enrollment
 
         builder.Property(x => x.UserId);
         builder.Property(x => x.CourseId);
+
+        builder.HasOne<Course>()
+            .WithMany()
+            .HasForeignKey(e => e.CourseId) 
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

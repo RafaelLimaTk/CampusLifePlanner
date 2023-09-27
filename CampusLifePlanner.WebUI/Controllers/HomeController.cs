@@ -2,9 +2,11 @@
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
 using CampusLifePlanner.Domain.Entities;
+using CampusLifePlanner.Infra.Data.Identity;
 using CampusLifePlanner.WebUI.Models;
 using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -19,13 +21,18 @@ public class HomeController : Controller
     private readonly ICourseService _courseService;
     private readonly IEnrollmentCourseService _enrollmentCourseService;
     private readonly IEventService _eventService;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public HomeController(IMapper mapper, ICourseService courseService, IEnrollmentCourseService enrollmentCourseService, IEventService eventService)
+    public HomeController(IMapper mapper, ICourseService courseService, 
+        IEnrollmentCourseService enrollmentCourseService, 
+        IEventService eventService, 
+        UserManager<ApplicationUser> userManager)
     {
         _mapper = mapper;
         _courseService = courseService;
         _enrollmentCourseService = enrollmentCourseService;
         _eventService = eventService;
+        _userManager = userManager;
     }
 
     #region CRUD
@@ -36,9 +43,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> RelatedEnrollmentCourse()
     {
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        var userId = user.Id;
+
+        var enrollmentCourse = await _courseService.GetCoursesUserIsNotEnrolledIn(Guid.Parse(userId));
         var CoursesModel = new CoursesViewModel
         {
-            Courses = await GetCoursesSelectList()
+            Courses = new SelectList(enrollmentCourse.ToList(), "Id", "Name")
         };
 
         return PartialView(CoursesModel);

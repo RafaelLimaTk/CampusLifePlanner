@@ -75,6 +75,7 @@ public class CourseController : Controller
             if ((await _eventService.GetAllAsync()).Any(a => a.Id == id))
                 throw new Exception(RS.EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE);
 
+            
             await _courseService.DeleteAsync(id);
             TempData["success"] = RS.GENERAL_PAGE_MSG_DELETE_SUCCESS.Replace("{0}", RS.GENERAL_PAGE_LBL_COURSE);
             return Json(new { success = true });
