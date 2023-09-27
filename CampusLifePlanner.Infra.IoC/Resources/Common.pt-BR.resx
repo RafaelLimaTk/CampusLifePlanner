@@ -255,4 +255,10 @@
   <data name="EX_MSG_USER_EXIST" xml:space="preserve">
     <value>O e-mail já está cadastrado.</value>
   </data>
+  <data name="EX_MSG_USER_NOT_ENROLLMENT_COURSE" xml:space="preserve">
+    <value>Usuário não está matriculado em nenhum curso</value>
+  </data>
+  <data name="EX_MSG_USER_NOT_FOUND" xml:space="preserve">
+    <value>Usuário não encontrado</value>
+  </data>
 </root>

@@ -35,12 +35,15 @@
     }
 </style>
 
+
 <div class="bg-body-tertiary bg-primary rounded p-4">
     <h4 class="text-white">
         @RS.Common.GENERAL_PAGE_LBL_EVENTS
     </h4>
 </div>
 
+@if (Model != null)
+{
 <div class="mt-4">
     <h5 class="m-0 pb-2">
         <a class="text-dark link-list-today" data-bs-toggle="collapse" href="#todayTasks" role="button" aria-expanded="false" aria-controls="todayTasks">
@@ -118,8 +121,11 @@
             <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
         }
     </div>
-</div>
-
+    </div>
+} else
+{
+    <h4 class="d-flex justify-content-center mt-4">Você não está matriculado em nenhum curso!</h4>
+}
 @section Scripts {
     <script>
         $(document).ready(function () {

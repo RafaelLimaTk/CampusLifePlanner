@@ -160,6 +160,24 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a User is not enrolled in any course.
+        /// </summary>
+        public static string EX_MSG_USER_NOT_ENROLLMENT_COURSE {
+            get {
+                return ResourceManager.GetString("EX_MSG_USER_NOT_ENROLLMENT_COURSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a User not found.
+        /// </summary>
+        public static string EX_MSG_USER_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("EX_MSG_USER_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a EduPlaner is your tool to maximize academic success! With an innovative approach, our app allows students to access and view their activities and assignments related to each course. Simplifying academic management, EduPlaner helps you stay in control of your studies, ensuring that no important deadlines are missed. Experience the efficiency of an activity manager designed to enhance your educational experience. Discover the power of organization with EduPlaner!.
         /// </summary>
         public static string GENERAL_MSG_DESCRIPTION_PROJECT {

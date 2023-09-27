@@ -49,7 +49,7 @@ public class CourseController : Controller
     }
 
     [HttpPost]
-    public async Task<JsonResult> Create(CourseDto courseDto)
+    public async Task<IActionResult> Create(CourseDto courseDto)
     {
         if (courseDto.Name == null) return Json(new { success = false, message = RS.EX_MSG_NULL_ERROR, type = "info" });
 

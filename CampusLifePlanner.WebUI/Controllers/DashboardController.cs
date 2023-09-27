@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CampusLifePlanner.Application.DTOs;
 using CampusLifePlanner.Application.Interfaces;
+using CampusLifePlanner.Domain.Entities;
 using CampusLifePlanner.Infra.Data.Identity;
 using CampusLifePlanner.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -38,12 +39,21 @@ public class DashboardController : Controller
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+            {
+                TempData["info"] = RS.EX_MSG_USER_NOT_FOUND;
+                return View();
+            }
+
             var userId = user.Id;
-            if (userId == null) return BadRequest("Usuário não existe");
 
             var userIdParseGuid = Guid.Parse(userId);
             var courseIdList = _enrollmentCourseService.GetListByUserId(userIdParseGuid).Select(a => a.CourseId).ToList();
-            if (!courseIdList.Any()) return BadRequest("Usuário não está matriculado em nenhum curso");
+            if (!courseIdList.Any())
+            {
+                TempData["info"] = RS.EX_MSG_USER_NOT_ENROLLMENT_COURSE;
+                return View();
+            }
 
             var events = await _eventService.GetEventsWithCoursesAsync();
 
