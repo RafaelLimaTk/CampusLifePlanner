@@ -72,7 +72,7 @@ public class CourseController : Controller
     {
         try
         {
-            if (_courseService.ExistEvent(id))
+            if ((await _eventService.GetAllAsync()).Any(a => a.Id == id))
                 throw new Exception(RS.EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE);
 
             await _courseService.DeleteAsync(id);
