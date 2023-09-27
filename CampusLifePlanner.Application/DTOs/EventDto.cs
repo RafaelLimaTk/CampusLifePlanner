@@ -14,7 +14,7 @@ public class EventDto
     [DisplayName("Título")]
     public string Title { get; set; }
 
-    [MinLength(5)]
+    [MinLength(1)]
     [MaxLength(500)]
     [DisplayName("Descrição")]
     public string? Description { get; set; }

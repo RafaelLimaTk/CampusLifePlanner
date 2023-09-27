@@ -21,11 +21,13 @@
                         <span style="color:red">*</span>
                         <label for="eventTitle" class="form-label">Título</label>
                         <input type="text" class="form-control" id="eventTitle" name="Event.Title" autofocus value="@Model.Event.Title">
+                        <span asp-validation-for="Event.Title" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <span style="color:red">*</span>
                         <label for="eventLocal" class="form-label">Local</label>
                         <input type="text" class="form-control" id="eventLocal" name="Event.Local" value="@Model.Event.Local">
+                        <span asp-validation-for="Event.Title" class="text-danger"></span>
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
@@ -62,7 +64,7 @@
             <div class="modal-footer">
                 @if (Model.Event.Id != Guid.Empty)
                 {
-                    <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Event.Id" class="btn btn-primary">@RS.GENERAL_PAGE_LBL_SHARED_EVENT</a>
+                    @* <a asp-controller="Event" asp-action="SharedEvent" asp-route-id="@Model.Event.Id" class="btn btn-primary">@RS.GENERAL_PAGE_LBL_SHARED_EVENT</a> *@
                     <button type="button" class="btn btn-danger fp-del" value="@Model.Event.Id">@RS.GENERAL_PAGE_LBL_DELETE</button>
                 }
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@RS.GENERAL_PAGE_LBL_CANCEL</button>

@@ -167,7 +167,7 @@
     <value>Detail</value>
   </data>
   <data name="EX_MSG_MODEL_INVALID" xml:space="preserve">
-    <value>Fill in all required fields</value>
+    <value>Fill in all mandatory fields. The title and location must contain at least 3 characters.</value>
   </data>
   <data name="GENERAL_PAGE_MSG__CREATED_SUCCESS" xml:space="preserve">
     <value>[0} created success</value>
@@ -231,5 +231,8 @@
   </data>
   <data name="GENERAL_MSG_DESCRIPTION_PROJECT" xml:space="preserve">
     <value>EduPlaner is your tool to maximize academic success! With an innovative approach, our app allows students to access and view their activities and assignments related to each course. Simplifying academic management, EduPlaner helps you stay in control of your studies, ensuring that no important deadlines are missed. Experience the efficiency of an activity manager designed to enhance your educational experience. Discover the power of organization with EduPlaner!</value>
+  </data>
+  <data name="EX_MSG_USER_EXIST" xml:space="preserve">
+    <value>The email is already registered.</value>
   </data>
 </root>

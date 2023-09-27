@@ -35,20 +35,20 @@ public class SeedUserRoleInitial : ISeedUserRoleInitial
 
     public void SeedUsers()
     {
-        if (_userManeger.FindByEmailAsync("andersonlima@gmail.com").Result == null)
+        if (_userManeger.FindByEmailAsync("rafaellima@gmail.com").Result == null)
         {
             ApplicationUser user = new ApplicationUser();
-            user.FirstName = "Anderson";
+            user.FirstName = "Rafael";
             user.LastName = "Lima";
-            user.UserName = "andersonlima@gmail.com";
-            user.Email = "andersonlima@gmail.com";
-            user.NormalizedUserName = "ANDERSONLIMA@GMAIL.COM";
-            user.NormalizedEmail = "ANDERSONLIMA@GMAIL.COM";
+            user.UserName = "rafaellima@gmail.com";
+            user.Email = "rafaellima@gmail.com";
+            user.NormalizedUserName = "RAFAELLIMA@GMAIL.COM";
+            user.NormalizedEmail = "RAFAELLIMA@GMAIL.COM";
             user.EmailConfirmed = true;
             user.LockoutEnabled = false;
             user.SecurityStamp = Guid.NewGuid().ToString();
 
-            IdentityResult result = _userManeger.CreateAsync(user, "@62745263Tk7").Result;
+            IdentityResult result = _userManeger.CreateAsync(user, "@St4d3nt1").Result;
 
             if (result.Succeeded)
             {
@@ -56,20 +56,20 @@ public class SeedUserRoleInitial : ISeedUserRoleInitial
             }
         }
 
-        if (_userManeger.FindByEmailAsync("rafamano123.rl@gmail.com").Result == null)
+        if (_userManeger.FindByEmailAsync("admin@gmail.com").Result == null)
         {
             ApplicationUser user = new ApplicationUser();
-            user.FirstName = "Rafael";
-            user.LastName = "Lima";
-            user.UserName = "rafamano123.rl@gmail.com";
-            user.Email = "rafamano123.rl@gmail.com";
-            user.NormalizedUserName = "RAFAMANO123.RL@GMAIL.COM";
-            user.NormalizedEmail = "RAFAMANO123.RL@GMAIL.COM";
+            user.FirstName = "Administrador";
+            user.LastName = "Administrador";
+            user.UserName = "admin@gmail.com";
+            user.Email = "admin@gmail.com";
+            user.NormalizedUserName = "ADMIN@GMAIL.COM";
+            user.NormalizedEmail = "ADMIN@GMAIL.COM";
             user.EmailConfirmed = true;
             user.LockoutEnabled = false;
             user.SecurityStamp = Guid.NewGuid().ToString();
 
-            IdentityResult result = _userManeger.CreateAsync(user, "@62745263Tk7").Result;
+            IdentityResult result = _userManeger.CreateAsync(user, "@Dm1n4s3r").Result;
 
             if (result.Succeeded)
             {

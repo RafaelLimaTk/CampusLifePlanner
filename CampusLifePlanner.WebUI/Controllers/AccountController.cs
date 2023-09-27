@@ -40,7 +40,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var result = await _authentication.Authentication(model.Email, model.Password);
+            var result = await _authentication.Authentication(model.Email, model.Password, model.RememberMe);
 
             if (result)
             {
@@ -68,6 +68,12 @@ public class AccountController : Controller
         {
             if (ModelState.IsValid)
             {
+                if (await _authentication.EmailExists(model.Email))
+                {
+                    TempData["info"] = RS.Common.EX_MSG_USER_EXIST;
+                    return View(model);
+                }
+
                 var result = await _authentication.RegisterUser(model.FirstName, model.LastName, model.Email, model.Password);
 
                 if (result.success)

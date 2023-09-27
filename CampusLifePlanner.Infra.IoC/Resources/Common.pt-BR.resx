@@ -187,7 +187,7 @@
     <value>Detalhes</value>
   </data>
   <data name="EX_MSG_MODEL_INVALID" xml:space="preserve">
-    <value>Preencha todos os campos obrigatórios</value>
+    <value>Preencha todos os campos obrigatórios. O título e o local devem conter no mínimo 3 caracteres.</value>
   </data>
   <data name="GENERAL_PAGE_MSG__CREATED_SUCCESS" xml:space="preserve">
     <value>{0} criado com sucesso</value>
@@ -251,5 +251,8 @@
   </data>
   <data name="GENERAL_MSG_DESCRIPTION_PROJECT" xml:space="preserve">
     <value>EduPlaner é a sua ferramenta para maximizar o sucesso acadêmico! Com uma abordagem inovadora, nosso aplicativo permite que os alunos acessem e visualizem suas atividades e tarefas relacionadas a cada curso. Simplificando a gestão acadêmica, o EduPlaner ajuda você a ficar no controle de seus estudos, garantindo que nenhum prazo importante seja esquecido. Experimente a eficiência de um gerenciador de atividades projetado para aprimorar sua experiência educacional. Descubra o poder da organização com o EduPlaner!</value>
+  </data>
+  <data name="EX_MSG_USER_EXIST" xml:space="preserve">
+    <value>O e-mail já está cadastrado.</value>
   </data>
 </root>

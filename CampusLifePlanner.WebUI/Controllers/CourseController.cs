@@ -81,7 +81,7 @@ public class CourseController : Controller
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = ex.Message, type = "error" });
+            return Json(new { success = false, message = RS.EX_MSG_EVENTS_REGISTERED_FOR_THIS_COURSE, type = "error" });
         }
 
     }

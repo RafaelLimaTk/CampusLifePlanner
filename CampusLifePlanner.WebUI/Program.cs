@@ -1,4 +1,3 @@
-using CampusLifePlanner.Application.Interfaces.Base;
 using CampusLifePlanner.Domain.Account;
 using CampusLifePlanner.Infra.Data.Context;
 using CampusLifePlanner.Infra.IoC;

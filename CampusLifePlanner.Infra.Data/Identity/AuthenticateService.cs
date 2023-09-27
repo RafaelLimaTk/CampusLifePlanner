@@ -1,6 +1,7 @@
 ﻿using CampusLifePlanner.Domain.Account;
 using CampusLifePlanner.Infra.Data.Migrations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusLifePlanner.Infra.Data.Identity;
 
@@ -20,10 +21,10 @@ public class AuthenticateService : IAuthenticate
 
     public RoleManager<ApplicationUser> RoleManager { get; }
 
-    public async Task<bool> Authentication(string email, string password)
+    public async Task<bool> Authentication(string email, string password, bool rememberMe)
     {
         var result = await _singInManeger.PasswordSignInAsync(email,
-            password, false, lockoutOnFailure: false);
+            password, rememberMe, lockoutOnFailure: false);
 
         return result.Succeeded;
     }
@@ -55,7 +56,6 @@ public class AuthenticateService : IAuthenticate
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
 
             await _userManager.AddToRoleAsync(applicationUser, "student");
-            await _userManager.AddToRoleAsync(applicationUser, "Admin");
         }
         else
             throw new Exception("Ocorreu um erro ao tentar inserir o nível de permissão no usuário");
@@ -66,6 +66,11 @@ public class AuthenticateService : IAuthenticate
         }
 
         return new(result.Succeeded, result.Errors.Count() == 0 ? null : result.Errors.FirstOrDefault().Description.ToString());
+    }
+
+    public async Task<bool> EmailExists(string email)
+    {
+        return _userManager.Users.Any(u => u.Email == email);
     }
 
     public async Task<bool> UpdateUserProfile(string userId, string imgPath)
@@ -79,5 +84,4 @@ public class AuthenticateService : IAuthenticate
         }
         return false;
     }
-
 }

@@ -113,6 +113,7 @@ public class EventController : Controller
         ModelState.Remove("Event.Courses");
         string jobId = "-";
         string jobIdSource = eventDto.Event.JobId;
+
         if (!ModelState.IsValid)
         {
             return ErrorResponse(RS.EX_MSG_MODEL_INVALID);

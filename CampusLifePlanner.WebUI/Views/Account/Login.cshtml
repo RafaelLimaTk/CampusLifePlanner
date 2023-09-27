@@ -26,14 +26,16 @@
                 <div class="form-floating mb-3">
                     <input asp-for="Email" type="email" class="form-control" id="floatingEmail" placeholder="name@example.com">
                     <label for="floatingEmail">Endereço de e-mail</label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
                     <input asp-for="Password" type="password" class="form-control" id="floatingPassword" placeholder="Senha">
                     <label for="floatingPassword">Senha</label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox mb-3">
                     <label>
-                        <input type="checkbox" value="remember-me"> Lembrar-me
+                        <input asp-for="RememberMe" type="checkbox"> Lembrar-me
                     </label>
                 </div>
                 <button class="w-100 btn btn-lg btn-primary rounded-3 mb-2" type="submit">Entrar</button>
@@ -51,24 +53,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
-    <script>
-        $('form').on('submit', function () {
-            if ($(this).valid()) {
-                $(this).find('input').removeClass('is-invalid').addClass('is-valid');
-            } else {
-                $(this).find('input').each(function () {
-                    if ($(this).hasClass('input-validation-error')) {
-                        $(this).removeClass('is-valid').addClass('is-invalid');
-
-                        var errorMessage = $(this).attr('data-val-required') || $(this).attr('data-val-email');
-
-                        $(this).siblings('label').text(errorMessage);
-                    } else {
-                        $(this).removeClass('is-invalid').addClass('is-valid');
-                    }
-                });
-            }
-        });
-    </script>
 }
