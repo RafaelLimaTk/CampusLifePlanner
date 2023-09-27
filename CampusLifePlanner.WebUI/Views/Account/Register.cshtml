@@ -64,22 +64,28 @@
     }
 
     <script>
-        $('form').on('submit', function () {
-            if ($(this).valid()) {
-                $(this).find('input').removeClass('is-invalid').addClass('is-valid');
-            } else {
-                $(this).find('input').each(function () {
-                    if ($(this).hasClass('input-validation-error')) {
-                        $(this).removeClass('is-valid').addClass('is-invalid');
+        $('form').on('submit', function (e) {
+            var validator = $(this).validate();
+            var isValid = $(this).valid();
 
-                        var errorMessage = $(this).attr('data-val-required') || $(this).attr('data-val-email');
-
-                        $(this).siblings('label').text(errorMessage);
-                    } else {
-                        $(this).removeClass('is-invalid').addClass('is-valid');
-                    }
-                });
+            if (isValid) {
+                return
             }
+
+            $(this).find('input').each(function () {
+                var $this = $(this);
+                var name = $this.attr("name");
+
+                if (!isValid && validator && validator.submitted[name]) {
+                    $this.removeClass('is-valid').addClass('is-invalid');
+                    var errors = validator.errorMap[name];
+                    if (errors) {
+                        $this.siblings('label').text(errors);
+                    }
+                } else {
+                    $this.removeClass('is-invalid').addClass('is-valid');
+                }
+            });
         });
     </script>
 }

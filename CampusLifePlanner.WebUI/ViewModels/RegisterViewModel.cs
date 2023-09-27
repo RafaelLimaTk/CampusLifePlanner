@@ -16,6 +16,8 @@ public class RegisterViewModel
 
     [Required(ErrorMessage = "Senha é obrigatório.")]
     [DataType(DataType.Password)]
+    [MinLength(8, ErrorMessage = "A senha deve conter no mínimo 8 caracteres.")]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$", ErrorMessage = "A senha deve ter letra maiúscula, minúscula, número e caractere especial.")]
     public string Password { get; set; }
 
     [Required(ErrorMessage = "Comfirme a senha")]
