@@ -19,6 +19,7 @@ public class EventDto
     [DisplayName("Descrição")]
     public string? Description { get; set; }
 
+    [Required(ErrorMessage = "Esse campo é obrigatório")]
     [MinLength(3)]
     [MaxLength(120)]
     [DisplayName("Local")]
