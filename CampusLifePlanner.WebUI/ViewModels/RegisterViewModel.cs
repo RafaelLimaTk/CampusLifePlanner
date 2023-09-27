@@ -12,6 +12,7 @@ public class RegisterViewModel
 
     [Required(ErrorMessage = "Email é obrigatório.")]
     [EmailAddress(ErrorMessage = "Email não é um endereço de email válido.")]
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Email não é um endereço de email válido.")]
     public string Email { get; set; }
 
     [Required(ErrorMessage = "Senha é obrigatório.")]

@@ -52,7 +52,7 @@ public class SeedUserRoleInitial : ISeedUserRoleInitial
 
             if (result.Succeeded)
             {
-                _userManeger.AddToRoleAsync(user, "User").Wait();
+                _userManeger.AddToRoleAsync(user, "student").Wait();
             }
         }
 
@@ -74,6 +74,7 @@ public class SeedUserRoleInitial : ISeedUserRoleInitial
             if (result.Succeeded)
             {
                 _userManeger.AddToRoleAsync(user, "Admin").Wait();
+                _userManeger.AddToRoleAsync(user, "student").Wait();
             }
         }
     }
