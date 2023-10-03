@@ -247,4 +247,7 @@
   <data name="GENERAL_MSG_MANDATORY" xml:space="preserve">
     <value>The {0} is mandatory.</value>
   </data>
+  <data name="MSG_PAGE_DASHBOARD_INFO_TASK" xml:space="preserve">
+    <value>See your tasks for today and tomorrow.</value>
+  </data>
 </root>

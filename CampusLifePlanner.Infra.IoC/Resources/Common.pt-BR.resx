@@ -267,4 +267,7 @@
   <data name="GENERAL_MSG_MANDATORY" xml:space="preserve">
     <value>O {0} é obrigatório.</value>
   </data>
+  <data name="MSG_PAGE_DASHBOARD_INFO_TASK" xml:space="preserve">
+    <value>Veja suas tarefas para hoje e amanhã.</value>
+  </data>
 </root>
