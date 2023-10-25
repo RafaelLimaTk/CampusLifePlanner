@@ -1,5 +1,6 @@
 ﻿@model CampusLifePlanner.WebUI.ViewModels.EventViewModel
 @using RS = CampusLifePlanner.Infra.IoC.Resources;
+@using System.Text;
 
 @{
     ViewData["Title"] = "Dashboard | EduPlaner";
@@ -8,11 +9,6 @@
 <style>
     .link-list-today, .link-list-next {
         text-decoration: none;
-    }
-
-    .collapse-show {
-        background: #f6f7fb;
-        padding: 20px
     }
 
     .icon-container-today, .icon-container-next {
@@ -26,103 +22,187 @@
         display: inline-block;
     }
 
-    .button-info{
+    .button-info {
         cursor: pointer;
     }
 
     .completed {
         text-decoration: line-through;
     }
+
+    .weekday {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+    }
+
+    .date {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        font-size: 32px;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+        .date::after {
+            content: "";
+            position: absolute;
+            height: 80%;
+            top: 10%;
+            bottom: 10%;
+            width: 1px;
+            background-color: #D3D3D3;
+            right: -10px;
+        }
+
+    .circle-background {
+        width: 30px;
+        height: 30px;
+        background-color: #2196F3;
+        border-radius: 50%;
+    }
+
+    .bg-tertiary{
+        background-color: #CFCFD2;
+    }
 </style>
 
 
-<div class="bg-body-tertiary bg-primary rounded p-4">
-    <h4 class="text-white">
-        @RS.Common.GENERAL_PAGE_LBL_EVENTS
-    </h4>
+<div class="row mt-4">
+    <div class="col-3 me-2">
+        <h4 class="mb-2">
+            @RS.Common.GENERAL_PAGE_LBL_EVENTS
+        </h4>
+        <span class="text-black text-opacity-75">
+            @RS.Common.MSG_PAGE_DASHBOARD_INFO_TASK
+        </span>
+    </div>
 </div>
 
 @if (Model != null)
 {
-<div class="mt-4">
-    <h5 class="m-0 pb-2">
-        <a class="text-dark link-list-today" data-bs-toggle="collapse" href="#todayTasks" role="button" aria-expanded="false" aria-controls="todayTasks">
-            <span class="icon-container-today">
-                <i class="bi bi-chevron-down fs-6"></i>
-            </span>
-            @RS.Common.GENERAL_PAGE_LBL_TODAY
-        </a>
-    </h5>
-    <div class="collapse collapse-show rounded show" id="todayTasks">
-        @if (Model != null && Model.TodayEvents != null && Model.TodayEvents.Any())
-        {
-            foreach (var evento in Model.TodayEvents)
+    <div class="mt-4">
+        <h5 class="m-0 pb-2">
+            <a class="text-dark link-list-today" data-bs-toggle="collapse" href="#todayTasks" role="button" aria-expanded="false" aria-controls="todayTasks">
+                <span class="icon-container-today">
+                    <i class="bi bi-chevron-down fs-6"></i>
+                </span>
+                @RS.Common.GENERAL_PAGE_LBL_TODAY
+            </a>
+        </h5>
+        <div class="collapse rounded show" id="todayTasks">
+            @if (Model != null && Model.TodayEvents != null && Model.TodayEvents.Any())
             {
-                <div class="row p-1">
-                    <div class="col-10 justify-content-sm-between">
-                        <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
-                            <input type="checkbox" class="task-checkbox me-1" value="@evento.Id" onchange="toggleTaskCompletion(this)" @(evento.Completed ? "checked" : "")>
-                            <span class ="@(evento.Completed ? "completed" : "")">@evento.Title - @evento.Courses.Name</span>
+                foreach (var evento in Model.TodayEvents)
+                {
+                    <div class="row p-1">
+                        <div class="card pe-0 ps-0">
+                            <div class="card-body m-0 p-0 d-flex align-items-center">
+                                <div class="text-center text-danger m-1 col-sm-1 m-0">
+                                    <div class="date">
+                                        <span class="weekday">@AbreviarDiaDaSemana(@evento.StartDate)</span>
+                                        @evento.StartDate.Day.ToString("00")
+                                    </div>
+                                </div>
+                                <div class="d-flex ms-3 flex-column col-2">
+                                    <span>
+                                        <i class="bi bi-stopwatch-fill text-black-50 text-opacity-25"></i>
+                                        @evento.StartDate.ToString("HH:mm") - @evento.EndDate.ToString("HH:mm")
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-geo-alt-fill text-black-50 text-opacity-25"></i>
+                                        @evento.Local
+                                    </span>
+                                </div>
+                                <div class="ms-5 d-flex flex-column col-3">
+                                    <div class="d-flex align-items-center">                                       
+                                        <span class="title-event @(evento.Completed ? "completed" : "")">@evento.Title</span>
+                                    </div>
+                                    <span class="d-flex justify-content-center align-items-center circle-background">
+                                        <span class="text-white text-center">@GenerateSigla(evento.Courses.Name)</span>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center col-5">
+                                    <input type="checkbox" class="task-checkbox me-3" value="@evento.Id" onchange="toggleTaskCompletion(this)" @(evento.Completed ? "checked" : "")>
+                                    <span class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
+                                        <i class="bi bi-info-circle text-primary" id="info"></i>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <span class="me-2">
-                            <i class="bi bi-calendar-date text-danger"></i>
-                            @RS.Common.GENERAL_PAGE_LBL_TODAY @RS.Common.GENERAL_PAGE_LBL_TO_THE @evento.StartDate.ToString("HH:mm")
-                        </span>
-                        <span class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
-                            <i class="bi bi-info-circle text-primary" id="info"></i>
-                        </span>
-                    </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
-        }
+            else
+            {
+                <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
+            }
+        </div>
     </div>
-</div>
 
-<div class="mt-4">
-    <h5 class="m-0 pb-2">
-        <a class="text-dark link-list-next" data-bs-toggle="collapse" href="#nextTasks" role="button" aria-expanded="false" aria-controls="nextTasks">
-            <span class="icon-container-next">
-                <i class="bi bi-chevron-down fs-6"></i>
-            </span>
-            @RS.Common.GENERAL_PAGE_LBL_TOMORROW
-        </a>
-    </h5>
-    <div class="collapse collapse-show rounded show" id="nextTasks">
-        @if (Model != null && Model.NextDayEvents != null && Model.NextDayEvents.Any())
-        {
-            foreach (var evento in Model.NextDayEvents)
+    <div class="mt-4">
+        <h5 class="m-0 pb-2">
+            <a class="text-dark link-list-next" data-bs-toggle="collapse" href="#nextTasks" role="button" aria-expanded="false" aria-controls="nextTasks">
+                <span class="icon-container-next">
+                    <i class="bi bi-chevron-down fs-6"></i>
+                </span>
+                @RS.Common.GENERAL_PAGE_LBL_TOMORROW
+            </a>
+        </h5>
+        <div class="collapse rounded show" id="nextTasks">
+            @if (Model != null && Model.NextDayEvents != null && Model.NextDayEvents.Any())
             {
-                <div class="row p-1">
-                    <div class="col-10 justify-content-sm-between">
-                        <div class="col-sm-6 mb-2 mb-sm-0 d-flex align-items-center">
-                            <span>@evento.Title - @evento.Courses.Name</span>
+                foreach (var evento in Model.NextDayEvents)
+                {
+                    <div class="row p-1">
+                        <div class="card pe-0 ps-0">
+                            <div class="card-body m-0 p-0 d-flex align-items-center">
+                                <div class="text-center text-success m-1 col-sm-1 m-0">
+                                    <div class="date">
+                                        <span class="weekday">@AbreviarDiaDaSemana(@evento.StartDate)</span>
+                                        @evento.StartDate.Day.ToString("00")
+                                    </div>
+                                </div>
+                                <div class="d-flex ms-3 flex-column col-2">
+                                    <span>
+                                        <i class="bi bi-stopwatch-fill text-black-50 text-opacity-25"></i>
+                                        @evento.StartDate.ToString("HH:mm") - @evento.EndDate.ToString("HH:mm")
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-geo-alt-fill text-black-50 text-opacity-25"></i>
+                                        @evento.Local
+                                    </span>
+                                </div>
+                                <div class="ms-5 d-flex flex-column col-3">
+                                    <div class="d-flex align-items-center">
+                                        <span class="title-event @(evento.Completed ? "completed" : "")">@evento.Title</span>
+                                    </div>
+                                    <span class="d-flex justify-content-center align-items-center circle-background">
+                                        <span class="text-white text-center">@GenerateSigla(evento.Courses.Name)</span>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center col-5">
+                                    <span class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
+                                        <i class="bi bi-info-circle text-primary" id="info"></i>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <span class="me-2">
-                            <i class="bi bi-calendar-date text-danger"></i>
-                            @RS.Common.GENERAL_PAGE_LBL_TOMORROW @RS.Common.GENERAL_PAGE_LBL_TO_THE @evento.StartDate.ToString("HH:mm")
-                        </span>
-                        <span class="button-info" class="button-info" data-bs-toggle="tooltip" title="@evento.Description" data-bs-placement="top">
-                            <i class="bi bi-info-circle text-primary" id="info"></i>
-                        </span>
-                    </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
-        }
+            else
+            {
+                <h4>@RS.Common.GENERAL_PAGE_LBL_NOT_FOUND.Replace("{0}", RS.Common.GENERAL_PAGE_LBL_EVENT)</h4>
+            }
+        </div>
     </div>
-    </div>
-} else
+}
+else
 {
     <h4 class="d-flex justify-content-center mt-4">Você não está matriculado em nenhum curso!</h4>
 }
@@ -140,13 +220,16 @@
 
 
         function toggleTaskCompletion(checkbox) {
-            let title = $(checkbox).next();
             let isChecked = $(checkbox).is(':checked');
+            let cardBody = $(checkbox).closest('.card-body');
+            let title = cardBody.find('.title-event');
+
             if (isChecked) {
                 title.addClass('completed');
             } else {
                 title.removeClass('completed');
             }
+
             $.post("@Url.Action("CreateEventLog")", { eventId: $(checkbox).val(), isChecked: isChecked });
         }
 
@@ -156,4 +239,56 @@
         })
 
     </script>
+}
+
+@functions {
+    public static string AbreviarDiaDaSemana(DateTime data)
+    {
+        string abreviacao;
+        switch (data.DayOfWeek)
+        {
+            case DayOfWeek.Monday:
+                abreviacao = "SEG";
+                break;
+            case DayOfWeek.Tuesday:
+                abreviacao = "TER";
+                break;
+            case DayOfWeek.Wednesday:
+                abreviacao = "QUA";
+                break;
+            case DayOfWeek.Thursday:
+                abreviacao = "QUI";
+                break;
+            case DayOfWeek.Friday:
+                abreviacao = "SEX";
+                break;
+            case DayOfWeek.Saturday:
+                abreviacao = "SAB";
+                break;
+            case DayOfWeek.Sunday:
+                abreviacao = "DOM";
+                break;
+            default:
+                abreviacao = "";
+                break;
+        }
+        return abreviacao;
+    }
+
+    public static string GenerateSigla(string courseName)
+    {
+        List<string> ignoreWords = new List<string> { "da" };
+        string[] words = courseName.Split(' ');
+
+        StringBuilder sigla = new StringBuilder();
+        foreach (var word in words)
+        {
+            if (!string.IsNullOrEmpty(word) && !ignoreWords.Contains(word.ToLower()))
+            {
+                sigla.Append(word[0]);
+            }
+        }
+
+        return sigla.ToString().ToUpper();
+    }
 }

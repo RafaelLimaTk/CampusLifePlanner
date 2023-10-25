@@ -502,6 +502,15 @@ namespace CampusLifePlanner.Infra.IoC.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a See your tasks for today and tomorrow..
+        /// </summary>
+        public static string MSG_PAGE_DASHBOARD_INFO_TASK {
+            get {
+                return ResourceManager.GetString("MSG_PAGE_DASHBOARD_INFO_TASK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a To stay up to date with events and activities, please choose the course in which you are currently enrolled. This will allow you to keep track of all relevant information and participate in scheduled activities. we are here for ensure that you are always well informed and engaged in your course..
         /// </summary>
         public static string MSG_PAGE_ENROLLMENT_COURSE {

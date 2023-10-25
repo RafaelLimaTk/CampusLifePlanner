@@ -14,19 +14,19 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house me-1"></i>Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-clipboard me-1"></i>Tarefas</a>
         </li>
         var admins = roleUser.Select(a => a.Email).ToList();
         if (admins.Contains(appUser.Email))
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Calendar">Calendario</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Calendar"><i class="bi bi-calendar me-1"></i>Calendario</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Cursos</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index"><i class="bi bi-collection me-1"></i>Cursos</a>
             </li>
         }
     }
